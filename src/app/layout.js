@@ -1,5 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Tajawal } from "next/font/google";
 import "./globals.css";
+import AOSInit from "@/components/AOSInit";
+
+const tajawal = Tajawal({
+  variable: "--font-tajawal",
+  subsets: ["arabic"],
+  weight: ["200", "300", "400", "500", "700", "800", "900"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,10 +26,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="ar"
+      dir="rtl"
+      className={` ${tajawal.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+        <AOSInit />
+        {children}
+      </body>
     </html>
   );
 }
