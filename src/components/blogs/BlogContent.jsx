@@ -1,4 +1,5 @@
-import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, ArrowLeft } from "lucide-react";
+import { Calendar, User, Tag, Share2, ArrowLeft } from "lucide-react";
+import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
 
 export default function BlogContent() {
@@ -81,15 +82,15 @@ export default function BlogContent() {
         <div className="flex flex-col md:flex-row items-center justify-between py-6 border-t border-b border-gray-100 mb-16">
           <div className="flex items-center gap-3 mb-6 md:mb-0">
             <span className="font-bold text-gray-900">مشاركة المقال:</span>
-            <button className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
-              <Facebook className="w-5 h-5" />
-            </button>
-            <button className="w-10 h-10 rounded-full bg-blue-50 text-blue-400 flex items-center justify-center hover:bg-blue-400 hover:text-white transition-colors">
-              <Twitter className="w-5 h-5" />
-            </button>
-            <button className="w-10 h-10 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
-              <Linkedin className="w-5 h-5" />
-            </button>
+              <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-[#2A5CBA] transition-colors">
+                <FaFacebook className="w-5 h-5" />
+              </button>
+              <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-sky-50 hover:text-sky-500 transition-colors">
+                <FaTwitter className="w-5 h-5" />
+              </button>
+              <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                <FaLinkedin className="w-5 h-5" />
+              </button>
           </div>
           
           <div className="flex items-center gap-2">
