@@ -15,8 +15,8 @@ export default function DirectPricingFeatures() {
       <div className="max-w-6xl mx-auto">
         {/* Timeline */}
         <div className="relative mb-24 z-0">
-          {/* Connecting Line */}
-          <div className="hidden md:block absolute top-[40px] left-[2%] right-[2%] h-[2px] bg-[#3A5DAA] z-0"></div>
+          {/* Connecting Line (Animated from Right to Left) */}
+          <div className="hidden md:block absolute top-[40px] right-[2%] h-[2px] bg-[#3A5DAA] z-0 draw-line-rtl"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 relative z-10">
             {/* Step 1 */}
