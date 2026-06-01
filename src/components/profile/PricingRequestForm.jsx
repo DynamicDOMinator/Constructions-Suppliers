@@ -61,48 +61,10 @@ export default function PricingRequestForm({ onBack }) {
         <div className="flex  flex-col lg:flex-row-reverse gap-6">
           
           {/* Right Side - Files and Notes */}
-          <div className="w-full lg:w-1/4 flex flex-col gap-6">
-            <div className="bg-white border border-orange-200 rounded-2xl p-6 shadow-sm h-full flex flex-col gap-6">
-              
-              <div>
-                <label className="block text-right font-bold text-gray-700 mb-3 text-sm">ملاحظات للمورد</label>
-                <textarea 
-                  rows={4} 
-                  placeholder="ملاحظات" 
-                  className="w-full bg-gray-50/50 border border-gray-100 rounded-xl p-4 text-xs text-gray-400 outline-none resize-none"
-                ></textarea>
-              </div>
-
-              {/* Upload Boxes */}
-              <div className="flex  flex-col gap-4">
-                <div>
-                  <h4 className="text-right text-xs font-bold text-gray-700 mb-2">المقايسة الأصلي</h4>
-                  <div className="border border-dashed border-orange-300 rounded-xl py-6 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-orange-50 transition-colors">
-                    <UploadCloud className="w-5 h-5 text-orange-200" />
-                    <span className="text-xs text-[#2A5CBA]">اختر الملفات من جهازك للرفع</span>
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-right text-xs font-bold text-gray-700 mb-2">المواصفات الفنية (Specs)</h4>
-                  <div className="border border-dashed border-orange-300 rounded-xl py-6 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-orange-50 transition-colors">
-                    <UploadCloud className="w-5 h-5 text-orange-200" />
-                    <span className="text-xs text-[#2A5CBA]">اختر الملفات من جهازك للرفع</span>
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-right text-xs font-bold text-gray-700 mb-2">الرسومات الهندسية(إن وجدت)</h4>
-                  <div className="border border-dashed border-orange-300 rounded-xl py-6 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-orange-50 transition-colors">
-                    <UploadCloud className="w-5 h-5 text-orange-200" />
-                    <span className="text-xs text-[#2A5CBA]">اختر الملفات من جهازك للرفع</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
+        
 
           {/* Left Side - Selected Products */}
-          <div className="w-full lg:w-3/4">
+          <div className="w-full ">
             <div className="bg-white border border-orange-200 rounded-2xl p-6 shadow-sm h-full">
               
               <div className="flex flex-row-reverse justify-between items-center mb-6">
