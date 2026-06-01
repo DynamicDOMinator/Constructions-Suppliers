@@ -1,6 +1,6 @@
 import { Bookmark } from "lucide-react";
 
-export default function ProfileHeader() {
+export default function ProfileHeader({ activeView, setActiveView }) {
   return (
     <div className="w-full bg-white pt-20 pb-8 px-6 md:px-24" dir="rtl">
       <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-start gap-8">
@@ -31,11 +31,25 @@ export default function ProfileHeader() {
             حفظ المورد
           </button>
           
-          <button className="flex-1 md:flex-none bg-[#2A5CBA] text-white hover:bg-blue-700 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">
+          <button 
+            onClick={() => setActiveView("quotas")}
+            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+              activeView === "quotas" 
+                ? "bg-[#1e40af] text-white" 
+                : "bg-[#2A5CBA] text-white hover:bg-blue-700"
+            }`}
+          >
             ارسال طلب مقايسة
           </button>
           
-          <button className="flex-1 md:flex-none bg-[#EB682C] text-white hover:bg-[#d65a22] px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">
+          <button 
+            onClick={() => setActiveView("pricing")}
+            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+              activeView === "pricing" 
+                ? "bg-[#c2410c] text-white" 
+                : "bg-[#EB682C] text-white hover:bg-[#d65a22]"
+            }`}
+          >
             ارسال طلب تسعير
           </button>
         </div>

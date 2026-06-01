@@ -26,6 +26,16 @@ export default function PricingRequestsPage() {
 
       {/* Tabs */}
       <div className="flex bg-gray-100 p-1 rounded-xl shadow-inner mb-6">
+        
+        
+          <button 
+          onClick={() => setActiveTab("accepted")}
+          className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${
+            activeTab === "accepted" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          طلبات التسعير المقبولة
+        </button>
         <button 
           onClick={() => setActiveTab("rejected")}
           className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${
@@ -34,14 +44,7 @@ export default function PricingRequestsPage() {
         >
           طلبات التسعير المرفوضة
         </button>
-        <button 
-          onClick={() => setActiveTab("accepted")}
-          className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${
-            activeTab === "accepted" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
-          }`}
-        >
-          طلبات التسعير المقبولة
-        </button>
+      
       </div>
 
       {/* Filter and Title */}
@@ -59,17 +62,17 @@ export default function PricingRequestsPage() {
           <Link href={`/dashboard/pricing/1284795`} key={req.id}>
             <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all h-full flex flex-col">
               
-              <div className="flex justify-between items-start mb-6">
+              <div className="flex flex-row-reverse justify-between items-start mb-6">
                 <span className={`text-xs font-bold px-3 py-1 rounded-md ${
                   req.status === "مقبولة" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
                 }`}>
                   {req.status}
                 </span>
                 
-                <div className="flex items-center gap-4 text-right">
+                <div className="flex flex-row-reverse items-center gap-4 text-right">
                   <div>
                     <h3 className="font-bold text-gray-900 text-lg">{req.name}</h3>
-                    <div className="flex items-center justify-end gap-1 text-gray-500 text-sm mt-1">
+                    <div className="flex flex-row-reverse items-center justify-end gap-1 text-gray-500 text-sm mt-1">
                       <span>{req.location}</span>
                       <MapPin className="w-4 h-4" />
                     </div>

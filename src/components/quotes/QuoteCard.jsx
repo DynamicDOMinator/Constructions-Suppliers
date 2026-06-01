@@ -1,5 +1,5 @@
 import { MapPin } from "lucide-react";
-
+import Link from "next/link";
 export default function QuoteCard() {
   return (
     <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow font-tajawal flex flex-col h-full" dir="rtl" data-aos="fade-up">
@@ -50,9 +50,11 @@ export default function QuoteCard() {
       </div>
 
       {/* Action Button */}
-      <button className="w-full bg-[#EB682C] text-white py-2.5 rounded-lg text-sm font-bold hover:bg-[#d65a22] transition-colors mt-auto">
-        عرض التفاصيل
-      </button>
+      <Link href="/quotes/123" className="mt-auto">
+        <button className="w-full bg-[#EB682C] text-white py-2.5 rounded-lg text-sm font-bold hover:bg-[#d65a22] transition-colors mt-auto">
+          عرض التفاصيل
+        </button>
+      </Link>
 
     </div>
   );

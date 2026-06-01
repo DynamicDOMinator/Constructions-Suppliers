@@ -51,10 +51,10 @@ export default function TeamManagementPage() {
 
       {/* Invite Member Section */}
       <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
-        <div className="flex flex-col gap-2 mb-2 text-right">
+        <div className="flex  flex-col gap-2 mb-2 text-right">
           <label className="text-sm font-bold text-gray-700">البريد الإلكتروني</label>
         </div>
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-4">
           
           <button className="w-full md:w-auto bg-[#EB682C] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors whitespace-nowrap">
             أرسل دعوة انضمام
@@ -89,13 +89,13 @@ export default function TeamManagementPage() {
       <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
         <h2 className="text-lg font-bold text-gray-500 mb-8 text-right">الأعضاء</h2>
         
-        <div className="flex flex-col gap-6">
+        <div className="flex  flex-col gap-6">
           {teamMembers.map((member, idx) => (
             <div key={member.id}>
-              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-4">
                 
                 {/* Left side (Role) */}
-                <div className="w-full md:w-auto flex justify-start">
+                <div className="w-full md:w-auto flex  justify-start">
                   {member.role === "الادمن" ? (
                     <div className="flex items-center gap-2 text-gray-700 px-4 py-2 w-full md:w-auto justify-end md:justify-start">
                       <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -110,7 +110,7 @@ export default function TeamManagementPage() {
                 </div>
 
                 {/* Right side (Profile info) */}
-                <div className="flex items-center gap-4 text-right">
+                <div className="flex  items-center gap-4 text-right">
                   <div>
                     <div className="flex justify-end items-center gap-2 mb-1">
                       {member.isYou && (
