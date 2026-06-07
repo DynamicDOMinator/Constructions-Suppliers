@@ -1,8 +1,12 @@
 "use client";
+import { useState } from "react";
 import { Bell, MessageSquare, ChevronDown, Globe } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Topbar() {
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
   return (
     <header className="h-24 bg-white border-b border-gray-100 px-8 flex items-center justify-between sticky top-0 z-20 font-tajawal">
       
@@ -33,15 +37,54 @@ export default function Topbar() {
 
         {/* Icons */}
         <div className="flex items-center gap-4">
-          <button className="relative text-[#EB682C] hover:text-[#d65a22] transition-colors">
+          <Link href="/dashboard/chat" className="relative text-[#EB682C] hover:text-[#d65a22] transition-colors">
             <MessageSquare className="w-5 h-5" />
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          </Link>
           
-          <button className="relative text-[#EB682C] hover:text-[#d65a22] transition-colors">
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          {/* Notifications Icon with Dropdown */}
+          <div className="relative">
+            <button 
+              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+              className="relative text-[#EB682C] hover:text-[#d65a22] transition-colors block"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            {/* Notifications Dropdown */}
+            {isNotificationsOpen && (
+              <div className="absolute top-full left-0 mt-4 w-80 bg-white border border-gray-100 shadow-xl rounded-xl z-50 overflow-hidden font-tajawal text-right" dir="rtl">
+                <div className="flex justify-between items-center px-4 pt-4 border-b border-gray-100">
+                  <Link href="/dashboard/notifications" className="text-sm font-bold text-[#EB682C] mb-2 hover:underline">عرض الكل</Link>
+                  <h3 className="text-sm font-bold text-gray-900 border-b-2 border-[#EB682C] pb-2 px-1">الإشعارات</h3>
+                </div>
+                <div className="max-h-[400px] overflow-y-auto">
+                  {/* Notification Item 1 (Unread) */}
+                  <div className="p-4 bg-[#F8F9FA] border-b border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      ارسل لك <span className="font-bold text-gray-900">محمود فتوح</span> طلب تسعير جديد
+                    </p>
+                    <p className="text-xs font-bold text-gray-900 mt-2">منذ 6 دقائق</p>
+                  </div>
+                  {/* Notification Item 2 (Read) */}
+                  <div className="p-4 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      ارسل لك <span className="font-bold text-gray-900">محمود فتوح</span> طلب تسعير جديد
+                    </p>
+                    <p className="text-xs font-bold text-gray-900 mt-2">منذ 6 دقائق</p>
+                  </div>
+                  {/* Notification Item 3 (Read) */}
+                  <div className="p-4 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      ارسل لك <span className="font-bold text-gray-900">محمود فتوح</span> طلب تسعير جديد
+                    </p>
+                    <p className="text-xs font-bold text-gray-900 mt-2">منذ 6 دقائق</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
       </div>

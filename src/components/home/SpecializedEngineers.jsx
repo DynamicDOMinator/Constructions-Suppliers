@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function SpecializedEngineers() {
   return (
         <section className="py-20 px-6 md:px-12 bg-[#F9FAFC]" data-aos="fade-up">
@@ -22,9 +24,11 @@ export default function SpecializedEngineers() {
                 <h3 className="font-bold text-black text-lg mb-1">{person.name}</h3>
                 <p className="text-xs text-gray-500 mb-3">{person.role}</p>
                 <p className="text-xs text-gray-500 mb-3 text-center max-w-[160px]">خبرة في الاشراف علي اعمال التشطيبات والديكور</p>
-                <button className="bg-[#EB682C] text-center text-white text-xs px-6 py-2 rounded-full group-hover:bg-[#EB682C] group-hover:text-white transition-colors w-full font-bold shadow-sm">
-               ابدء المحادثة
-                </button>
+                <Link href="/chat" className="w-full">
+                  <button className="bg-[#EB682C] text-center text-white text-xs px-6 py-2 rounded-full group-hover:bg-[#EB682C] group-hover:text-white transition-colors w-full font-bold shadow-sm">
+                    ابدء المحادثة
+                  </button>
+                </Link>
               </div>
             ))}
           </div>
