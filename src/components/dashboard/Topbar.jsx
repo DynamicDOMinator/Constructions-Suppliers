@@ -54,7 +54,7 @@ export default function Topbar() {
 
             {/* Notifications Dropdown */}
             {isNotificationsOpen && (
-              <div className="absolute top-full left-0 mt-4 w-80 bg-white border border-gray-100 shadow-xl rounded-xl z-50 overflow-hidden font-tajawal text-right" dir="rtl">
+              <div className="absolute top-full left-0 mt-4 w-80 bg-white border border-gray-100 shadow-xl rounded-xl z-50 overflow-hidden font-tajawal text-right animate-in fade-in slide-in-from-top-2 duration-200" dir="rtl">
                 <div className="flex justify-between items-center px-4 pt-4 border-b border-gray-100">
                   <Link href="/dashboard/notifications" className="text-sm font-bold text-[#EB682C] mb-2 hover:underline">عرض الكل</Link>
                   <h3 className="text-sm font-bold text-gray-900 border-b-2 border-[#EB682C] pb-2 px-1">الإشعارات</h3>

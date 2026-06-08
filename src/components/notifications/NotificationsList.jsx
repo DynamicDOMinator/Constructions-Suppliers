@@ -67,7 +67,7 @@ const getBgColor = (type) => {
 export default function NotificationsList() {
   return (
     <div className="max-w-4xl mx-auto w-full font-tajawal bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" dir="rtl">
-      <div className="p-6 md:p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+      <div className="p-6 md:p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50" data-aos="fade-down">
         <div className="flex items-center gap-3">
           <div className="bg-[#EB682C]/10 p-3 rounded-xl">
             <Bell className="w-6 h-6 text-[#EB682C]" />
@@ -86,12 +86,14 @@ export default function NotificationsList() {
       </div>
 
       <div className="divide-y divide-gray-100">
-        {notifications.map((notification) => (
+        {notifications.map((notification, idx) => (
           <div 
             key={notification.id} 
-            className={`p-6 md:p-8 flex gap-4 md:gap-6 items-start transition-colors hover:bg-gray-50 ${!notification.isRead ? 'bg-[#F9FAFC]' : ''}`}
+            data-aos="fade-up"
+            data-aos-delay={idx * 100}
+            className={`p-6 md:p-8 flex gap-4 md:gap-6 items-start transition-all duration-300 hover:bg-gray-50 hover:shadow-sm transform hover:-translate-y-0.5 ${!notification.isRead ? 'bg-[#F9FAFC]' : ''}`}
           >
-            <div className={`p-3 rounded-xl flex-shrink-0 ${getBgColor(notification.type)}`}>
+            <div className={`p-3 rounded-xl flex-shrink-0 transition-transform duration-300 hover:scale-110 ${getBgColor(notification.type)}`}>
               {getIcon(notification.type)}
             </div>
             
@@ -111,10 +113,10 @@ export default function NotificationsList() {
               
               {!notification.isRead && (
                 <div className="mt-4 flex gap-3">
-                  <button className="bg-[#EB682C] text-white text-xs md:text-sm px-4 md:px-6 py-2 rounded-lg font-bold hover:bg-[#d65a22] transition-colors shadow-sm">
+                  <button className="bg-[#EB682C] text-white text-xs md:text-sm px-4 md:px-6 py-2 rounded-lg font-bold hover:bg-[#d65a22] transition-colors shadow-sm hover:shadow-md transform active:scale-95 duration-200">
                     عرض التفاصيل
                   </button>
-                  <button className="bg-white border border-gray-200 text-gray-600 text-xs md:text-sm px-4 md:px-6 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors">
+                  <button className="bg-white border border-gray-200 text-gray-600 text-xs md:text-sm px-4 md:px-6 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors transform active:scale-95 duration-200">
                     تجاهل
                   </button>
                 </div>
@@ -122,7 +124,7 @@ export default function NotificationsList() {
             </div>
             
             {!notification.isRead && (
-              <div className="w-2.5 h-2.5 bg-[#EB682C] rounded-full flex-shrink-0 mt-2"></div>
+              <div className="w-2.5 h-2.5 bg-[#EB682C] rounded-full flex-shrink-0 mt-2 animate-pulse"></div>
             )}
           </div>
         ))}

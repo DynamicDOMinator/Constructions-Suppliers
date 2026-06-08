@@ -27,7 +27,7 @@ export default function UserChatPage() {
       <Navbar />
 
       <div className="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
-        <div className="flex h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+        <div className="flex h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100" data-aos="zoom-in" data-aos-duration="500">
           {/* Conversations Sidebar */}
           <div className="w-1/3 min-w-[280px] md:min-w-[320px] border-l border-gray-100 flex flex-col bg-white">
             <div className="p-6">
@@ -46,11 +46,13 @@ export default function UserChatPage() {
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-3">
-              {conversations.map((chat) => (
+            <div className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
+              {conversations.map((chat, idx) => (
                 <div 
                   key={chat.id} 
-                  className={`flex items-start gap-4 p-3 rounded-2xl mb-1 cursor-pointer transition-colors ${chat.active ? 'bg-orange-50/50' : 'hover:bg-gray-50'}`}
+                  data-aos="fade-left"
+                  data-aos-delay={100 + (idx * 50)}
+                  className={`flex items-start gap-4 p-3 rounded-2xl cursor-pointer transition-all duration-300 ${chat.active ? 'bg-orange-50/50 scale-[1.02] shadow-sm' : 'hover:bg-gray-50'}`}
                 >
                   <div className="relative">
                     <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-gray-100">
@@ -98,8 +100,13 @@ export default function UserChatPage() {
 
             {/* Chat Messages */}
             <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
-              {messages.map((msg) => (
-                <div key={msg.id} className={`flex items-end gap-3 ${msg.sender === 'me' ? 'flex-row-reverse' : ''}`}>
+              {messages.map((msg, idx) => (
+                <div 
+                  key={msg.id} 
+                  data-aos="fade-up"
+                  data-aos-delay={idx * 50}
+                  className={`flex items-end gap-3 ${msg.sender === 'me' ? 'flex-row-reverse' : ''}`}
+                >
                   {msg.sender === 'them' && (
                     <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 mb-1 border border-gray-100">
                       <img src={msg.avatar} alt="avatar" className="w-full h-full object-cover" />
@@ -107,7 +114,7 @@ export default function UserChatPage() {
                   )}
                   
                   <div 
-                    className={`max-w-[80%] md:max-w-[70%] rounded-2xl px-5 py-3 ${
+                    className={`max-w-[80%] md:max-w-[70%] rounded-2xl px-5 py-3 shadow-sm transform transition-transform hover:scale-[1.01] ${
                       msg.sender === 'me' 
                         ? 'bg-[#EB682C] text-white rounded-br-sm' 
                         : 'bg-gray-100 text-gray-800 rounded-bl-sm'
