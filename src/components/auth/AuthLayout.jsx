@@ -22,7 +22,7 @@ export default function AuthLayout({ children }) {
         </div>
 
         {/* The dynamic form content */}
-        <div className="w-full max-w-[450px] mt-12 lg:mt-0">
+        <div className="w-full w-[361px] mt-12 lg:mt-0">
           {children}
         </div>
       </div>

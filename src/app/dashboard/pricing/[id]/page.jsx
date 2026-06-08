@@ -40,8 +40,8 @@ export default function PricingRequestDetailsPage({ params }) {
       {/* Details Table */}
       <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm flex flex-col gap-6">
         
-        <div className="border border-gray-200 rounded-2xl overflow-hidden">
-          <table className="w-full text-right">
+        <div className="border border-gray-200 rounded-2xl overflow-x-auto w-full">
+          <table className="w-full text-right min-w-[500px]">
             <thead className="bg-[#1e293b] text-white">
               <tr>
                 <th className="py-4 px-6 font-bold w-1/2 border-l border-[#334155]">الملاحظات</th>

@@ -1,42 +1,49 @@
-"use client";
 import { useState } from "react";
-import { Bell, MessageSquare, ChevronDown, Globe } from "lucide-react";
+import { Bell, MessageSquare, ChevronDown, Globe, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Topbar() {
+export default function Topbar({ onMenuClick }) {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   return (
-    <header className="h-24 bg-white border-b border-gray-100 px-8 flex items-center justify-between sticky top-0 z-20 font-tajawal">
+    <header className="h-24 bg-white border-b border-gray-100 px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 font-tajawal">
       
-      {/* Right Side: Company Details */}
-      <div className="flex flex-col text-right">
-        <h1 className="text-xl font-bold text-gray-900 mb-1">اسم الشركة</h1>
-        <p className="text-sm text-gray-500">مرحبا عبد العزيز عبدالرحمن الدوسري</p>
+      {/* Right Side: Company Details and Mobile Menu */}
+      <div className="flex items-center gap-4 text-right">
+        <button 
+          className="lg:hidden text-gray-500 hover:text-[#EB682C] transition-colors"
+          onClick={onMenuClick}
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+        <div className="flex flex-col">
+          <h1 className="text-lg md:text-xl font-bold text-gray-900 mb-1 hidden sm:block">اسم الشركة</h1>
+          <p className="text-xs md:text-sm text-gray-500">مرحبا عبد العزيز عبدالرحمن الدوسري</p>
+        </div>
       </div>
 
       {/* Left Side: Actions & Profile */}
       <div className="flex items-center gap-6" dir="ltr">
         
         {/* Language Switcher */}
-        <div className="flex items-center gap-1 cursor-pointer text-gray-700 hover:text-black font-semibold text-sm">
+        <div className="hidden sm:flex items-center gap-1 cursor-pointer text-gray-700 hover:text-black font-semibold text-sm">
           <span>EN</span>
           <Globe className="w-4 h-4" />
         </div>
 
         {/* Profile Dropdown */}
         <div className="flex items-center gap-2 cursor-pointer">
-          <ChevronDown className="w-4 h-4 text-gray-500" />
-          <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200">
+          <ChevronDown className="w-4 h-4 text-gray-500 hidden sm:block" />
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-gray-200">
             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Profile" className="w-full h-full object-cover" />
           </div>
         </div>
 
-        <div className="w-px h-6 bg-gray-200"></div>
+        <div className="w-px h-6 bg-gray-200 hidden sm:block"></div>
 
         {/* Icons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 md:gap-4">
           <Link href="/dashboard/chat" className="relative text-[#EB682C] hover:text-[#d65a22] transition-colors">
             <MessageSquare className="w-5 h-5" />
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -54,7 +61,7 @@ export default function Topbar() {
 
             {/* Notifications Dropdown */}
             {isNotificationsOpen && (
-              <div className="absolute top-full left-0 mt-4 w-80 bg-white border border-gray-100 shadow-xl rounded-xl z-50 overflow-hidden font-tajawal text-right animate-in fade-in slide-in-from-top-2 duration-200" dir="rtl">
+              <div className="absolute top-full left-0 md:left-auto md:right-0 mt-4 w-[280px] md:w-80 bg-white border border-gray-100 shadow-xl rounded-xl z-50 overflow-hidden font-tajawal text-right animate-in fade-in slide-in-from-top-2 duration-200" dir="rtl">
                 <div className="flex justify-between items-center px-4 pt-4 border-b border-gray-100">
                   <Link href="/dashboard/notifications" className="text-sm font-bold text-[#EB682C] mb-2 hover:underline">عرض الكل</Link>
                   <h3 className="text-sm font-bold text-gray-900 border-b-2 border-[#EB682C] pb-2 px-1">الإشعارات</h3>

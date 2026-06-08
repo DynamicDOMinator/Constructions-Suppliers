@@ -19,15 +19,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout>
       {currentStep === 1 && (
-        <>
-          <RegisterStep1 onNext={() => setCurrentStep(2)} />
-          <div className="mt-8 text-center text-sm">
-            <span className="text-gray-500">لديك حساب؟ </span>
-            <Link href="/login" className="font-bold text-[#EB682C] hover:underline">
-              تسجيل الدخول
-            </Link>
-          </div>
-        </>
+        <RegisterStep1 onNext={() => setCurrentStep(2)} />
       )}
 
       {currentStep === 2 && (

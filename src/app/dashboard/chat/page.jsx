@@ -1,5 +1,6 @@
-import React from 'react';
-import { Search, Paperclip, Send, MoreHorizontal, Clock, Check, CheckCheck } from 'lucide-react';
+"use client";
+import React, { useState } from 'react';
+import { Search, Paperclip, Send, MoreHorizontal, ArrowRight } from 'lucide-react';
 
 const conversations = [
   { id: 1, name: 'م/ محمود فتوح', message: 'جاري مراجعة طلب التسعير الخاص بك', time: 'الآن', avatar: '/avatar.jpg', active: true },
@@ -24,10 +25,12 @@ const messages = [
 ];
 
 export default function ChatPage() {
+  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
+
   return (
     <div className="flex h-[calc(100vh-120px)] bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
       {/* Conversations Sidebar */}
-      <div className="w-1/3 min-w-[300px] border-l border-gray-100 flex flex-col bg-white">
+      <div className={`${isMobileChatOpen ? 'hidden md:flex' : 'flex'} w-full md:w-1/3 md:min-w-[300px] border-l border-gray-100 flex-col bg-white h-full`}>
         <div className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <h2 className="text-xl font-bold text-gray-900">المحادثات</h2>
@@ -48,6 +51,7 @@ export default function ChatPage() {
           {conversations.map((chat) => (
             <div 
               key={chat.id} 
+              onClick={() => setIsMobileChatOpen(true)}
               className={`flex items-start gap-4 p-3 rounded-2xl mb-1 cursor-pointer transition-colors ${chat.active ? 'bg-blue-50/50' : 'hover:bg-gray-50'}`}
             >
               <div className="relative">
@@ -72,10 +76,16 @@ export default function ChatPage() {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-[#F9FAFB]/30">
+      <div className={`${isMobileChatOpen ? 'flex' : 'hidden md:flex'} flex-1 flex-col bg-[#F9FAFB]/30 h-full`}>
         {/* Chat Header */}
-        <div className="px-8 py-5 border-b border-gray-100 bg-white flex justify-between items-center">
+        <div className="px-4 md:px-8 py-3 md:py-5 border-b border-gray-100 bg-white flex justify-between items-center">
           <div className="flex items-center gap-4">
+            <button 
+              className="md:hidden text-gray-500 hover:text-gray-700 ml-2"
+              onClick={() => setIsMobileChatOpen(false)}
+            >
+              <ArrowRight className="w-6 h-6" />
+            </button>
             <div className="relative">
               <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
                 <img src="https://i.pravatar.cc/150?img=11" alt="محمود فتوح" className="w-full h-full object-cover" />
@@ -95,7 +105,7 @@ export default function ChatPage() {
         </div>
 
         {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-8 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-4 md:space-y-6">
           {messages.map((msg) => (
             <div key={msg.id} className={`flex items-end gap-3 ${msg.sender === 'me' ? 'flex-row-reverse' : ''}`}>
               {msg.sender === 'them' && (
@@ -118,7 +128,7 @@ export default function ChatPage() {
         </div>
 
         {/* Message Input */}
-        <div className="p-6 bg-white border-t border-gray-100">
+        <div className="p-4 md:p-6 bg-white border-t border-gray-100">
           <div className="flex items-center gap-4 bg-white border border-gray-200 rounded-2xl p-2 px-4 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all shadow-sm">
             <button className="text-blue-600 p-2 hover:bg-blue-50 rounded-xl transition-colors">
               <Send className="w-5 h-5 transform rotate-180" /> {/* Rotating because RTL usually has paperplane pointing left */}

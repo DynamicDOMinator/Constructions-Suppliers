@@ -11,11 +11,12 @@ import {
   Package, 
   Wrench, 
   Megaphone, 
-  HeadphonesIcon, 
-  Star 
+  HeadphonesIcon,
+  Star,
+  X
 } from "lucide-react";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
 
   const navItems = [
@@ -32,8 +33,8 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-white border-l border-gray-100 h-screen sticky top-0 flex flex-col font-tajawal shadow-sm">
-      <div className="p-6 mb-4 flex items-center justify-center">
+    <aside className={`w-64 bg-white border-l border-gray-100 h-screen fixed lg:sticky top-0 right-0 flex flex-col font-tajawal shadow-sm z-40 transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
+      <div className="p-6 mb-4 flex items-center justify-between lg:justify-center">
         <Link href="/">
           <div className="flex items-center gap-2 cursor-pointer">
             <div className="text-[#004b87] font-bold text-sm text-right leading-tight">
@@ -43,6 +44,12 @@ export default function Sidebar() {
             <Image src="/logo.png" alt="Constructions Suppliers" width={40} height={40} className="w-10 object-contain" />
           </div>
         </Link>
+        <button 
+          className="lg:hidden text-gray-500 hover:text-gray-700"
+          onClick={() => setIsOpen(false)}
+        >
+          <X className="w-6 h-6" />
+        </button>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-4 space-y-1 scrollbar-hide">
@@ -56,6 +63,7 @@ export default function Sidebar() {
             <Link 
               key={item.name} 
               href={item.href}
+              onClick={() => setIsOpen && setIsOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors ${
                 isActive 
                   ? "text-[#EB682C] font-bold border-r-4 border-[#EB682C] bg-orange-50/50" 

@@ -1,6 +1,7 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
 import Navbar from "@/components/Navbar";
-import { Search, Paperclip, Send, MoreHorizontal } from 'lucide-react';
+import { Search, Paperclip, Send, MoreHorizontal, ArrowRight } from 'lucide-react';
 
 const conversations = [
   { id: 1, name: 'م/ أحمد علي', message: 'نعم، يمكننا البدء بالتصميم الأسبوع القادم', time: 'الآن', avatar: 'https://randomuser.me/api/portraits/men/32.jpg', active: true },
@@ -22,14 +23,16 @@ const messages = [
 ];
 
 export default function UserChatPage() {
+  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#F9FAFC] flex flex-col font-tajawal">
       <Navbar />
 
-      <div className="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+      <div className="flex-grow p-2 md:p-8 max-w-7xl mx-auto w-full">
         <div className="flex h-[calc(100vh-140px)] bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100" data-aos="zoom-in" data-aos-duration="500">
           {/* Conversations Sidebar */}
-          <div className="w-1/3 min-w-[280px] md:min-w-[320px] border-l border-gray-100 flex flex-col bg-white">
+          <div className={`${isMobileChatOpen ? 'hidden md:flex' : 'flex'} w-full md:w-1/3 md:min-w-[280px] lg:min-w-[320px] border-l border-gray-100 flex-col bg-white h-full`}>
             <div className="p-6">
               <div className="flex items-center gap-3 mb-6">
                 <h2 className="text-xl font-bold text-gray-900">المحادثات</h2>
@@ -50,6 +53,7 @@ export default function UserChatPage() {
               {conversations.map((chat, idx) => (
                 <div 
                   key={chat.id} 
+                  onClick={() => setIsMobileChatOpen(true)}
                   data-aos="fade-left"
                   data-aos-delay={100 + (idx * 50)}
                   className={`flex items-start gap-4 p-3 rounded-2xl cursor-pointer transition-all duration-300 ${chat.active ? 'bg-orange-50/50 scale-[1.02] shadow-sm' : 'hover:bg-gray-50'}`}
@@ -76,10 +80,16 @@ export default function UserChatPage() {
           </div>
 
           {/* Main Chat Area */}
-          <div className="flex-1 flex flex-col bg-[#F9FAFB]/30">
+          <div className={`${isMobileChatOpen ? 'flex' : 'hidden md:flex'} flex-1 flex-col bg-[#F9FAFB]/30 h-full`}>
             {/* Chat Header */}
-            <div className="px-6 md:px-8 py-4 border-b border-gray-100 bg-white flex justify-between items-center">
+            <div className="px-4 md:px-8 py-3 md:py-4 border-b border-gray-100 bg-white flex justify-between items-center">
               <div className="flex items-center gap-4">
+                <button 
+                  className="md:hidden text-gray-500 hover:text-gray-700 ml-2"
+                  onClick={() => setIsMobileChatOpen(false)}
+                >
+                  <ArrowRight className="w-6 h-6" />
+                </button>
                 <div className="relative">
                   <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-100">
                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="م/ أحمد علي" className="w-full h-full object-cover" />
@@ -99,7 +109,7 @@ export default function UserChatPage() {
             </div>
 
             {/* Chat Messages */}
-            <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-4 md:space-y-6">
               {messages.map((msg, idx) => (
                 <div 
                   key={msg.id} 
@@ -127,7 +137,7 @@ export default function UserChatPage() {
             </div>
 
             {/* Message Input */}
-            <div className="p-4 md:p-6 bg-white border-t border-gray-100">
+            <div className="p-3 md:p-6 bg-white border-t border-gray-100">
               <div className="flex items-center gap-4 bg-white border border-gray-200 rounded-2xl p-2 px-4 focus-within:ring-2 focus-within:ring-[#EB682C] focus-within:border-transparent transition-all shadow-sm">
                 <button className="text-[#EB682C] p-2 hover:bg-orange-50 rounded-xl transition-colors">
                   <Send className="w-5 h-5 transform rotate-180" />
