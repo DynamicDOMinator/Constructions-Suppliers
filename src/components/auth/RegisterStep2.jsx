@@ -1,15 +1,25 @@
 import Link from "next/link";
 
-export default function RegisterStep2({ accountType, setAccountType, onNext }) {
-  const types = [
-    "شركات التصنيع",
-    "شركات الموردين",
-    "شركات المقاولات",
-    "شركات خدمات وتأجير معدات",
-    "مكاتب الاستشارات الهندسية",
-    "مقاول من الباطن",
-    "مهندس"
-  ];
+export default function RegisterStep2({ formData, setFormData, onNext }) {
+  const typeMapping = {
+    "شركات التصنيع": "factory",
+    "شركات الموردين": "supplier",
+    "شركات المقاولات": "contractor",
+    "شركات خدمات وتأجير معدات": "rental",
+    "مكاتب الاستشارات الهندسية": "real_estate", // Closest match in API
+    "مقاول من الباطن": "subcontractor",
+    "مهندس": "engineer"
+  };
+
+  const types = Object.keys(typeMapping);
+
+  const handleSelect = (type) => {
+    setFormData({
+      ...formData,
+      accountTypeDisplay: type,
+      type: typeMapping[type]
+    });
+  };
 
   return (
     <div className="w-full">
@@ -23,9 +33,9 @@ export default function RegisterStep2({ accountType, setAccountType, onNext }) {
           {types.slice(0, 3).map((type) => (
             <button
               key={type}
-              onClick={() => setAccountType(type)}
+              onClick={() => handleSelect(type)}
               className={`px-6 py-3.5 rounded-[24px] text-sm transition-all border shadow-sm ${
-                accountType === type 
+                formData.accountTypeDisplay === type 
                   ? "bg-[#3e5ca8] text-white border-transparent font-bold" 
                   : "bg-white text-gray-700 border-gray-100 hover:border-gray-300 font-medium"
               }`}
@@ -40,9 +50,9 @@ export default function RegisterStep2({ accountType, setAccountType, onNext }) {
           {types.slice(3, 5).map((type) => (
             <button
               key={type}
-              onClick={() => setAccountType(type)}
+              onClick={() => handleSelect(type)}
               className={`px-6 py-3.5 rounded-[24px] text-sm transition-all border shadow-sm ${
-                accountType === type 
+                formData.accountTypeDisplay === type 
                   ? "bg-[#3e5ca8] text-white border-transparent font-bold" 
                   : "bg-white text-gray-700 border-gray-100 hover:border-gray-300 font-medium"
               }`}
@@ -57,9 +67,9 @@ export default function RegisterStep2({ accountType, setAccountType, onNext }) {
           {types.slice(5, 7).map((type) => (
             <button
               key={type}
-              onClick={() => setAccountType(type)}
+              onClick={() => handleSelect(type)}
               className={`px-6 py-3.5 rounded-[24px] text-sm transition-all border shadow-sm ${
-                accountType === type 
+                formData.accountTypeDisplay === type 
                   ? "bg-[#3e5ca8] text-white border-transparent font-bold" 
                   : "bg-white text-gray-700 border-gray-100 hover:border-gray-300 font-medium"
               }`}
@@ -72,7 +82,7 @@ export default function RegisterStep2({ accountType, setAccountType, onNext }) {
 
       <button 
         onClick={onNext}
-        disabled={!accountType}
+        disabled={!formData.type}
         className="w-full bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg"
       >
         التالي

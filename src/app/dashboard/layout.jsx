@@ -1,10 +1,28 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user, isAuthenticated, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (!isAuthenticated) {
+        router.push("/login");
+      } else if (user?.type === "engineer") {
+        router.push("/");
+      }
+    }
+  }, [loading, isAuthenticated, user, router]);
+
+  if (loading || !isAuthenticated || user?.type === "engineer") {
+    return null; // Return nothing while redirecting
+  }
   return (
     <div className="flex min-h-screen bg-[#F9FAFB] w-full relative overflow-x-hidden" dir="rtl">
       {/* Mobile Overlay */}

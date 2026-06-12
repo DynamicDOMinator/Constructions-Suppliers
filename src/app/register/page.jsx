@@ -7,37 +7,82 @@ import SupplierRegistration from "@/components/auth/SupplierRegistration";
 import EngineerRegistration from "@/components/auth/EngineerRegistration";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [accountType, setAccountType] = useState("");
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { register } = useAuth();
 
-  const handleFinish = () => {
-    setCurrentStep("success");
+  const handleFinish = async (additionalData = {}) => {
+    setLoading(true);
+    setError("");
+
+    const completeData = { ...formData, ...additionalData };
+
+    // Construct FormData
+    const data = new FormData();
+    Object.keys(completeData).forEach(key => {
+      if (Array.isArray(completeData[key])) {
+        // Send array elements
+        completeData[key].forEach((item, index) => {
+          if (typeof item === 'object' && item !== null && !(item instanceof File)) {
+            Object.keys(item).forEach(subKey => {
+              data.append(`${key}[${index}][${subKey}]`, item[subKey]);
+            });
+          } else {
+            data.append(`${key}[${index}]`, item);
+          }
+        });
+      } else if (completeData[key] !== null && completeData[key] !== undefined) {
+        data.append(key, completeData[key]);
+      }
+    });
+
+    const res = await register(data);
+    setLoading(false);
+
+    if (res.success) {
+      setCurrentStep("success");
+    } else {
+      setError(res.error);
+    }
   };
 
   return (
     <AuthLayout>
+      {error && (
+        <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-bold border border-red-100 text-right mb-4">
+          {error}
+        </div>
+      )}
+
       {currentStep === 1 && (
-        <RegisterStep1 onNext={() => setCurrentStep(2)} />
+        <RegisterStep1 
+          formData={formData} 
+          setFormData={setFormData} 
+          onNext={() => setCurrentStep(2)} 
+        />
       )}
 
       {currentStep === 2 && (
         <RegisterStep2 
-          accountType={accountType} 
-          setAccountType={setAccountType} 
+          formData={formData} 
+          setFormData={setFormData} 
           onNext={() => setCurrentStep(3)} 
         />
       )}
 
       {currentStep === 3 && (
-        <>
-          {accountType === "مهندس" ? (
-            <EngineerRegistration onFinish={handleFinish} />
+        <div className={loading ? "opacity-50 pointer-events-none" : ""}>
+          {formData.type === "engineer" ? (
+            <EngineerRegistration formData={formData} setFormData={setFormData} onFinish={handleFinish} />
           ) : (
-            <SupplierRegistration onFinish={handleFinish} />
+            <SupplierRegistration formData={formData} setFormData={setFormData} onFinish={handleFinish} />
           )}
-        </>
+        </div>
       )}
 
       {currentStep === "success" && (

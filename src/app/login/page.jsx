@@ -1,9 +1,34 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import AuthLayout from "@/components/auth/AuthLayout";
-import { Mail, EyeOff } from 'lucide-react';
+import { Mail, EyeOff, Eye, Loader2 } from 'lucide-react';
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { login } = useAuth();
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    
+    const res = await login(email, password);
+    if (res.success) {
+      router.push("/dashboard");
+    } else {
+      setError(res.error);
+      setLoading(false);
+    }
+  };
   return (
     <AuthLayout>
       <div className="text-center mb-10">
@@ -13,7 +38,13 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <form className="flex flex-col gap-5">
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+        {error && (
+          <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-bold border border-red-100 text-right">
+            {error}
+          </div>
+        )}
+
         <div className="flex flex-col gap-2 text-right">
           <label className="text-sm font-bold text-gray-700">
             البريد الالكتروني
@@ -22,6 +53,9 @@ export default function LoginPage() {
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
               placeholder="البريد الالكتروني"
               className="w-full h-14 px-4 pl-12 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right"
             />
@@ -31,9 +65,22 @@ export default function LoginPage() {
         <div className="flex flex-col gap-2 text-right">
           <label className="text-sm font-bold text-gray-700">كلمة المرور</label>
           <div className="relative">
-            <EyeOff className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600" />
+            <button 
+              type="button" 
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute left-4 top-1/2 -translate-y-1/2"
+            >
+              {showPassword ? (
+                <Eye className="w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600" />
+              ) : (
+                <EyeOff className="w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600" />
+              )}
+            </button>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
               placeholder="••••••••••••"
               className="w-full h-14 px-4 pl-12 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-left tracking-widest"
               dir="ltr"
@@ -41,7 +88,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex  justify-end mt-[-10px]">
+        <div className="flex justify-end mt-[-10px]">
           <Link
             href="/forgot-password"
             className="text-xs font-bold text-[#2A5CBA] hover:underline"
@@ -51,10 +98,11 @@ export default function LoginPage() {
         </div>
 
         <button
-          type="button"
-          className="w-full bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors mt-6 text-lg"
+          type="submit"
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-2 bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors mt-6 text-lg disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          تسجيل الدخول
+          {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "تسجيل الدخول"}
         </button>
       </form>
 
