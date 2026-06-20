@@ -256,7 +256,7 @@ function ChatContent() {
                     {/* Optionally display last message time if you have it in chat object */}
                   </div>
                   <p className="text-xs text-gray-400 truncate font-medium">
-                    {chat.uuid.substring(0, 8)}...
+                    {chat.last_message?.message || (typeof chat.last_message === 'string' ? chat.last_message : (isEnglish ? 'New conversation' : 'محادثة جديدة'))}
                   </p>
                 </div>
               </div>
