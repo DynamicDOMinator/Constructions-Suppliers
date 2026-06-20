@@ -83,9 +83,9 @@ function ChatContent() {
   };
 
   const openChatWithUser = async (targetUuid) => {
-    if (!targetUuid) return;
+    if (!targetUuid || targetUuid === 'undefined' || targetUuid === 'null') return;
     try {
-      const res = await api.post(`/auth/chat/conversation/${targetUuid}`);
+      const res = await api.post(`/auth/chat/conversations`, { user_uuid: targetUuid });
       const chat = res.data;
       
       setConversations(prev => {
@@ -96,7 +96,12 @@ function ChatContent() {
       });
       selectChat(chat);
     } catch (e) {
-      console.error('Failed to open chat', e);
+      if (e.response && e.response.status === 404) {
+        console.error('Target user not found:', e.response.data.message);
+        alert(isEnglish ? 'User not found or unavailable for chat' : 'المستخدم غير موجود أو غير متاح للمحادثة');
+      } else {
+        console.error('Failed to open chat', e);
+      }
     }
   };
 
