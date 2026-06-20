@@ -179,7 +179,7 @@ export default function BOQRequestDetailsPage({ params }) {
       )}
 
       {request.status === "accepted" && (
-        <Link href={`/dashboard/chat?user=${request.sender_id}`} className="block mt-4">
+        <Link href={`/dashboard/chat?user=${request.sender?.uuid || request.sender_id}`} className="block mt-4">
           <button className="w-full bg-[#D97746] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#EB682C] transition-colors shadow-sm">
             {isEnglish ? "Start Chat with Client" : "بدء محادثة مع العميل"}
           </button>

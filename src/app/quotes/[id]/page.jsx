@@ -241,7 +241,7 @@ export default function PricingOfferDetailsPage({ params }) {
               <p className="text-gray-500 text-sm mb-8">{isEnglish ? "Your request will be reviewed and we will contact you soon" : "سيتم مراجعة طلبك والتواصل معك في اقرب وقت"}</p>
 
               <div className="w-full flex flex-col gap-3">
-                <Link href={`/dashboard/chat?user=${request.supplier_id}`} className="w-full">
+                <Link href={`/dashboard/chat?user=${request.supplier?.uuid || request.supplier_id}`} className="w-full">
                   <button className="w-full bg-[#D97746] hover:bg-[#EB682C] text-white py-3.5 rounded-xl font-bold transition-colors">
                     {isEnglish ? "Start Conversation with Supplier" : "بدء محادثة مع المورد"}
                   </button>
