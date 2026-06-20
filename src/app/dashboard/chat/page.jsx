@@ -175,8 +175,16 @@ function ChatContent() {
 
   // Helper to get the other user's info from the chat object
   const getOtherUser = (chat) => {
-    if (!chat || !user) return { name: 'Unknown', uuid: '' };
-    return chat.user1.uuid === user.uuid ? chat.user2 : chat.user1;
+    if (!chat || !user || !user.uuid) return { name: 'Unknown', uuid: '', avatar_url: '' };
+    
+    if (chat.user1 && chat.user1.uuid === user.uuid) {
+      return chat.user2 || { name: 'Unknown', uuid: '', avatar_url: '' };
+    }
+    if (chat.user2 && chat.user2.uuid === user.uuid) {
+      return chat.user1 || { name: 'Unknown', uuid: '', avatar_url: '' };
+    }
+    
+    return chat.user1 || chat.user2 || { name: 'Unknown', uuid: '', avatar_url: '' };
   };
 
   // Format time helper
