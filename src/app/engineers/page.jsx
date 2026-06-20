@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import api from "@/lib/axios";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function EngineersPage() {
+  const { isEnglish } = useLanguage();
   const [engineers, setEngineers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,24 +46,24 @@ export default function EngineersPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-white to-[#F9FAFC] border-b border-gray-100 py-20 text-center" data-aos="fade-down">
+      <div className="bg-gradient-to-b from-white to-[#F9FAFC] border-b border-gray-100 py-20 text-center" data-aos="fade-down" dir={isEnglish ? "ltr" : "rtl"}>
         <h1 className="text-3xl md:text-5xl font-bold text-[#2A5CBA] mb-6">
-          المهندسون <span className="text-[#EB682C]">المتخصصون</span>
+          {isEnglish ? "Specialized " : "المهندسون "}<span className="text-[#EB682C]">{isEnglish ? "Engineers" : "المتخصصون"}</span>
         </h1>
         <p className="text-md text-gray-500 max-w-2xl mx-auto px-4 leading-relaxed">
-          نخبة من أفضل المهندسين المتخصصين في مجالات البناء والتشطيبات والديكور لتلبية كافة احتياجات مشروعك. تصفح ملفاتهم وابدأ المحادثة الآن.
+          {isEnglish ? "A selection of the best specialized engineers in construction, finishing, and decoration to meet all your project needs. Browse their profiles and start a conversation now." : "نخبة من أفضل المهندسين المتخصصين في مجالات البناء والتشطيبات والديكور لتلبية كافة احتياجات مشروعك. تصفح ملفاتهم وابدأ المحادثة الآن."}
         </p>
        
       </div>
 
-      <div className="flex-grow max-w-7xl mx-auto px-6 py-16 w-full" dir="rtl">
+      <div className="flex-grow max-w-7xl mx-auto px-6 py-16 w-full" dir={isEnglish ? "ltr" : "rtl"}>
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#EB682C] border-t-transparent shadow-md"></div>
           </div>
         ) : engineers.length === 0 ? (
           <div className="text-center text-gray-500 py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-            <p className="text-xl font-bold">لا يوجد مهندسين حالياً.</p>
+            <p className="text-xl font-bold">{isEnglish ? "No engineers currently available." : "لا يوجد مهندسين حالياً."}</p>
           </div>
         ) : (
           <>
@@ -79,15 +81,15 @@ export default function EngineersPage() {
                       )}
                     </div>
                     <h3 className="font-bold text-gray-900 text-xl mb-1 text-center">{person.name}</h3>
-                    <p className="text-sm text-[#EB682C] font-bold mb-4 text-center bg-orange-50 px-4 py-1 rounded-full">{person.specialization || "مهندس متخصص"}</p>
+                    <p className="text-sm text-[#EB682C] font-bold mb-4 text-center bg-orange-50 px-4 py-1 rounded-full">{person.specialization || (isEnglish ? "Specialized Engineer" : "مهندس متخصص")}</p>
                     <p className="text-sm text-gray-500 mb-6 text-center line-clamp-3 leading-relaxed">
-                      {person.bio || "خبرة في الاشراف علي اعمال التشطيبات والديكور لضمان الجودة"}
+                      {person.bio || (isEnglish ? "Experience in supervising finishing and decoration works to ensure quality" : "خبرة في الاشراف علي اعمال التشطيبات والديكور لضمان الجودة")}
                     </p>
                   </Link>
                   <div className="mt-auto w-full z-10">
-                    <Link href={`/chat?user=${person.uuid}`} className="w-full block">
+                    <Link href={`/dashboard/chat?user=${person.uuid}`} className="w-full block">
                       <button className="bg-[#EB682C] text-center text-white text-sm px-6 py-3 rounded-2xl w-full font-bold shadow-md shadow-orange-500/20 hover:bg-[#d65a22] transition-all active:scale-95 duration-200">
-                        ابدء المحادثة
+                        {isEnglish ? "Start Conversation" : "ابدء المحادثة"}
                       </button>
                     </Link>
                   </div>
@@ -100,8 +102,8 @@ export default function EngineersPage() {
               <div className="flex justify-center items-center gap-2 mt-16 flex-wrap">
                 {links.map((link, idx) => {
                   let label = link.label;
-                  if (label.includes('Previous') || label.includes('&laquo;')) label = 'السابق';
-                  if (label.includes('Next') || label.includes('&raquo;')) label = 'التالي';
+                  if (label.includes('Previous') || label.includes('&laquo;')) label = isEnglish ? 'Previous' : 'السابق';
+                  if (label.includes('Next') || label.includes('&raquo;')) label = isEnglish ? 'Next' : 'التالي';
 
                   const pageNum = link.url ? link.url.split('page=')[1] : null;
 

@@ -1,11 +1,14 @@
+"use client";
 import { useState } from "react";
 import { UploadCloud, Check, Trash2, ChevronDown, GripVertical, Plus, ChevronDown as ChevronDownIcon, X } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function EngineerRegistration({ formData, setFormData, onFinish }) {
+  const { isEnglish } = useLanguage();
   const [step, setStep] = useState(1);
   
   // State for skills
-  const [skills, setSkills] = useState(["التصميم الداخلي", "النمذجة ثلاثية الأبعاد (3D)", "أوتوكاد (AutoCAD)", "متابعة الميزانية والتكاليف"]);
+  const [skills, setSkills] = useState(isEnglish ? ["Interior Design", "3D Modeling", "AutoCAD", "Budget Tracking"] : ["التصميم الداخلي", "النمذجة ثلاثية الأبعاد (3D)", "أوتوكاد (AutoCAD)", "متابعة الميزانية والتكاليف"]);
   const [isAddingSkill, setIsAddingSkill] = useState(false);
   const [newSkill, setNewSkill] = useState("");
 
@@ -31,7 +34,11 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
     }
   };
 
-  const stepsData = [
+  const stepsData = isEnglish ? [
+    { id: 1, title: "Specialization" },
+    { id: 2, title: "Experience & Skills" },
+    { id: 3, title: "Portfolio" },
+  ] : [
     { id: 1, title: "التخصص" },
     { id: 2, title: "الخبرات والمهارات" },
     { id: 3, title: "سابقة الاعمال" },
@@ -39,15 +46,15 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
 
   const renderStepper = () => (
     <div className="mb-14 relative w-full px-2">
-      <div className="absolute -top-6 right-0 text-[#2A5CBA] text-xs font-bold font-tajawal">
-        معلومات الحساب {Math.round(((step) / 3) * 100)}%
+      <div className={`absolute -top-6 ${isEnglish ? 'left-0' : 'right-0'} text-[#2A5CBA] text-xs font-bold font-tajawal`}>
+        {isEnglish ? "Account Info" : "معلومات الحساب"} {Math.round(((step) / 3) * 100)}%
       </div>
 
       <div className="flex justify-between items-center relative z-10 font-tajawal">
         {/* Background Line */}
         <div className="absolute top-[14px] right-0 left-0 h-[2px] bg-gray-100 -z-10"></div>
         {/* Active Line */}
-        <div className="absolute top-[14px] right-0 h-[2px] bg-[#2A5CBA] -z-10 transition-all duration-300" style={{ width: `${((step - 1) / 2) * 100}%` }}></div>
+        <div className={`absolute top-[14px] ${isEnglish ? 'left-0' : 'right-0'} h-[2px] bg-[#2A5CBA] -z-10 transition-all duration-300`} style={{ width: `${((step - 1) / 2) * 100}%` }}></div>
         
         {stepsData.map((s) => {
           const isActive = step === s.id;
@@ -76,12 +83,12 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
 
   return (
     <div className="w-full relative">
-      <div className="absolute top-0 left-0 md:-left-8 text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg">
-        تخطي
+      <div className={`absolute top-0 ${isEnglish ? 'right-0 md:-right-8' : 'left-0 md:-left-8'} text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg`}>
+        {isEnglish ? "Skip" : "تخطي"}
       </div>
 
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-[#EB682C] mb-3">أنشئ ملفك التعريفي</h1>
+        <h1 className="text-3xl font-bold text-[#EB682C] mb-3">{isEnglish ? "Create your profile" : "أنشئ ملفك التعريفي"}</h1>
       </div>
 
       {renderStepper()}
@@ -89,57 +96,57 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
       {step === 1 && (
         <div className="flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-4">
           
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">التخصص</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Specialization" : "التخصص"}</label>
             <div className="relative">
-              <ChevronDownIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+              <ChevronDownIcon className={`absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none`} />
               <select 
-                className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right appearance-none bg-white text-gray-800" 
-                dir="rtl"
+                className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'} appearance-none bg-white text-gray-800`} 
+                dir={isEnglish ? "ltr" : "rtl"}
                 value={formData.specialization || ""}
                 onChange={(e) => setFormData({...formData, specialization: e.target.value})}
               >
-                <option value="">اختر التخصص</option>
-                <option value="هندسة مدنية">هندسة مدنية</option>
-                <option value="هندسة معمارية">هندسة معمارية</option>
-                <option value="التصميم الداخلي">التصميم الداخلي</option>
-                <option value="هندسة كهربائية">هندسة كهربائية</option>
-                <option value="هندسة ميكانيكية">هندسة ميكانيكية</option>
+                <option value="">{isEnglish ? "Select Specialization" : "اختر التخصص"}</option>
+                <option value="هندسة مدنية">{isEnglish ? "Civil Engineering" : "هندسة مدنية"}</option>
+                <option value="هندسة معمارية">{isEnglish ? "Architectural Engineering" : "هندسة معمارية"}</option>
+                <option value="التصميم الداخلي">{isEnglish ? "Interior Design" : "التصميم الداخلي"}</option>
+                <option value="هندسة كهربائية">{isEnglish ? "Electrical Engineering" : "هندسة كهربائية"}</option>
+                <option value="هندسة ميكانيكية">{isEnglish ? "Mechanical Engineering" : "هندسة ميكانيكية"}</option>
               </select>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">مجال العمل</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Field of Work" : "مجال العمل"}</label>
             <div className="relative">
-              <ChevronDownIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+              <ChevronDownIcon className={`absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none`} />
               <select 
-                className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right appearance-none bg-white text-gray-800" 
-                dir="rtl"
+                className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'} appearance-none bg-white text-gray-800`} 
+                dir={isEnglish ? "ltr" : "rtl"}
                 value={formData.field_of_work || ""}
                 onChange={(e) => setFormData({...formData, field_of_work: e.target.value})}
               >
-                <option value="">اختر مجال العمل</option>
-                <option value="المقاولات العامة">المقاولات العامة</option>
-                <option value="إدارة المشاريع">إدارة المشاريع</option>
-                <option value="التشطيبات">التشطيبات</option>
-                <option value="الاستشارات">الاستشارات</option>
+                <option value="">{isEnglish ? "Select Field of Work" : "اختر مجال العمل"}</option>
+                <option value="المقاولات العامة">{isEnglish ? "General Contracting" : "المقاولات العامة"}</option>
+                <option value="إدارة المشاريع">{isEnglish ? "Project Management" : "إدارة المشاريع"}</option>
+                <option value="التشطيبات">{isEnglish ? "Finishing" : "التشطيبات"}</option>
+                <option value="الاستشارات">{isEnglish ? "Consulting" : "الاستشارات"}</option>
               </select>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">نبذة تعريفية عنك</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Brief bio about you" : "نبذة تعريفية عنك"}</label>
             <textarea 
-              placeholder="اكتب نبذة تعريفية عن عملك" 
-              className="w-full p-4 border border-gray-200 rounded-2xl text-sm min-h-[120px] resize-none focus:outline-none focus:border-[#EB682C] text-right"
+              placeholder={isEnglish ? "Write a brief bio about your work" : "اكتب نبذة تعريفية عن عملك"} 
+              className={`w-full p-4 border border-gray-200 rounded-2xl text-sm min-h-[120px] resize-none focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
               value={formData.bio || ""}
               onChange={(e) => setFormData({...formData, bio: e.target.value})}
             />
           </div>
 
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">السيرة الذاتية</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "CV" : "السيرة الذاتية"}</label>
             <div className="relative border border-dashed border-[#de6d3a] rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-orange-50 transition-colors h-40">
               <input 
                 type="file" 
@@ -154,7 +161,7 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
                 <UploadCloud className="w-6 h-6 text-[#de6d3a]" />
               </div>
               <p className="text-xs font-bold text-gray-600 mb-1">
-                {formData.cv ? formData.cv.name : "اسحب ملفاتك هنا او اضغط لرفع الملفات"}
+                {formData.cv ? formData.cv.name : (isEnglish ? "Drag your files here or click to upload" : "اسحب ملفاتك هنا او اضغط لرفع الملفات")}
               </p>
               <p className="text-[10px] text-gray-400">PDF, DOC, DOCX (max. 10MB)</p>
             </div>
@@ -166,40 +173,40 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
       {step === 2 && (
         <div className="flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-4">
           
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">اسم الشركة</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Company Name" : "اسم الشركة"}</label>
             <input 
               type="text" 
-              placeholder="اسم الشركة" 
-              className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right"
+              placeholder={isEnglish ? "Company Name" : "اسم الشركة"} 
+              className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
               value={experienceData.company_name}
               onChange={(e) => setExperienceData({...experienceData, company_name: e.target.value})}
             />
           </div>
 
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">المسمي الوظيفي</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Job Title" : "المسمي الوظيفي"}</label>
             <input 
               type="text" 
-              placeholder="المسمي الوظيفي" 
-              className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right"
+              placeholder={isEnglish ? "Job Title" : "المسمي الوظيفي"} 
+              className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
               value={experienceData.job_title}
               onChange={(e) => setExperienceData({...experienceData, job_title: e.target.value})}
             />
           </div>
 
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">تاريخ بداية العمل</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Start Date" : "تاريخ بداية العمل"}</label>
             <div className="flex flex-row gap-4">
               <div className="relative w-1/2">
-                <ChevronDownIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDownIcon className={`absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none`} />
                 <select 
-                  className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right appearance-none bg-white text-gray-500" 
-                  dir="rtl"
+                  className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'} appearance-none bg-white text-gray-500`} 
+                  dir={isEnglish ? "ltr" : "rtl"}
                   value={experienceData.start_year}
                   onChange={(e) => setExperienceData({...experienceData, start_year: e.target.value})}
                 >
-                  <option value="">السنة</option>
+                  <option value="">{isEnglish ? "Year" : "السنة"}</option>
                   {[...Array(20)].map((_, i) => {
                     const year = new Date().getFullYear() - i;
                     return <option key={year} value={year}>{year}</option>;
@@ -207,14 +214,14 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
                 </select>
               </div>
               <div className="relative w-1/2">
-                <ChevronDownIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDownIcon className={`absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none`} />
                 <select 
-                  className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right appearance-none bg-white text-gray-500" 
-                  dir="rtl"
+                  className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'} appearance-none bg-white text-gray-500`} 
+                  dir={isEnglish ? "ltr" : "rtl"}
                   value={experienceData.start_month}
                   onChange={(e) => setExperienceData({...experienceData, start_month: e.target.value})}
                 >
-                  <option value="">الشهر</option>
+                  <option value="">{isEnglish ? "Month" : "الشهر"}</option>
                   {[...Array(12)].map((_, i) => (
                     <option key={i+1} value={(i+1).toString().padStart(2, '0')}>{i+1}</option>
                   ))}
@@ -223,18 +230,18 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">تاريخ نهاية العمل</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "End Date" : "تاريخ نهاية العمل"}</label>
             <div className="flex flex-row gap-4">
               <div className="relative w-1/2">
-                <ChevronDownIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDownIcon className={`absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none`} />
                 <select 
-                  className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right appearance-none bg-white text-gray-500" 
-                  dir="rtl"
+                  className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'} appearance-none bg-white text-gray-500`} 
+                  dir={isEnglish ? "ltr" : "rtl"}
                   value={experienceData.end_year}
                   onChange={(e) => setExperienceData({...experienceData, end_year: e.target.value})}
                 >
-                  <option value="">السنة (أو اتركها للآن)</option>
+                  <option value="">{isEnglish ? "Year (or leave empty for present)" : "السنة (أو اتركها للآن)"}</option>
                   {[...Array(20)].map((_, i) => {
                     const year = new Date().getFullYear() - i;
                     return <option key={year} value={year}>{year}</option>;
@@ -242,14 +249,14 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
                 </select>
               </div>
               <div className="relative w-1/2">
-                <ChevronDownIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDownIcon className={`absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none`} />
                 <select 
-                  className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right appearance-none bg-white text-gray-500" 
-                  dir="rtl"
+                  className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'} appearance-none bg-white text-gray-500`} 
+                  dir={isEnglish ? "ltr" : "rtl"}
                   value={experienceData.end_month}
                   onChange={(e) => setExperienceData({...experienceData, end_month: e.target.value})}
                 >
-                  <option value="">الشهر</option>
+                  <option value="">{isEnglish ? "Month" : "الشهر"}</option>
                   {[...Array(12)].map((_, i) => (
                     <option key={i+1} value={(i+1).toString().padStart(2, '0')}>{i+1}</option>
                   ))}
@@ -258,8 +265,8 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 text-right">
-            <label className="text-sm font-bold text-gray-700">المهارات</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Skills" : "المهارات"}</label>
             <div className="flex flex-wrap items-center gap-3 p-3 border border-gray-200 rounded-2xl min-h-[56px]">
               
               <button 
@@ -267,14 +274,14 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
                 onClick={() => setIsAddingSkill(true)}
                 className="flex items-center justify-center gap-1 px-4 py-2 border border-dashed border-[#de6d3a] rounded-full text-[#de6d3a] text-[10px] font-bold hover:bg-orange-50 transition-colors shrink-0"
               >
-                <Plus className="w-3 h-3" /> اضافة مهارة
+                <Plus className="w-3 h-3" /> {isEnglish ? "Add Skill" : "اضافة مهارة"}
               </button>
 
               {isAddingSkill && (
                 <input 
                   type="text" 
                   autoFocus
-                  placeholder="اكتب واضغط Enter" 
+                  placeholder={isEnglish ? "Type and press Enter" : "اكتب واضغط Enter"} 
                   className="px-3 py-2 border border-gray-300 rounded-full text-xs outline-none focus:border-[#EB682C]"
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
@@ -300,7 +307,7 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
           
           {projects.map((project, idx) => (
             <div key={project.id} className="flex flex-col gap-4 mb-4">
-              <div className="flex flex-row-reverse items-center justify-between border border-gray-200 rounded-2xl p-4 bg-white shadow-sm">
+              <div className={`flex ${isEnglish ? 'flex-row' : 'flex-row-reverse'} items-center justify-between border border-gray-200 rounded-2xl p-4 bg-white shadow-sm`}>
                 <div className="flex items-center gap-3">
                   <ChevronDown className="w-5 h-5 text-gray-400 cursor-pointer" />
                   <Trash2 
@@ -310,24 +317,24 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
                 </div>
                 <div className="flex  items-center gap-2">
                   <GripVertical className="w-4 h-4 text-orange-400" />
-                  <span className="font-bold text-sm">المشروع {idx === 0 ? "الاول" : idx + 1}</span>
+                  <span className="font-bold text-sm">{isEnglish ? `Project ${idx + 1}` : `المشروع ${idx === 0 ? "الاول" : idx + 1}`}</span>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2 text-right">
-                <label className="text-sm font-bold text-gray-700">اسم المشروع</label>
+              <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+                <label className="text-sm font-bold text-gray-700">{isEnglish ? "Project Name" : "اسم المشروع"}</label>
                 <input 
                   type="text" 
-                  placeholder="اسم المشروع" 
-                  className="w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] text-right" 
+                  placeholder={isEnglish ? "Project Name" : "اسم المشروع"} 
+                  className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`} 
                   value={project.name || ""}
                   onChange={(e) => setProjects(projects.map(p => p.id === project.id ? { ...p, name: e.target.value } : p))}
                 />
               </div>
 
-              <div className="flex flex-col gap-2 text-right">
-                <label className="text-sm font-bold text-gray-700">سابقة الاعمال</label>
-                <div className="flex flex-col md:flex-row gap-4 mt-1">
+              <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+                <label className="text-sm font-bold text-gray-700">{isEnglish ? "Portfolio" : "سابقة الاعمال"}</label>
+                <div className={`flex flex-col md:${isEnglish ? 'flex-row-reverse' : 'flex-row'} gap-4 mt-1`}>
                   {/* Right Uploader Box */}
                   <div className={`relative border border-dashed border-[#de6d3a] rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-orange-50 transition-colors h-32 ${project.files?.length > 0 ? 'w-full md:w-1/2' : 'w-full'}`}>
                     <input 
@@ -345,7 +352,7 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
                     <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mb-2">
                       <UploadCloud className="w-5 h-5 text-[#de6d3a]" />
                     </div>
-                    <p className="text-[10px] font-bold text-gray-600 mb-1">اسحب ملفاتك هنا او <span className="text-[#de6d3a]">اضغط لرفع الملفات</span></p>
+                    <p className="text-[10px] font-bold text-gray-600 mb-1">{isEnglish ? "Drag files here or" : "اسحب ملفاتك هنا او"} <span className="text-[#de6d3a]">{isEnglish ? "click to upload" : "اضغط لرفع الملفات"}</span></p>
                     <p className="text-[8px] text-gray-400">PNG, JPG or PDF</p>
                   </div>
 
@@ -373,7 +380,7 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
             onClick={() => setProjects([...projects, { id: Date.now() }])}
             className="w-full border-2 border-[#2A5CBA] text-[#2A5CBA] py-4 rounded-2xl font-bold hover:bg-blue-50 transition-colors text-lg flex items-center justify-center gap-2 mt-2"
           >
-            <Plus className="w-5 h-5" /> اضافة مشاريع اخري
+            <Plus className="w-5 h-5" /> {isEnglish ? "Add Other Projects" : "اضافة مشاريع اخري"}
           </button>
         </div>
       )}
@@ -398,21 +405,24 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
                     skills: skills.join(", ")
                   }
                 ],
-                portfolios: projects.map(p => p.name || `Project ${p.id}`) // Mocking portfolios as string array as per API
+                portfolios: projects.filter(p => p.name && p.name.trim() !== "").map(p => {
+                  const { preview, ...rest } = p;
+                  return rest;
+                })
               };
               onFinish(finalData);
             }
           }}
           className="flex-1 bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors text-lg"
         >
-          {step === 3 ? "نشر" : "التالي"}
+          {step === 3 ? (isEnglish ? "Publish" : "نشر") : (isEnglish ? "Next" : "التالي")}
         </button>
         {step > 1 && (
           <button 
             onClick={() => setStep(step - 1)}
             className="flex-1 bg-white border border-gray-200 text-gray-700 py-4 rounded-2xl font-bold hover:bg-gray-50 transition-colors text-lg"
           >
-            السابق
+            {isEnglish ? "Previous" : "السابق"}
           </button>
         )}
       </div>
@@ -429,14 +439,14 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
               >
                 <X className="w-5 h-5" />
               </button>
-              <h2 className="text-xl font-bold text-gray-800">معرض الصور</h2>
+              <h2 className="text-xl font-bold text-gray-800">{isEnglish ? "Image Gallery" : "معرض الصور"}</h2>
             </div>
 
             <div className="p-6 overflow-y-auto">
               {(() => {
                 const project = projects.find(p => p.id === viewingGallery);
                 if (!project || !project.files || project.files.length === 0) {
-                  return <p className="text-center text-gray-500 py-10">لا توجد صور في هذا المشروع</p>;
+                  return <p className="text-center text-gray-500 py-10">{isEnglish ? "No images in this project" : "لا توجد صور في هذا المشروع"}</p>;
                 }
                 return (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">

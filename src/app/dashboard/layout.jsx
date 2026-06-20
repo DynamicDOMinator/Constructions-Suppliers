@@ -4,11 +4,13 @@ import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
+  const { isEnglish } = useLanguage();
 
   useEffect(() => {
     if (!loading) {
@@ -24,7 +26,7 @@ export default function DashboardLayout({ children }) {
     return null; // Return nothing while redirecting
   }
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB] w-full relative overflow-x-hidden" dir="rtl">
+    <div className="flex min-h-screen bg-[#F9FAFB] w-full relative overflow-x-hidden" dir={isEnglish ? 'ltr' : 'rtl'}>
       {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div 

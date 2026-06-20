@@ -1,8 +1,27 @@
 "use client";
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SuppliersSidebar() {
-  const categories = [
+  const { isEnglish } = useLanguage();
+  const categories = isEnglish ? [
+    "Paints & Chemicals",
+    "Lighting & Switches",
+    "Aluminum & Glass",
+    "Plumbing & Sanitation",
+    "Fire Alarm & Suppression",
+    "Construction & Insulation Materials",
+    "Surveying Equipment",
+    "Industrial Safety",
+    "Electrical",
+    "Doors",
+    "Flooring",
+    "Elevators",
+    "Air Conditioning",
+    "Marble & Granite",
+    "Freelance",
+    "Other"
+  ] : [
     "دهانات وكيماويات",
     "اضاءة ومفاتيح",
     "الومنيوم وزجاج",
@@ -22,20 +41,17 @@ export default function SuppliersSidebar() {
   ];
 
   return (
-    <aside className="w-full lg:w-[250px] flex-shrink-0 font-tajawal" dir="rtl">
-      <h2 className="text-xl font-bold mb-6 text-black">ابحث عن الموردين</h2>
+    <aside className="w-full lg:w-[250px] flex-shrink-0 font-tajawal" dir={isEnglish ? "ltr" : "rtl"}>
+      <h2 className="text-xl font-bold mb-6 text-black">{isEnglish ? "Search for Suppliers" : "ابحث عن الموردين"}</h2>
       
       <div className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
-        <h3 className="text-sm font-bold text-gray-800 mb-4 text-right">الانشطة</h3>
+        <h3 className={`text-sm font-bold text-gray-800 mb-4 ${isEnglish ? 'text-left' : 'text-right'}`}>{isEnglish ? "Activities" : "الانشطة"}</h3>
         
         <div className="flex flex-col gap-4">
           {categories.map((cat, idx) => (
             <label key={idx} className="flex items-center gap-3 cursor-pointer group">
               <div className="relative flex items-center justify-center w-5 h-5 border border-gray-300 rounded-[4px] bg-white group-hover:border-[#EB682C] transition-colors">
-                <input 
-                  type="checkbox" 
-                  className="absolute opacity-0 cursor-pointer w-full h-full peer"
-                />
+                <input type="checkbox" className="absolute opacity-0 cursor-pointer w-full h-full peer" />
                 <svg className="w-3 h-3 text-white hidden peer-checked:block pointer-events-none" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 5L4.5 8.5L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>

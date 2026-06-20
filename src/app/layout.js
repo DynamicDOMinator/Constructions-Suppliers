@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Tajawal } from "next/font/google";
 import "./globals.css";
 import AOSInit from "@/components/AOSInit";
 import { AuthProvider } from "@/context/AuthContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const tajawal = Tajawal({
   variable: "--font-tajawal",
@@ -36,10 +37,12 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
-        <AuthProvider>
-          <AOSInit />
-          {children}
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <AOSInit />
+            {children}
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

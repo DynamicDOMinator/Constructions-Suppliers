@@ -1,13 +1,17 @@
+"use client";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function ContactSection() {
+  const { isEnglish } = useLanguage();
   return (
-    <section className="py-12 px-6 md:px-12 font-tajawal max-w-[1400px] mx-auto w-full" dir="rtl" data-aos="fade-up">
+    <section className="py-12 px-6 md:px-12 font-tajawal max-w-[1400px] mx-auto w-full" dir={isEnglish ? "ltr" : "rtl"} data-aos="fade-up">
       
       {/* Top Title */}
-      <div className="text-right mb-12">
+      <div className={`${isEnglish ? 'text-left' : 'text-right'} mb-12`}>
         <h2 className="text-3xl font-bold text-gray-900">
-          تواصل <span className="text-[#EB682C]">معنا</span>
+          {isEnglish ? "Contact " : "تواصل "}
+          <span className="text-[#EB682C]">{isEnglish ? "Us" : "معنا"}</span>
         </h2>
       </div>
 
@@ -34,7 +38,7 @@ export default function ContactSection() {
                 <Mail className="w-5 h-5 text-[#2A5CBA]" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-sm mb-1">البريد الالكتروني</h3>
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{isEnglish ? "Email" : "البريد الالكتروني"}</h3>
                 <p className="text-gray-500 text-xs" dir="ltr">info@construction-supplier.com</p>
               </div>
             </div>
@@ -45,7 +49,7 @@ export default function ContactSection() {
                 <Phone className="w-5 h-5 text-[#2A5CBA]" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-sm mb-1">رقم الهاتف</h3>
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{isEnglish ? "Phone Number" : "رقم الهاتف"}</h3>
                 <p className="text-gray-500 text-xs" dir="ltr">15930 / 01000005536</p>
               </div>
             </div>
@@ -56,8 +60,8 @@ export default function ContactSection() {
                 <MapPin className="w-5 h-5 text-[#2A5CBA]" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-sm mb-1">الموقع</h3>
-                <p className="text-gray-500 text-xs">الرياض، المملكة العربية السعودية</p>
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{isEnglish ? "Location" : "الموقع"}</h3>
+                <p className="text-gray-500 text-xs">{isEnglish ? "Riyadh, Saudi Arabia" : "الرياض، المملكة العربية السعودية"}</p>
               </div>
             </div>
 
@@ -68,13 +72,13 @@ export default function ContactSection() {
         <div className="w-full lg:w-1/2">
           <div className="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-10 shadow-sm">
             
-            <div className="text-right   mb-8">
-              <span className="text-[#EB682C] text-xs font-bold mb-2 block">احصل على استفسار</span>
+            <div className={`${isEnglish ? 'text-left' : 'text-right'} mb-8`}>
+              <span className="text-[#EB682C] text-xs font-bold mb-2 block">{isEnglish ? "Get an Inquiry" : "احصل على استفسار"}</span>
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
-                تواصل معنا، نحن هنا لمساعدتك
+                {isEnglish ? "Get in touch, we are here to help" : "تواصل معنا، نحن هنا لمساعدتك"}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto">
-                هل لديك أسئلة أو ملاحظات؟ نحن هنا لمساعدتك. أرسل لنا رسالة، وسنقوم بالرد خلال 24 ساعة.
+                {isEnglish ? "Have questions or feedback? We are here to help. Send us a message, and we will respond within 24 hours." : "هل لديك أسئلة أو ملاحظات؟ نحن هنا لمساعدتك. أرسل لنا رسالة، وسنقوم بالرد خلال 24 ساعة."}
               </p>
             </div>
 
@@ -83,20 +87,19 @@ export default function ContactSection() {
               {/* Full Name */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm  font-bold text-gray-800 flex gap-1 items-center justify-start">
-                  الاسم بالكامل <span className="text-red-500">*</span>
+                  {isEnglish ? "Full Name" : "الاسم بالكامل"} <span className="text-red-500">*</span>
                 </label>
                 <input 
                   type="text" 
-                  placeholder="محمود طارق محمد" 
-                  className="w-full h-12 px-4 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#EB682C] text-right"
-                  dir="rtl"
+                  placeholder={isEnglish ? "Mahmoud Tarek Mohamed" : "محمود طارق محمد"} 
+                  className={`w-full h-12 px-4 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
                 />
               </div>
 
               {/* Email */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-bold text-gray-800 flex gap-1 items-center justify-start">
-                  البريد الالكتروني <span className="text-red-500">*</span>
+                  {isEnglish ? "Email Address" : "البريد الالكتروني"} <span className="text-red-500">*</span>
                 </label>
                 <input 
                   type="email" 
@@ -109,7 +112,7 @@ export default function ContactSection() {
               {/* Phone */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-bold text-gray-800 flex gap-1 items-center justify-start">
-                  رقم الهاتف <span className="text-red-500">*</span>
+                  {isEnglish ? "Phone Number" : "رقم الهاتف"} <span className="text-red-500">*</span>
                 </label>
                 <div className="flex flex-row-reverse h-12 border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#EB682C]">
                   {/* Phone Input */}
@@ -129,13 +132,12 @@ export default function ContactSection() {
               {/* Message */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-bold text-gray-800 flex gap-1 items-center justify-start">
-                  الرسالة <span className="text-red-500">*</span>
+                  {isEnglish ? "Message" : "الرسالة"} <span className="text-red-500">*</span>
                 </label>
                 <textarea 
-                  placeholder="اكتب رسالتك" 
+                  placeholder={isEnglish ? "Write your message" : "اكتب رسالتك"} 
                   rows="5"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#EB682C] text-right resize-none"
-                  dir="rtl"
+                  className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'} resize-none`}
                 ></textarea>
               </div>
 
@@ -144,7 +146,7 @@ export default function ContactSection() {
                 type="button" 
                 className="w-full bg-[#EB682C] text-white font-bold h-12 rounded-xl mt-2 hover:bg-[#d65a22] transition-colors"
               >
-                ارسال استفسارك
+                {isEnglish ? "Send Inquiry" : "ارسال استفسارك"}
               </button>
 
             </form>

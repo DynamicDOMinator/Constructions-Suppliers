@@ -1,22 +1,100 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import api from "@/lib/axios";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function PricingOfferDetailsPage({ params }) {
+  const { isEnglish } = useLanguage();
+  const { id } = use(params);
   const [showRejectReason, setShowRejectReason] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showRejectSuccessModal, setShowRejectSuccessModal] = useState(false);
+  const [request, setRequest] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const offerItems = [
-    { name: "أنابيب ووصلات ومآخذ توصيل", duration: "أيام من 4-7", price: "500 ريال", notes: "شركة SPC هي شركة موثوقة متخصصة في تصنيع قطع غيار عالية الجودة للقطاعات الصناعية والكهربائية ملاحظات المورد" },
-    { name: "ارضيات الخزف بورسلان", duration: "أيام من 4-7", price: "500 ريال", notes: "" },
-    { name: "مكيف هواء 360 كاسيت", duration: "أيام من 4-7", price: "500 ريال", notes: "" },
-  ];
+  const fetchDetails = async () => {
+    try {
+      const res = await api.get(`/auth/quotes/${id}`);
+      setRequest(res.data);
+    } catch (err) {
+      console.error("Failed to fetch quote details:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetails();
+  }, [id]);
+
+  const handleAccept = async () => {
+    setIsSubmitting(true);
+    try {
+      await api.post(`/auth/quotes/${id}/accept`);
+      setShowSuccessModal(true);
+      await fetchDetails();
+    } catch (err) {
+      console.error(err);
+      alert(isEnglish ? "Error during acceptance" : "حدث خطأ أثناء القبول");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!rejectReason.trim()) {
+      alert(isEnglish ? "Please enter a rejection reason" : "الرجاء كتابة سبب الرفض");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      await api.post(`/auth/quotes/${id}/reject`, { reason: rejectReason });
+      setShowRejectReason(false);
+      setRejectReason("");
+      await fetchDetails();
+      setShowRejectSuccessModal(true);
+    } catch (err) {
+      console.error(err);
+      alert(isEnglish ? "Error during rejection" : "حدث خطأ أثناء الرفض");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <main className={`min-h-screen bg-[#F8FAFC] flex flex-col font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`}>
+        <Navbar />
+        <div className="flex-1 flex justify-center items-center">
+          <Loader2 className="w-10 h-10 animate-spin text-[#EB682C]" />
+        </div>
+        <Footer />
+      </main>
+    );
+  }
+
+  if (!request) {
+    return (
+      <main className={`min-h-screen bg-[#F8FAFC] flex flex-col font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`}>
+        <Navbar />
+        <div className="flex-1 flex justify-center items-center">
+          <p className="text-gray-500 font-bold text-xl">{isEnglish ? "Request not found" : "الطلب غير موجود"}</p>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
+
+  const supplierName = request.supplier?.company_profile?.company_name || request.supplier?.name || (isEnglish ? "Unnamed" : "بدون اسم");
 
   return (
-    <main className="min-h-screen bg-[#F8FAFC] flex flex-col font-tajawal text-right">
+    <main className={`min-h-screen bg-[#F8FAFC] flex flex-col font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`} dir={isEnglish ? "ltr" : "rtl"}>
       <Navbar />
       
       <div className="font-tajawal w-full pb-20 relative mt-10">
@@ -24,40 +102,46 @@ export default function PricingOfferDetailsPage({ params }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-12 max-w-5xl mx-auto px-6">
           <div className="w-6"></div> {/* Spacer for centering */}
-          <h2 className="text-3xl font-bold text-[#EB682C]">عروض التسعير</h2>
+          <h2 className="text-3xl font-bold text-[#EB682C]">{isEnglish ? "Pricing Offers" : "عروض التسعير"}</h2>
           <Link href="/quotes" className="text-[#EB682C] hover:text-[#d65a22] transition-colors">
             <ArrowRight className="w-6 h-6" />
           </Link>
         </div>
 
         <div className="max-w-5xl mx-auto px-6">
-          <h3 className="text-2xl font-bold text-gray-900 text-right mb-6">عرض شركة الحلول الصناعية</h3>
+          <h3 className={`text-2xl font-bold text-gray-900 mb-6 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            {isEnglish ? `Offer from ${supplierName}` : `عرض ${supplierName}`}
+          </h3>
 
           {/* Offer Table */}
           <div className="bg-white border border-gray-200 rounded-xl overflow-hidden mb-8 shadow-sm">
-            <table className="w-full text-right text-sm">
+            <table className={`w-full ${isEnglish ? 'text-left' : 'text-right'} text-sm`}>
               <thead className="bg-[#F8FAFC] text-gray-400 border-b border-gray-100">
                 <tr>
-                  <th className="py-4 px-6 font-bold border-l border-gray-100 w-1/4">الملاحظات ↕</th>
-                  <th className="py-4 px-6 font-bold border-l border-gray-100 w-1/6">السعر ↕</th>
-                  <th className="py-4 px-6 font-bold border-l border-gray-100 w-1/6">مدة التوريد ↕</th>
-                  <th className="py-4 px-6 font-bold w-1/4">اسم المنتج ↕</th>
+                  <th className={`py-4 px-6 font-bold ${isEnglish ? 'border-r' : 'border-l'} border-gray-100 w-1/4`}>{isEnglish ? "Product Name ↕" : "اسم المنتج ↕"}</th>
+                  {request.items?.some(i => i.reply_supply_duration || i.duration) && (
+                    <th className={`py-4 px-6 font-bold ${isEnglish ? 'border-r' : 'border-l'} border-gray-100 w-1/6`}>{isEnglish ? "Supply Duration ↕" : "مدة التوريد ↕"}</th>
+                  )}
+                  <th className={`py-4 px-6 font-bold ${isEnglish ? 'border-r' : 'border-l'} border-gray-100 w-1/6`}>{isEnglish ? "Price ↕" : "السعر ↕"}</th>
+                  <th className="py-4 px-6 font-bold w-1/4">{isEnglish ? "Notes ↕" : "الملاحظات ↕"}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {offerItems.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-5 px-6 text-gray-600 border-l border-gray-100 leading-relaxed text-xs">
-                      {item.notes}
+                {request.items?.map((item) => (
+                  <tr key={item.uuid} className="hover:bg-gray-50/50 transition-colors">
+                    <td className={`py-5 px-6 text-gray-900 font-bold ${isEnglish ? 'border-r' : 'border-l'} border-gray-100`}>
+                      {item.product_name || item.item_name}
                     </td>
-                    <td className="py-5 px-6 text-gray-800 border-l border-gray-100 font-bold">
-                      {item.price}
+                    {request.items?.some(i => i.reply_supply_duration || i.duration) && (
+                      <td className={`py-5 px-6 text-gray-800 ${isEnglish ? 'border-r' : 'border-l'} border-gray-100 font-bold`}>
+                        {item.reply_supply_duration || item.duration || "—"}
+                      </td>
+                    )}
+                    <td className={`py-5 px-6 text-gray-800 ${isEnglish ? 'border-r' : 'border-l'} border-gray-100 font-bold`}>
+                      {item.reply_unit_price ? `${item.reply_unit_price} ${isEnglish ? 'SAR' : 'ريال'}` : "—"}
                     </td>
-                    <td className="py-5 px-6 text-gray-800 border-l border-gray-100 font-bold">
-                      {item.duration}
-                    </td>
-                    <td className="py-5 px-6 text-gray-900 font-bold">
-                      {item.name}
+                    <td className="py-5 px-6 text-gray-600 leading-relaxed text-xs">
+                      {item.reply_notes || "—"}
                     </td>
                   </tr>
                 ))}
@@ -65,41 +149,68 @@ export default function PricingOfferDetailsPage({ params }) {
             </table>
           </div>
 
+          {/* Status Display if already accepted/rejected */}
+          {request.status === "accepted" && (
+            <div className="text-center bg-green-50 text-green-700 py-4 rounded-xl font-bold">
+              {isEnglish ? "This offer has been accepted" : "تم قبول هذا العرض"}
+            </div>
+          )}
+          {request.status === "rejected" && (
+            <div className="text-center bg-red-50 text-red-700 py-4 rounded-xl font-bold">
+              {isEnglish ? "This offer has been rejected" : "تم رفض هذا العرض"}
+            </div>
+          )}
+
           {/* Reject Reason Textarea */}
-          {showRejectReason && (
+          {showRejectReason && request.status !== "accepted" && request.status !== "rejected" && (
             <div className="mb-8 animate-in fade-in slide-in-from-top-2">
-              <label className="block text-right font-bold text-gray-700 mb-3 text-sm">سبب الرفض</label>
+              <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-bold text-gray-700 mb-3 text-sm`}>{isEnglish ? "Rejection Reason" : "سبب الرفض"}</label>
               <textarea 
                 rows={4} 
-                placeholder="اذكر سبب الرفض" 
-                className="w-full bg-white border border-gray-200 rounded-xl p-4 text-xs text-gray-600 outline-none resize-none focus:border-orange-300 transition-colors"
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder={isEnglish ? "Mention the reason for rejection" : "اذكر سبب الرفض"} 
+                className={`w-full bg-white border border-gray-200 rounded-xl p-4 text-xs text-gray-600 outline-none resize-none focus:border-orange-300 transition-colors ${isEnglish ? 'text-left' : 'text-right'}`}
+                disabled={isSubmitting}
               ></textarea>
-              <div className="mt-4">
+              <div className="mt-4 flex gap-4">
+                <button 
+                  onClick={handleReject}
+                  disabled={isSubmitting}
+                  className="flex-1 bg-[#EB682C] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#d65a22] transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isSubmitting && <Loader2 className="w-5 h-5 animate-spin" />}
+                  {isEnglish ? "Send Reason" : "ارسال السبب"}
+                </button>
                 <button 
                   onClick={() => setShowRejectReason(false)}
-                  className="w-full bg-[#EB682C] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#d65a22] transition-colors shadow-sm"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-gray-100 text-gray-700 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 transition-colors shadow-sm disabled:opacity-50"
                 >
-                  ارسال السبب
+                  {isEnglish ? "Cancel" : "إلغاء"}
                 </button>
               </div>
             </div>
           )}
 
           {/* Action Buttons */}
-          {!showRejectReason && (
+          {!showRejectReason && request.status !== "accepted" && request.status !== "rejected" && (
             <div className="flex flex-col md:flex-row gap-4 mt-10">
               <button 
-                onClick={() => setShowSuccessModal(true)}
-                className="flex-1 bg-[#D97746] hover:bg-[#EB682C] text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-sm"
+                onClick={handleAccept}
+                disabled={isSubmitting}
+                className="flex-1 bg-[#EB682C] hover:bg-[#EB682C] text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-sm disabled:opacity-50 flex justify-center items-center gap-2"
               >
-                قبول طلب التسعير
+                {isSubmitting && <Loader2 className="w-5 h-5 animate-spin" />}
+                {isEnglish ? "Accept Pricing Request" : "قبول طلب التسعير"}
               </button>
               
               <button 
                 onClick={() => setShowRejectReason(true)}
-                className="flex-1 bg-[#3B5BDB] hover:bg-[#2A5CBA] text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-sm"
+                disabled={isSubmitting}
+                className="flex-1 bg-[#3B5BDB] hover:bg-[#2A5CBA] text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-sm disabled:opacity-50"
               >
-                رفض طلب التسعير
+                {isEnglish ? "Reject Pricing Request" : "رفض طلب التسعير"}
               </button>
             </div>
           )}
@@ -126,17 +237,52 @@ export default function PricingOfferDetailsPage({ params }) {
                 <Check className="w-10 h-10" strokeWidth={3} />
               </div>
 
-              <h3 className="text-[#EB682C] text-2xl font-bold mb-2">تم قبول طلب التسعير بنجاح</h3>
-              <p className="text-gray-500 text-sm mb-8">سيتم مراجعة طلبك والتواصل معك في اقرب وقت</p>
+              <h3 className="text-[#EB682C] text-2xl font-bold mb-2">{isEnglish ? "Pricing Request Accepted Successfully" : "تم قبول طلب التسعير بنجاح"}</h3>
+              <p className="text-gray-500 text-sm mb-8">{isEnglish ? "Your request will be reviewed and we will contact you soon" : "سيتم مراجعة طلبك والتواصل معك في اقرب وقت"}</p>
 
               <div className="w-full flex flex-col gap-3">
-                <button className="w-full bg-[#D97746] hover:bg-[#EB682C] text-white py-3.5 rounded-xl font-bold transition-colors">
-                  بدء محادثة مع المورد
-                </button>
+                <Link href={`/dashboard/chat?user=${request.supplier_id}`} className="w-full">
+                  <button className="w-full bg-[#D97746] hover:bg-[#EB682C] text-white py-3.5 rounded-xl font-bold transition-colors">
+                    {isEnglish ? "Start Conversation with Supplier" : "بدء محادثة مع المورد"}
+                  </button>
+                </Link>
                 
                 <Link href="/" className="w-full">
                   <button className="w-full bg-[#3B5BDB] hover:bg-[#2A5CBA] text-white py-3.5 rounded-xl font-bold transition-colors">
-                    الرجوع للصفحة الرئيسية
+                    {isEnglish ? "Back to Home Page" : "الرجوع للصفحة الرئيسية"}
+                  </button>
+                </Link>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* Reject Success Modal */}
+        {showRejectSuccessModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in">
+            <div className="bg-white rounded-3xl w-full max-w-md p-8 shadow-2xl relative flex flex-col items-center text-center">
+              
+              <button 
+                onClick={() => setShowRejectSuccessModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center text-red-500 mb-6 shadow-lg shadow-red-100 mt-4">
+                <Check className="w-10 h-10" strokeWidth={3} />
+              </div>
+
+              <h3 className="text-gray-900 text-2xl font-bold mb-2">{isEnglish ? "Request Rejected Successfully" : "تم رفض الطلب بنجاح"}</h3>
+              <p className="text-gray-500 text-sm mb-8">{isEnglish ? "Rejection reason has been sent to the supplier." : "تم إرسال سبب الرفض إلى المورد."}</p>
+
+              <div className="w-full flex flex-col gap-3">
+                <Link href="/" className="w-full">
+                  <button className="w-full bg-[#3B5BDB] hover:bg-[#2A5CBA] text-white py-3.5 rounded-xl font-bold transition-colors">
+                    {isEnglish ? "Back to Home Page" : "الرجوع للصفحة الرئيسية"}
                   </button>
                 </Link>
               </div>

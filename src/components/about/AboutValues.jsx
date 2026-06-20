@@ -1,7 +1,27 @@
+"use client";
 import { CheckCircle2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function AboutValues() {
-  const values = [
+  const { isEnglish } = useLanguage();
+  const values = isEnglish ? [
+    {
+      title: "Commitment",
+      description: "We consider commitment a fundamental principle in everything we offer and ensure a pure work environment.",
+    },
+    {
+      title: "Excellence",
+      description: "We always strive to provide high-quality services and solutions that exceed expectations.",
+    },
+    {
+      title: "Trust",
+      description: "We build our dealings on transparency and credibility to be everyone's trusted partner.",
+    },
+    {
+      title: "Competition",
+      description: "We believe in the spirit of positive competition that drives us towards continuous development and success.",
+    }
+  ] : [
     {
       title: "الالتزام",
       description: "نضع الالتزام مبدأ أساسياً في كل ما نقدمه ونحرص على بيئة عمل نقية.",
@@ -21,7 +41,7 @@ export default function AboutValues() {
   ];
 
   return (
-    <section className="py-20 px-6 md:px-12 bg-white" dir="rtl">
+    <section className="py-20 px-6 md:px-12 bg-white" dir={isEnglish ? "ltr" : "rtl"}>
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
         
         {/* Right Content (Text) */}
@@ -29,13 +49,13 @@ export default function AboutValues() {
           {/* Top Label */}
           <div className="flex items-center gap-2 mb-4">
             <div className="w-6 h-[2px] bg-[#EB682C]"></div>
-            <span className="text-gray-500 text-sm font-medium">القيم</span>
+            <span className="text-gray-500 text-sm font-medium">{isEnglish ? "Values" : "القيم"}</span>
           </div>
 
           {/* Title */}
           <h2 className="text-3xl md:text-4xl font-bold font-tajawal mb-10 leading-snug">
-            <span className="text-black">قيمنا </span>
-            <span className="text-[#EB682C]">الاساسية</span>
+            <span className="text-black">{isEnglish ? "Our Core " : "قيمنا "}</span>
+            <span className="text-[#EB682C]">{isEnglish ? "Values" : "الاساسية"}</span>
           </h2>
 
           {/* Grid of Values */}

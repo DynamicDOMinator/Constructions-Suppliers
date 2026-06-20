@@ -364,7 +364,7 @@ export default function EngineerProfilePage() {
                     <Bookmark className="w-4 h-4" />
                     حفظ المهندس
                   </button>
-                  <Link href={`/chat?user=${engineer?.uuid || ''}`}>
+                  <Link href={`/dashboard/chat?user=${engineer?.uuid || ''}`}>
                     <button className="flex items-center justify-center px-8 py-2 bg-[#EB682C] text-white rounded-lg font-bold hover:bg-[#d65a22] transition-colors hover:scale-105 active:scale-95 duration-300 shadow-md hover:shadow-lg">
                       بدء المحادثة
                     </button>
@@ -848,7 +848,7 @@ export default function EngineerProfilePage() {
               <div className="bg-[#de7c54] rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center text-center mt-6 shadow-lg">
                 <h2 className="text-white text-xl md:text-2xl font-bold mb-1">{portfolioProjects?.[selectedProjectIndex]?.project_name || "اسم المشروع"}</h2>
                 <p className="text-white/80 text-xs mb-6">تم نشره {portfolioProjects?.[selectedProjectIndex]?.created_at ? new Date(portfolioProjects[selectedProjectIndex].created_at).toLocaleDateString("ar-EG") : "5 ابريل 2024"}</p>
-                <Link href={`/chat?user=${engineer?.uuid || ''}`}>
+                <Link href={`/dashboard/chat?user=${engineer?.uuid || ''}`}>
                   <button className="bg-white text-[#de7c54] px-12 py-3 rounded-full font-bold hover:bg-gray-50 transition-colors shadow-md">
                     بدء المحادثة
                   </button>

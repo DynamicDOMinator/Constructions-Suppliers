@@ -1,8 +1,10 @@
 "use client";
 import { useState } from 'react';
 import { User, Mail, EyeOff, Eye, ChevronDown } from 'lucide-react';
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function RegisterStep1({ onNext, formData, setFormData }) {
+  const { isEnglish } = useLanguage();
   const [showCountries, setShowCountries] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState({ code: '+966', flagUrl: 'https://flagcdn.com/w40/sa.png' });
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -12,15 +14,15 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
 
   const handleNext = () => {
     if (!formData.name || !formData.email || !formData.phone || !formData.password) {
-      setError("يرجى تعبئة جميع الحقول المطلوبة");
+      setError(isEnglish ? "Please fill in all required fields" : "يرجى تعبئة جميع الحقول المطلوبة");
       return;
     }
     if (formData.password.length < 6) {
-      setError("يجب أن تتكون كلمة المرور من 6 أحرف على الأقل");
+      setError(isEnglish ? "Password must be at least 6 characters" : "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل");
       return;
     }
     if (formData.password !== confirmPassword) {
-      setError("كلمتا المرور غير متطابقتين");
+      setError(isEnglish ? "Passwords do not match" : "كلمتا المرور غير متطابقتين");
       return;
     }
     setError("");
@@ -32,11 +34,11 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
     { code: '+20', flagUrl: 'https://flagcdn.com/w40/eg.png', name: 'مصر' },
   ];
   return (
-    <div className="w-full">
+    <div className="w-full" dir={isEnglish ? 'ltr' : 'rtl'}>
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-[#EB682C] mb-3">إنشاء حساب جديد</h1>
+        <h1 className="text-3xl font-bold text-[#EB682C] mb-3">{isEnglish ? 'Create a New Account' : 'إنشاء حساب جديد'}</h1>
         <p className="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto">
-          هلاً بك! أنشئ حسابك الآن لتبدأ رحلتك معنا، واستمتع بالفرص والخدمات
+          {isEnglish ? 'Welcome! Create your account now to start your journey with us and enjoy opportunities and services.' : 'هلاً بك! أنشئ حسابك الآن لتبدأ رحلتك معنا، واستمتع بالفرص والخدمات'}
         </p>
       </div>
 
@@ -48,36 +50,36 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
         )}
         
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex flex-col gap-2 text-right w-full md:w-1/2">
-            <label className="text-sm font-bold text-gray-700">الاسم</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'} w-full md:w-1/2`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? 'Name' : 'الاسم'}</label>
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input 
                 type="text" 
                 value={formData.name || ""}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                placeholder="الاسم" 
+                placeholder={isEnglish ? 'Name' : 'الاسم'} 
                 className="w-full h-14 px-4 pl-12 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C]" 
               />
             </div>
           </div>
-          <div className="flex flex-col gap-2 text-right w-full md:w-1/2">
-            <label className="text-sm font-bold text-gray-700">البريد الالكتروني</label>
+          <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'} w-full md:w-1/2`}>
+            <label className="text-sm font-bold text-gray-700">{isEnglish ? 'Email Address' : 'البريد الالكتروني'}</label>
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input 
                 type="email" 
                 value={formData.email || ""}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
-                placeholder="البريد الالكتروني" 
+                placeholder={isEnglish ? 'Email Address' : 'البريد الالكتروني'} 
                 className="w-full h-14 px-4 pl-12 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C]" 
               />
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 text-right">
-          <label className="text-sm font-bold text-gray-700">رقم الهاتف</label>
+        <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+          <label className="text-sm font-bold text-gray-700">{isEnglish ? 'Phone Number' : 'رقم الهاتف'}</label>
           <div className="flex flex-row-reverse h-14 border border-gray-200 rounded-2xl relative focus-within:border-[#EB682C] bg-white">
             <input 
               type="tel" 
@@ -121,8 +123,8 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 text-right">
-          <label className="text-sm font-bold text-gray-700">كلمة المرور</label>
+        <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+          <label className="text-sm font-bold text-gray-700">{isEnglish ? 'Password' : 'كلمة المرور'}</label>
           <div className="relative">
             <button 
               type="button" 
@@ -146,8 +148,8 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 text-right">
-          <label className="text-sm font-bold text-gray-700">تأكيد كلمة المرور</label>
+        <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
+          <label className="text-sm font-bold text-gray-700">{isEnglish ? 'Confirm Password' : 'تأكيد كلمة المرور'}</label>
           <div className="relative">
             <button 
               type="button" 
@@ -176,15 +178,15 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
           onClick={handleNext}
           className="w-full bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors mt-6 text-lg"
         >
-          انشاء الحساب
+          {isEnglish ? 'Create Account' : 'انشاء الحساب'}
         </button>
 
       </form>
 
       <div className="mt-8 text-center text-sm">
-        <span className="text-gray-500">لديك حساب؟ </span>
+        <span className="text-gray-500">{isEnglish ? 'Already have an account? ' : 'لديك حساب؟ '}</span>
         <a href="/login" className="font-bold text-[#de6d3a] hover:underline">
-          تسجيل الدخول
+          {isEnglish ? 'Sign In' : 'تسجيل الدخول'}
         </a>
       </div>
     </div>

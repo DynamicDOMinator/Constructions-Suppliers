@@ -1,3 +1,4 @@
+"use client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AboutHero from "@/components/about/AboutHero";
@@ -5,10 +6,12 @@ import AboutIntro from "@/components/about/AboutIntro";
 import AboutValues from "@/components/about/AboutValues";
 import AboutVisionMission from "@/components/about/AboutVisionMission";
 import AboutStory from "@/components/about/AboutStory";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function AboutPage() {
+  const { isEnglish } = useLanguage();
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col font-tajawal text-right" dir="rtl">
+    <main className={`min-h-screen bg-gray-50 flex flex-col font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`} dir={isEnglish ? "ltr" : "rtl"}>
       {/* Shared Navbar */}
       <Navbar />
 

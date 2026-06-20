@@ -1,7 +1,18 @@
+"use client";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function RegisterStep2({ formData, setFormData, onNext }) {
-  const typeMapping = {
+  const { isEnglish } = useLanguage();
+  const typeMapping = isEnglish ? {
+    "Manufacturing Companies": "factory",
+    "Supplier Companies": "supplier",
+    "Contracting Companies": "contractor",
+    "Equipment Services & Rental Companies": "rental",
+    "Engineering Consultancy Offices": "real_estate",
+    "Subcontractor": "subcontractor",
+    "Engineer": "engineer"
+  } : {
     "شركات التصنيع": "factory",
     "شركات الموردين": "supplier",
     "شركات المقاولات": "contractor",
@@ -22,9 +33,9 @@ export default function RegisterStep2({ formData, setFormData, onNext }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full" dir={isEnglish ? 'ltr' : 'rtl'}>
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold text-[#EB682C] mb-3">اختر نوع حسابك لتكملة بياناتك</h1>
+        <h1 className="text-3xl font-bold text-[#EB682C] mb-3">{isEnglish ? 'Choose your account type to complete your information' : 'اختر نوع حسابك لتكملة بياناتك'}</h1>
       </div>
 
       <div className="flex flex-col gap-4 mb-16 max-w-2xl mx-auto items-center">
@@ -85,13 +96,13 @@ export default function RegisterStep2({ formData, setFormData, onNext }) {
         disabled={!formData.type}
         className="w-full bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg"
       >
-        التالي
+        {isEnglish ? 'Next' : 'التالي'}
       </button>
 
       <div className="mt-8 text-center text-sm">
-        <span className="text-gray-500">لديك حساب؟ </span>
+        <span className="text-gray-500">{isEnglish ? 'Already have an account? ' : 'لديك حساب؟ '}</span>
         <Link href="/login" className="font-bold text-[#de6d3a] hover:underline">
-          تسجيل الدخول
+          {isEnglish ? 'Sign In' : 'تسجيل الدخول'}
         </Link>
       </div>
     </div>

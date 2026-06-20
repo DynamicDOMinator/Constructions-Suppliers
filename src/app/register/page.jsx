@@ -8,6 +8,7 @@ import EngineerRegistration from "@/components/auth/EngineerRegistration";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -15,6 +16,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
+  const { isEnglish } = useLanguage();
 
   const handleFinish = async (additionalData = {}) => {
     setLoading(true);
@@ -30,7 +32,19 @@ export default function RegisterPage() {
         completeData[key].forEach((item, index) => {
           if (typeof item === 'object' && item !== null && !(item instanceof File)) {
             Object.keys(item).forEach(subKey => {
-              data.append(`${key}[${index}][${subKey}]`, item[subKey]);
+              const subItem = item[subKey];
+              if (Array.isArray(subItem)) {
+                // Handle nested arrays like 'files' in products
+                subItem.forEach((nestedItem, nestedIndex) => {
+                  if (nestedItem && nestedItem.file instanceof File) {
+                    data.append(`${key}[${index}][${subKey}][${nestedIndex}]`, nestedItem.file);
+                  } else {
+                    data.append(`${key}[${index}][${subKey}][${nestedIndex}]`, nestedItem);
+                  }
+                });
+              } else {
+                data.append(`${key}[${index}][${subKey}]`, subItem);
+              }
             });
           } else {
             data.append(`${key}[${index}]`, item);
@@ -90,12 +104,12 @@ export default function RegisterPage() {
           <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
             <CheckCircle className="w-10 h-10 text-green-500" />
           </div>
-          <h1 className="text-3xl font-bold text-[#EB682C] mb-3">بنجاح</h1>
-          <p className="text-gray-500 text-sm mb-12">تم إنشاء حسابك وملفك التعريفي بنجاح. سيتم مراجعة بياناتك قريباً.</p>
+          <h1 className="text-3xl font-bold text-[#EB682C] mb-3">{isEnglish ? 'Success!' : 'بنجاح'}</h1>
+          <p className="text-gray-500 text-sm mb-12">{isEnglish ? 'Your account and profile have been created successfully. Your data will be reviewed shortly.' : 'تم إنشاء حسابك وملفك التعريفي بنجاح. سيتم مراجعة بياناتك قريباً.'}</p>
 
           <Link href="/" className="w-full">
             <button className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors">
-              العودة للرئيسية
+              {isEnglish ? 'Back to Home' : 'العودة للرئيسية'}
             </button>
           </Link>
         </div>

@@ -1,18 +1,25 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
+  const { isEnglish } = useLanguage();
   return (
-    <footer className="bg-[#2653A6] text-white py-12 px-6 md:px-12 mt-auto">
-      <p className="text-center pb-4 ">معاً نصنع مستقبل البناء</p>
+    <footer className="bg-[#2653A6] text-white py-12 px-6 md:px-12 mt-auto" dir={isEnglish ? "ltr" : "rtl"}>
+      <p className="text-center pb-4">{isEnglish ? "Together we build the future of construction" : "معاً نصنع مستقبل البناء"}</p>
       <div className="max-w-6xl mx-auto flex flex-col items-center text-center">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">ابن مشاريعك بثقة وجودة أعلى</h2>
-        <p  className="text-blue-100 text-center text-sm max-w-2xl mb-8 leading-relaxed">
-        Constructions Suppliers هي منصتك المتكاملة التي تربط الموردين بالمصانع والمهندسين والمشترين، لتسهّل الوصول إلى المواد والخدمات وتدعم نجاح مشاريع البناء والتشييد
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          {isEnglish ? "Build your projects with confidence and higher quality" : "ابن مشاريعك بثقة وجودة أعلى"}
+        </h2>
+        <p className="text-blue-100 text-center text-sm max-w-2xl mb-8 leading-relaxed">
+          {isEnglish
+            ? "Constructions Suppliers is your integrated platform that connects suppliers with factories, engineers, and buyers to facilitate access to materials and services and support the success of construction projects."
+            : "Constructions Suppliers هي منصتك المتكاملة التي تربط الموردين بالمصانع والمهندسين والمشترين، لتسهّل الوصول إلى المواد والخدمات وتدعم نجاح مشاريع البناء والتشييد"}
         </p>
         
         <button className="bg-[#EB682C] text-white px-8 py-3 rounded-full text-sm font-bold hover:bg-[#d65a22] transition-colors mb-12">
-          تواصل معنا
+          {isEnglish ? "Contact Us" : "تواصل معنا"}
         </button>
         <p className="text-sm pb-10">
           © 2026 Constructions Suppliers

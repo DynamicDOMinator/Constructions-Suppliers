@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Test - Constructions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/pusher-js@8.3.0/dist/web/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.16.1/dist/echo.iife.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50" x-data="chatApp()" x-init="init()">
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        
+        <!-- Login Section -->
+        <div x-show="!loggedIn" class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto mt-20">
+            <h1 class="text-2xl font-bold text-center text-slate-800 mb-6">تسجيل الدخول للتجربة</h1>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">البريد الإلكتروني</label>
+                    <input type="email" x-model="loginData.email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">كلمة المرور</label>
+                    <input type="password" x-model="loginData.password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <button @click="login()" class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition">دخول</button>
+            </div>
+            <p class="text-xs text-slate-400 mt-4 text-center">استخدم حساب مقاول أو مهندس للتجربة</p>
+        </div>
+
+        <!-- Main App Section -->
+        <div x-show="loggedIn" class="space-y-6">
+            
+            <!-- User Info Bar -->
+            <div class="bg-white rounded-xl shadow-sm p-4 flex justify-between items-center">
+                <div>
+                    <span class="text-slate-500">مرحباً:</span>
+                    <span class="font-bold text-slate-800" x-text="user.name"></span>
+                    <span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full mr-2" x-text="user.type === 'contractor' ? 'مقاول' : 'مهندس'"></span>
+                    <span :class="connectionStatus === 'connected' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'" class="text-[10px] px-2 py-0.5 rounded-full mr-2 font-bold" x-text="connectionStatus === 'connected' ? 'بث مباشر متصل' : 'البث غير متصل'"></span>
+                    <span class="text-[10px] text-slate-400 block" x-text="'UUID: ' + user.uuid"></span>
+                </div>
+                <button @click="logout()" class="text-red-500 hover:underline text-sm">تسجيل خروج</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-[600px]">
+                
+                <!-- Sidebar: Conversations/Engineers -->
+                <div class="bg-white rounded-2xl shadow-sm flex flex-col overflow-hidden">
+                    <div class="p-4 border-b bg-slate-50 flex justify-between items-center">
+                        <template x-if="user.type === 'contractor'">
+                            <div class="flex-1">
+                                <h2 class="font-bold text-slate-800 mb-2">بدء محادثة مع مهندس</h2>
+                                <div class="flex gap-2">
+                                    <input type="text" x-model="targetUserUuid" placeholder="UUID المهندس" class="w-full px-3 py-1 border rounded text-sm outline-none">
+                                    <button @click="openChat(targetUserUuid)" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">فتح</button>
+                                </div>
+                            </div>
+                        </template>
+                        <template x-if="user.type !== 'contractor'">
+                            <div class="flex-1">
+                                <h2 class="font-bold text-slate-800">المحادثات الواردة</h2>
+                            </div>
+                        </template>
+                        <button @click="loadConversations()" class="mr-2 text-blue-600 hover:rotate-180 transition-transform duration-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        </button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-2 space-y-2">
+                        <template x-for="chat in conversations" :key="chat.uuid">
+                            <div @click="selectChat(chat)" :class="activeChat && activeChat.uuid === chat.uuid ? 'bg-blue-50 border-blue-200' : 'hover:bg-slate-50'" class="p-3 border rounded-xl cursor-pointer transition">
+                                <div class="font-bold text-sm" x-text="chat.user1.uuid == user.uuid ? chat.user2.name : chat.user1.name"></div>
+                                <div class="text-xs text-slate-400" x-text="'UUID: ' + (chat.user1.uuid == user.uuid ? chat.user2.uuid : chat.user1.uuid)"></div>
+                                <div class="text-xs text-slate-300" x-text="chat.uuid ? 'محادثة: ' + chat.uuid.substring(0,8) + '...' : 'محادثة قيد التجهيز'"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Chat Window -->
+                <div class="md:col-span-2 bg-white rounded-2xl shadow-sm flex flex-col overflow-hidden relative">
+                    <template x-if="!activeChat">
+                        <div class="flex-1 flex flex-col items-center justify-center text-slate-300">
+                            <svg class="w-16 h-16 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                            <p>اختر محادثة للبدء</p>
+                        </div>
+                    </template>
+
+                    <template x-if="activeChat">
+                        <div class="flex flex-col h-full">
+                            <!-- Chat Header -->
+                            <div class="p-4 border-b bg-white flex items-center justify-between">
+                                <div class="flex flex-col">
+                                    <div class="font-bold text-slate-800" x-text="activeChat.user1.uuid == user.uuid ? activeChat.user2.name : activeChat.user1.name"></div>
+                                    <div class="text-[10px] text-slate-400" x-text="'UUID: ' + activeChat.uuid"></div>
+                                </div>
+                                <div class="text-xs text-green-500 flex items-center">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full ml-1"></span> متصل
+                                </div>
+                            </div>
+
+                            <!-- Messages Area -->
+                            <div class="flex-1 p-4 overflow-y-auto space-y-4 bg-[#f0f2f5]" x-init="$nextTick(() => $el.scrollTop = $el.scrollHeight)" x-ref="messageBox">
+                                <template x-for="msg in messages" :key="msg.uuid">
+                                    <div :class="msg.sender.uuid === user.uuid ? 'justify-end' : 'justify-start'" class="flex">
+                                        <div :class="msg.sender.uuid === user.uuid ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-white text-slate-800 rounded-tl-none'" class="max-w-[70%] p-3 rounded-2xl shadow-sm">
+                                            <p class="text-sm" x-text="msg.message"></p>
+                                            <p class="text-[10px] opacity-70 mt-1" x-text="new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></p>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Input Area -->
+                            <div class="p-4 border-t bg-white">
+                                <form @submit.prevent="send()">
+                                    <div class="flex gap-2">
+                                        <input type="text" x-model="newMessage" placeholder="اكتب رسالتك هنا..." class="flex-1 px-4 py-2 bg-slate-100 border-none rounded-full outline-none focus:ring-2 focus:ring-blue-500">
+                                        <button type="submit" class="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition">
+                                            <svg class="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function chatApp() {
+            return {
+                loggedIn: false,
+                token: null,
+                user: {},
+                loginData: { email: '', password: '' },
+                targetUserUuid: '',
+                activeChat: null,
+                conversations: [],
+                messages: [],
+                newMessage: '',
+                echo: null,
+                connectionStatus: 'disconnected',
+
+                async init() {
+                    const savedToken = localStorage.getItem('chat_token');
+                    const savedUser = localStorage.getItem('chat_user');
+                    if (savedToken && savedUser) {
+                        const parsedUser = JSON.parse(savedUser);
+                        // Cleanup old sessions without UUID
+                        if (!parsedUser.uuid) {
+                            this.logout();
+                            return;
+                        }
+                        this.token = savedToken;
+                        this.user = parsedUser;
+                        this.loggedIn = true;
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
+                        this.initEcho();
+                        await this.loadConversations();
+                    }
+                },
+
+                async login() {
+                    try {
+                        const res = await axios.post('/api/auth/login', this.loginData);
+                        this.token = res.data.access_token;
+                        this.user = res.data.user;
+                        this.loggedIn = true;
+                        
+                        localStorage.setItem('chat_token', this.token);
+                        localStorage.setItem('chat_user', JSON.stringify(this.user));
+                        
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
+                        this.initEcho();
+                        await this.loadConversations();
+                    } catch (e) {
+                        alert('خطأ في تسجيل الدخول: ' + (e.response?.data?.error || 'حاول مرة أخرى'));
+                    }
+                },
+
+                logout() {
+                    this.loggedIn = false;
+                    this.token = null;
+                    this.user = {};
+                    this.conversations = [];
+                    this.activeChat = null;
+                    localStorage.removeItem('chat_token');
+                    localStorage.removeItem('chat_user');
+                    if(this.echo) this.echo.disconnect();
+                },
+
+                async loadConversations() {
+                    try {
+                        const res = await axios.get('/api/auth/chat/conversations');
+                        this.conversations = res.data;
+                    } catch (e) {
+                        console.error('Failed to load conversations');
+                    }
+                },
+
+                async openChat(id) {
+                    try {
+                        const res = await axios.post(`/api/auth/chat/conversation/${id}`);
+                        const chat = res.data;
+                        if (!this.conversations.find(c => c.uuid === chat.uuid)) {
+                            this.conversations.push(chat);
+                        }
+                        this.selectChat(chat);
+                    } catch (e) {
+                        alert(e.response?.data?.error || 'حدث خطأ ما');
+                    }
+                },
+
+                async selectChat(chat) {
+                    this.activeChat = chat;
+                    this.messages = [];
+                    await this.loadMessages();
+                    this.subscribeToChannel();
+                },
+
+                async loadMessages() {
+                    const res = await axios.get(`/api/auth/chat/${this.activeChat.uuid}/messages`);
+                    this.messages = res.data;
+                    this.scrollToBottom();
+                },
+
+                async send() {
+                    if (!this.newMessage.trim()) return;
+                    const text = this.newMessage;
+                    this.newMessage = '';
+                    try {
+                        const res = await axios.post(`/api/auth/chat/${this.activeChat.uuid}/messages`, { message: text });
+                        // Message will be added via Echo listener or manual push
+                        // In some Reverb setups, you might want to push manually if you don't broadcast to self
+                        // For simplicity, we'll let Echo handle it if possible, but for immediate UI:
+                        if (!this.messages.find(m => m.uuid === res.data.uuid)) {
+                            this.messages.push(res.data);
+                        }
+                        this.scrollToBottom();
+                    } catch (e) {
+                        alert('فشل إرسال الرسالة');
+                    }
+                },
+
+                initEcho() {
+                    if (!this.token) return;
+                    window.Pusher = Pusher;
+
+                    const host = window.location.hostname === 'localhost' ? '127.0.0.1' : window.location.hostname;
+                    console.log('Connecting to Reverb on:', host);
+
+                    this.echo = new Echo({
+                        broadcaster: 'reverb',
+                        key: '8f4c1d2a9b7e6c5d3a1f0e9d8c7b6a5', // Match .env REVERB_APP_KEY
+                        wsHost: host,
+                        wsPort: 8080,
+                        wssPort: 8080,
+                        forceTLS: false,
+                        enabledTransports: ['ws', 'wss'],
+                        authEndpoint: '/api/broadcasting/auth',
+                        auth: {
+                            headers: {
+                                Authorization: 'Bearer ' + this.token,
+                                Accept: 'application/json'
+                            }
+                        }
+                    });
+
+                    this.echo.connector.pusher.connection.bind('state_change', (states) => {
+                        console.log('Connection state changed from', states.previous, 'to', states.current);
+                        this.connectionStatus = states.current;
+                    });
+                },
+
+                subscribeToChannel() {
+                    if (!this.echo) {
+                        console.warn('Echo not initialized, skipping subscription');
+                        return;
+                    }
+                    const channelName = `chat.${this.activeChat.uuid}`;
+                    console.log('Subscribing to private channel:', channelName);
+                    
+                    this.echo.private(channelName)
+                        .listen('MessageSent', (e) => {
+                            console.log('Real-time message received:', e);
+                            if (!this.messages.find(m => m.uuid === e.message.uuid)) {
+                                this.messages.push(e.message);
+                                this.scrollToBottom();
+                            }
+                        })
+                        .error((error) => {
+                            console.error('Subscription error:', error);
+                            alert('خطأ في الاشتراك في القناة اللحظية - تأكد من صلاحياتك');
+                        });
+                },
+
+                scrollToBottom() {
+                    this.$nextTick(() => {
+                        const box = this.$refs.messageBox;
+                        if(box) box.scrollTop = box.scrollHeight;
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
