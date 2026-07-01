@@ -3,6 +3,7 @@ import "./globals.css";
 import AOSInit from "@/components/AOSInit";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { NotificationsProvider } from "@/context/NotificationsContext";
 
 const tajawal = Tajawal({
   variable: "--font-tajawal",
@@ -39,8 +40,10 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <LanguageProvider>
           <AuthProvider>
-            <AOSInit />
-            {children}
+            <NotificationsProvider>
+              <AOSInit />
+              {children}
+            </NotificationsProvider>
           </AuthProvider>
         </LanguageProvider>
       </body>

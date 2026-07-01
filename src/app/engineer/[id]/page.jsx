@@ -364,7 +364,7 @@ export default function EngineerProfilePage() {
                     <Bookmark className="w-4 h-4" />
                     حفظ المهندس
                   </button>
-                  <Link href={`/dashboard/chat?user=${engineer?.uuid || ''}`}>
+                  <Link href={`/chat?user=${engineer?.uuid || ''}`}>
                     <button className="flex items-center justify-center px-8 py-2 bg-[#EB682C] text-white rounded-lg font-bold hover:bg-[#d65a22] transition-colors hover:scale-105 active:scale-95 duration-300 shadow-md hover:shadow-lg">
                       بدء المحادثة
                     </button>

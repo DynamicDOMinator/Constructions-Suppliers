@@ -76,7 +76,7 @@ export default function SpecializedEngineers() {
                   <p className="text-xs text-gray-500 mb-3 text-center max-w-[160px]">{person.bio || (isEnglish ? "Expert in supervision of finishing and decoration works" : "خبرة في الاشراف علي اعمال التشطيبات والديكور")}</p>
                 </Link>
                 <div className="mt-auto w-[224px]">
-                  <Link href={`/dashboard/chat?user=${person.uuid}`} className="w-full block">
+                  <Link href={`/chat?user=${person.uuid}`} className="w-full block">
                     <button className="bg-[#EB682C] text-center text-white text-xs px-6 py-2 rounded-full w-full font-bold shadow-sm">
                       {isEnglish ? "Start Chat" : "ابدء المحادثة"}
                     </button>

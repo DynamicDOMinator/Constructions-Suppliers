@@ -91,6 +91,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      try {
+        await api.post("/auth/chat/offline");
+      } catch (offlineErr) {
+        console.error("Failed to set offline status", offlineErr);
+      }
       await api.post("/auth/logout");
     } catch (error) {
       console.error("Logout failed on server, cleaning up locally anyway:", error);

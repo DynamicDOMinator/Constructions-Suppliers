@@ -87,7 +87,7 @@ export default function EngineersPage() {
                     </p>
                   </Link>
                   <div className="mt-auto w-full z-10">
-                    <Link href={`/dashboard/chat?user=${person.uuid}`} className="w-full block">
+                    <Link href={`/chat?user=${person.uuid}`} className="w-full block">
                       <button className="bg-[#EB682C] text-center text-white text-sm px-6 py-3 rounded-2xl w-full font-bold shadow-md shadow-orange-500/20 hover:bg-[#d65a22] transition-all active:scale-95 duration-200">
                         {isEnglish ? "Start Conversation" : "ابدء المحادثة"}
                       </button>

@@ -51,10 +51,16 @@ export default function TeamManagementPage() {
 
       const fetchedRoles = rolesRes.data?.data || [];
       setRoles(fetchedRoles);
-      
-      // Select first role by default if not set
-      if (fetchedRoles.length > 0 && !selectedRoleUuid) {
-        setSelectedRoleUuid(fetchedRoles[0].uuid);
+
+      // Always validate selectedRoleUuid against the fresh list.
+      // If the current value is missing or no longer in the list (stale UUID), reset to first role.
+      if (fetchedRoles.length > 0) {
+        const isStillValid = fetchedRoles.some(r => r.uuid === selectedRoleUuid);
+        if (!selectedRoleUuid || !isStillValid) {
+          setSelectedRoleUuid(fetchedRoles[0].uuid);
+        }
+      } else {
+        setSelectedRoleUuid("");
       }
 
       setTeamMembers(teamRes.data?.data || []);
@@ -160,9 +166,24 @@ export default function TeamManagementPage() {
   };
 
   const handleInvite = async () => {
-    if (!inviteName || !inviteEmail || !invitePassword || !selectedRoleUuid || !invitePhone) {
+    if (!inviteName || !inviteEmail || !invitePassword || !invitePhone) {
       return showPopup("تنبيه", "الرجاء إكمال جميع الحقول", "alert");
     }
+
+    // Validate selectedRoleUuid against the CURRENT roles list (prevents stale UUID)
+    const validRole = roles.find(r => r.uuid === selectedRoleUuid);
+    const roleUuidToSend = validRole?.uuid || roles[0]?.uuid || "";
+
+    if (!roleUuidToSend) {
+      return showPopup("تنبيه", "الرجاء اختيار دور صالح", "alert");
+    }
+
+    // Sync the dropdown if we fell back to the first role
+    if (roleUuidToSend !== selectedRoleUuid) {
+      setSelectedRoleUuid(roleUuidToSend);
+    }
+
+    console.log("[Team] Sending role_uuid:", roleUuidToSend);
 
     setInviting(true);
     try {
@@ -170,7 +191,7 @@ export default function TeamManagementPage() {
         name: inviteName,
         email: inviteEmail,
         password: invitePassword,
-        role_uuid: selectedRoleUuid,
+        role_uuid: roleUuidToSend,
         phone: invitePhone
       };
 
@@ -189,6 +210,7 @@ export default function TeamManagementPage() {
       setInviting(false);
     }
   };
+
 
   const handleRoleChange = async (memberUuid, newRoleUuid) => {
     try {
