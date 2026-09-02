@@ -18,15 +18,19 @@ function SuppliersPageContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     const fetchSuppliers = async () => {
       setIsLoading(true);
       try {
-        const endpoint = typeParam 
-          ? `/auth/companies?page=${page}&type=${typeParam}` 
-          : `/auth/companies?page=${page}`;
-        const response = await api.get(endpoint);
+        const params = { page };
+        if (typeParam) params.type = typeParam;
+        if (selectedCategory && selectedCategory !== "الكل") {
+          params.category = selectedCategory;
+        }
+
+        const response = await api.get("/auth/companies", { params });
         
         if (response.data) {
           setSuppliers(response.data.data || []);
@@ -44,7 +48,12 @@ function SuppliersPageContent() {
     };
 
     fetchSuppliers();
-  }, [page, typeParam]);
+  }, [page, typeParam, selectedCategory]);
+
+  const handleSelectCategory = (cat) => {
+    setSelectedCategory(cat);
+    setPage(1);
+  };
 
   return (
     <main className={`min-h-screen bg-[#F8FAFC] flex flex-col font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`}>
@@ -54,7 +63,10 @@ function SuppliersPageContent() {
 
       <section className="py-12 px-6 md:px-12 max-w-[1600px] mx-auto w-full flex flex-col lg:flex-row gap-8" dir={isEnglish ? 'ltr' : 'rtl'}>
         {/* Sidebar (Right in RTL) */}
-        <SuppliersSidebar />
+        <SuppliersSidebar 
+          selectedCategory={selectedCategory}
+          onSelectCategory={handleSelectCategory}
+        />
 
         {/* Main Grid (Left in RTL) */}
         <div className="flex-1">
@@ -118,8 +130,16 @@ function SuppliersPageContent() {
               )}
             </>
           ) : (
-            <div className="flex items-center justify-center h-64 bg-white rounded-2xl border border-gray-100">
-              <p className="text-gray-500 font-bold">{isEnglish ? 'No companies currently.' : 'لا يوجد شركات حالياً.'}</p>
+            <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl border border-gray-100 p-8 text-center">
+              <p className="text-gray-600 font-bold text-base mb-2">{isEnglish ? 'No companies currently.' : 'لا توجد شركات مطابقة حالياً.'}</p>
+              {selectedCategory && (
+                <button
+                  onClick={() => setSelectedCategory("")}
+                  className="text-xs font-bold text-[#EB682C] hover:underline mt-2"
+                >
+                  {isEnglish ? "Reset filters" : "إعادة ضبط التصفية"}
+                </button>
+              )}
             </div>
           )}
         </div>

@@ -3,10 +3,10 @@ import { useState } from "react";
 import { UploadCloud, Check, Trash2, ChevronDown, GripVertical, Plus, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
-export default function SupplierRegistration({ formData, setFormData, onFinish }) {
+export default function SupplierRegistration({ formData, setFormData, onFinish, registerError, isSubmitting }) {
   const { isEnglish } = useLanguage();
   const [step, setStep] = useState(1);
-  const [brands, setBrands] = useState(["Brand Name", "Brand Name", "Brand Name", "Lorem ipsum", "Gtf"]);
+  const [brands, setBrands] = useState([]);
   const [isAddingBrand, setIsAddingBrand] = useState(false);
   const [newBrand, setNewBrand] = useState("");
 
@@ -14,6 +14,7 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
   const [services, setServices] = useState([{ id: 1 }]);
   const [viewingProductGallery, setViewingProductGallery] = useState(null);
   const [viewingServiceGallery, setViewingServiceGallery] = useState(null);
+  const [step1Error, setStep1Error] = useState("");
 
   const addBrand = (e) => {
     if (e.key === "Enter" && newBrand.trim()) {
@@ -21,6 +22,30 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
       setBrands([...brands, newBrand.trim()]);
       setNewBrand("");
       setIsAddingBrand(false);
+    }
+  };
+
+  const handleFinalSubmit = () => {
+    const finalData = {
+      brands: brands,
+      products: products.filter(p => p.name && p.name.trim() !== "").map(p => {
+        const { preview, ...rest } = p;
+        return rest;
+      }),
+      services: services.filter(s => s.name && s.name.trim() !== "").map(s => {
+        const { preview, ...rest } = s;
+        return rest;
+      })
+    };
+    onFinish(finalData);
+  };
+
+  const handleSkip = () => {
+    if (step <= 1) return; // First step cannot be skipped
+    if (step < 4) {
+      setStep((prev) => prev + 1);
+    } else {
+      handleFinalSubmit();
     }
   };
 
@@ -53,11 +78,22 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
           const isCompleted = step > s.id;
 
           return (
-            <div key={s.id} className="flex flex-col items-center relative bg-white">
+            <div 
+              key={s.id} 
+              onClick={() => {
+                if (s.id > 1 && !formData.company_name?.trim()) {
+                  setStep1Error(isEnglish ? "Please enter company name first" : "يرجى إدخال اسم الشركة أولاً");
+                  return;
+                }
+                setStep1Error("");
+                setStep(s.id);
+              }}
+              className="flex flex-col items-center relative bg-white cursor-pointer group"
+            >
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
                 isCompleted ? "bg-[#2A5CBA] text-white border-2 border-[#2A5CBA]" : 
                 isActive ? "bg-white border-[1.5px] border-[#2A5CBA] text-[#2A5CBA]" : 
-                "bg-white border border-gray-200 text-gray-300"
+                "bg-white border border-gray-200 text-gray-300 group-hover:border-gray-400"
               }`}>
                 {isCompleted ? <Check className="w-4 h-4" strokeWidth={3} /> : s.id}
               </div>
@@ -75,9 +111,14 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
 
   return (
     <div className="w-full relative">
-      <div className={`absolute top-0 ${isEnglish ? 'right-0 md:-right-8' : 'left-0 md:-left-8'} text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg`}>
-        {isEnglish ? "Skip" : "تخطي"}
-      </div>
+      {step > 1 && (
+        <div 
+          onClick={handleSkip}
+          className={`absolute top-0 ${isEnglish ? 'right-0 md:-right-8' : 'left-0 md:-left-8'} text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg select-none transition-colors hover:text-[#1e4287]`}
+        >
+          {isEnglish ? "Skip" : "تخطي"}
+        </div>
+      )}
 
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-[#EB682C] mb-3">{isEnglish ? "Create your profile" : "أنشئ ملفك التعريفي"}</h1>
@@ -87,7 +128,11 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
 
       {step === 1 && (
         <div className="flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-4">
-          
+          {step1Error && (
+            <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-bold border border-red-100 text-right">
+              {step1Error}
+            </div>
+          )}
           <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
             <label className="text-sm font-bold text-gray-700">{isEnglish ? "Company Name" : "اسم الشركة"}</label>
             <input 
@@ -95,7 +140,10 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
               placeholder={isEnglish ? "Name" : "الاسم"} 
               className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
               value={formData.company_name || ""}
-              onChange={(e) => setFormData({...formData, company_name: e.target.value})}
+              onChange={(e) => {
+                setStep1Error("");
+                setFormData({...formData, company_name: e.target.value});
+              }}
             />
           </div>
 
@@ -281,7 +329,15 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
 
               {brands.map((brand, idx) => (
                 <div key={idx} className="bg-[#fff1e6] text-gray-800 px-4 py-2 rounded-full text-xs font-medium flex items-center gap-2">
-                  {brand}
+                  <span>{brand}</span>
+                  <button
+                    type="button"
+                    onClick={() => setBrands(brands.filter((_, i) => i !== idx))}
+                    className="text-gray-400 hover:text-red-500 transition-colors ml-1"
+                    title={isEnglish ? "Remove" : "حذف"}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
                 </div>
               ))}
               
@@ -495,29 +551,30 @@ export default function SupplierRegistration({ formData, setFormData, onFinish }
         </div>
       )}
 
-      <div className="flex gap-4 mt-12">
+      {registerError && (
+        <div className="bg-red-50 text-red-600 p-4 rounded-2xl text-sm font-bold border border-red-200 text-center mt-8 animate-in fade-in">
+          {registerError}
+        </div>
+      )}
+
+      <div className="flex gap-4 mt-8">
         <button 
+          disabled={isSubmitting}
           onClick={() => {
+            if (step === 1 && !formData.company_name?.trim()) {
+              setStep1Error(isEnglish ? "Please enter company name" : "يرجى إدخال اسم الشركة للمتابعة");
+              return;
+            }
+            setStep1Error("");
             if (step < 4) {
               setStep(step + 1);
             } else {
-              // Assemble final arrays before calling onFinish
-              const finalData = {
-                brands: brands,
-                products: products.filter(p => p.name && p.name.trim() !== "").map(p => {
-                  const { preview, ...rest } = p; // omit preview when sending
-                  return rest;
-                }),
-                services: services.filter(s => s.name && s.name.trim() !== "").map(s => {
-                  const { preview, ...rest } = s;
-                  return rest;
-                })
-              };
-              onFinish(finalData);
+              handleFinalSubmit();
             }
           }}
-          className="flex-1 bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors text-lg"
+          className="flex-1 bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors text-lg disabled:opacity-50 flex items-center justify-center gap-2"
         >
+          {isSubmitting && <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
           {step === 4 ? (isEnglish ? "Finish" : "إنهاء") : (isEnglish ? "Next" : "التالي")}
         </button>
         {step > 1 && (

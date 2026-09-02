@@ -4,14 +4,57 @@ import api from "@/lib/axios";
 
 const AuthContext = createContext({});
 
+const formatErrorMessage = (msg) => {
+  if (typeof msg !== "string") return String(msg);
+  if (msg.includes("The email has already been taken")) {
+    return "البريد الإلكتروني مستخدم بالفعل.";
+  }
+  if (msg.includes("The phone has already been taken")) {
+    return "رقم الهاتف مستخدم بالفعل.";
+  }
+  return msg;
+};
+
+const extractAuthError = (error, defaultMsg = "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.") => {
+  const resData = error.response?.data;
+  if (!resData) return error.message || defaultMsg;
+
+  if (typeof resData === "string") return formatErrorMessage(resData);
+
+  // 1. Check nested errors object (standard Laravel validation)
+  if (resData.errors && typeof resData.errors === "object") {
+    const firstKey = Object.keys(resData.errors)[0];
+    if (firstKey) {
+      const firstVal = resData.errors[firstKey];
+      const msg = Array.isArray(firstVal) ? firstVal[0] : String(firstVal);
+      if (msg) return formatErrorMessage(msg);
+    }
+  }
+
+  // 2. Check direct object keys (e.g. {"email": ["The email has already been taken."]})
+  if (typeof resData === "object") {
+    for (const key of Object.keys(resData)) {
+      if (key === "message" || key === "status" || key === "success") continue;
+      const val = resData[key];
+      if (Array.isArray(val) && val.length > 0) {
+        return formatErrorMessage(val[0]);
+      }
+      if (typeof val === "string" && val.length > 0) {
+        return formatErrorMessage(val);
+      }
+    }
+  }
+
+  if (resData.message) return formatErrorMessage(resData.message);
+  if (resData.error) return formatErrorMessage(resData.error);
+
+  return defaultMsg;
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
   const checkAuth = async () => {
     const token = localStorage.getItem("access_token");
@@ -47,6 +90,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   const login = async (email, password) => {
     try {
       const res = await api.post("/auth/login", { email, password });
@@ -63,7 +110,7 @@ export const AuthProvider = ({ children }) => {
       console.error("Login failed:", error);
       return { 
         success: false, 
-        error: error.response?.data?.message || "فشل تسجيل الدخول. يرجى التحقق من بياناتك." 
+        error: extractAuthError(error, "فشل تسجيل الدخول. يرجى التحقق من بياناتك.")
       };
     }
   };
@@ -84,7 +131,7 @@ export const AuthProvider = ({ children }) => {
       console.error("Registration failed:", error);
       return { 
         success: false, 
-        error: error.response?.data?.message || "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى." 
+        error: extractAuthError(error, "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى.")
       };
     }
   };

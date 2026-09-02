@@ -16,17 +16,21 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPaginationData] = useState(null);
   
-  // States for search and sort
+  // States for search, sort, and category filter
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState(""); // 'asc' or 'desc'
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await api.get(
-          `/auth/products?page=${currentPage}`,
-        );
+        const params = { page: currentPage };
+        if (selectedCategory && selectedCategory !== "الكل") {
+          params.category = selectedCategory;
+        }
+
+        const response = await api.get("/auth/products", { params });
         if (response.data) {
           setProducts(response.data.data || []);
           if (!Array.isArray(response.data)) {
@@ -46,7 +50,12 @@ export default function ProductsPage() {
     };
 
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage, selectedCategory]);
+
+  const handleSelectCategory = (cat) => {
+    setSelectedCategory(cat);
+    setCurrentPage(1);
+  };
 
   // Derived state for filtering and sorting
   const getFilteredAndSortedProducts = () => {
@@ -98,7 +107,10 @@ export default function ProductsPage() {
       <section className="py-8 px-6 md:px-12 w-full" dir={isEnglish ? "ltr" : "rtl"}>
         <div className={`max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-8 items-start`}>
           {/* Sidebar (Right in RTL) */}
-          <ProductsSidebar />
+          <ProductsSidebar 
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleSelectCategory}
+          />
 
           {/* Main Grid (Left in RTL) */}
           <div className="flex-1 w-full">
@@ -139,10 +151,21 @@ export default function ProductsPage() {
                 )}
               </>
             ) : (
-              <div className="flex items-center justify-center h-64 bg-white rounded-2xl border border-gray-100">
-                <p className="text-gray-500 font-bold">
-                  {isEnglish ? "No products found." : "لا يوجد منتجات حالياً."}
+              <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl border border-gray-100 p-8 text-center">
+                <p className="text-gray-600 font-bold text-base mb-2">
+                  {isEnglish ? "No products found." : "لا توجد منتجات مطابقة."}
                 </p>
+                {(searchQuery || selectedCategory) && (
+                  <button
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedCategory("");
+                    }}
+                    className="text-xs font-bold text-[#EB682C] hover:underline"
+                  >
+                    {isEnglish ? "Reset filters" : "إعادة ضبط الفلاتر"}
+                  </button>
+                )}
               </div>
             )}
           </div>

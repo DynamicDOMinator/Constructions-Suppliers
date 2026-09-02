@@ -24,7 +24,8 @@ export default function Navbar() {
     { name: isEnglish ? "Home" : "الرئيسية", href: "/" },
     { name: isEnglish ? "My Quotes" : "مقايستي", href: "/quotes" },
     { name: isEnglish ? "Products" : "المنتجات", href: "/products" },
-    { name: isEnglish ? "Suppliers" : "الموردون", href: "/suppliers" },
+    { name: isEnglish ? "Services" : "الخدمات", href: "/services" },
+    { name: isEnglish ? "Companies" : "الشركات", href: "/suppliers" },
     { name: isEnglish ? "Plans" : "الخطط", href: "/plans" },
     { name: isEnglish ? "Blogs" : "المدونات", href: "/blogs" },
     { name: isEnglish ? "About Us" : "معلومات عنا", href: "/about" },
@@ -178,7 +179,7 @@ export default function Navbar() {
       </div>
 
       {/* Nav Links (Center) */}
-      <div className="hidden lg:flex items-center gap-6 text-sm font-medium">
+      <div className="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
           return (

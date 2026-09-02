@@ -3,7 +3,7 @@ import { useState } from "react";
 import { UploadCloud, Check, Trash2, ChevronDown, GripVertical, Plus, ChevronDown as ChevronDownIcon, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
-export default function EngineerRegistration({ formData, setFormData, onFinish }) {
+export default function EngineerRegistration({ formData, setFormData, onFinish, registerError, isSubmitting }) {
   const { isEnglish } = useLanguage();
   const [step, setStep] = useState(1);
   
@@ -34,6 +34,37 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
     }
   };
 
+  const handleFinalSubmit = () => {
+    const start_date = (experienceData.start_year && experienceData.start_month) 
+      ? `${experienceData.start_year}-${experienceData.start_month}-01` 
+      : "2020-01-01";
+      
+    const finalData = {
+      experiences: [
+        {
+          company_name: experienceData.company_name || "اسم الشركة",
+          job_title: experienceData.job_title || "مهندس",
+          start_date: start_date,
+          skills: skills.join(", ")
+        }
+      ],
+      portfolios: projects.filter(p => p.name && p.name.trim() !== "").map(p => {
+        const { preview, ...rest } = p;
+        return rest;
+      })
+    };
+    onFinish(finalData);
+  };
+
+  const handleSkip = () => {
+    if (step <= 1) return; // First step cannot be skipped
+    if (step < 3) {
+      setStep((prev) => prev + 1);
+    } else {
+      handleFinalSubmit();
+    }
+  };
+
   const stepsData = isEnglish ? [
     { id: 1, title: "Specialization" },
     { id: 2, title: "Experience & Skills" },
@@ -61,11 +92,15 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
           const isCompleted = step > s.id;
 
           return (
-            <div key={s.id} className="flex flex-col items-center relative bg-white">
+            <div 
+              key={s.id} 
+              onClick={() => setStep(s.id)}
+              className="flex flex-col items-center relative bg-white cursor-pointer group"
+            >
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
                 isCompleted ? "bg-[#2A5CBA] text-white border-2 border-[#2A5CBA]" : 
                 isActive ? "bg-white border-[1.5px] border-[#2A5CBA] text-[#2A5CBA]" : 
-                "bg-white border border-gray-200 text-gray-300"
+                "bg-white border border-gray-200 text-gray-300 group-hover:border-gray-400"
               }`}>
                 {isCompleted ? <Check className="w-4 h-4" strokeWidth={3} /> : s.id}
               </div>
@@ -83,9 +118,14 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
 
   return (
     <div className="w-full relative">
-      <div className={`absolute top-0 ${isEnglish ? 'right-0 md:-right-8' : 'left-0 md:-left-8'} text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg`}>
-        {isEnglish ? "Skip" : "تخطي"}
-      </div>
+      {step > 1 && (
+        <div 
+          onClick={handleSkip}
+          className={`absolute top-0 ${isEnglish ? 'right-0 md:-right-8' : 'left-0 md:-left-8'} text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg select-none transition-colors hover:text-[#1e4287]`}
+        >
+          {isEnglish ? "Skip" : "تخطي"}
+        </div>
+      )}
 
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-[#EB682C] mb-3">{isEnglish ? "Create your profile" : "أنشئ ملفك التعريفي"}</h1>
@@ -385,36 +425,25 @@ export default function EngineerRegistration({ formData, setFormData, onFinish }
         </div>
       )}
 
-      <div className="flex gap-4 mt-12">
+      {registerError && (
+        <div className="bg-red-50 text-red-600 p-4 rounded-2xl text-sm font-bold border border-red-200 text-center mt-8 animate-in fade-in">
+          {registerError}
+        </div>
+      )}
+
+      <div className="flex gap-4 mt-8">
         <button 
+          disabled={isSubmitting}
           onClick={() => {
             if (step < 3) {
               setStep(step + 1);
             } else {
-              // Assemble the final arrays before calling onFinish
-              const start_date = (experienceData.start_year && experienceData.start_month) 
-                ? `${experienceData.start_year}-${experienceData.start_month}-01` 
-                : "2020-01-01";
-                
-              const finalData = {
-                experiences: [
-                  {
-                    company_name: experienceData.company_name || "اسم الشركة",
-                    job_title: experienceData.job_title || "مهندس",
-                    start_date: start_date,
-                    skills: skills.join(", ")
-                  }
-                ],
-                portfolios: projects.filter(p => p.name && p.name.trim() !== "").map(p => {
-                  const { preview, ...rest } = p;
-                  return rest;
-                })
-              };
-              onFinish(finalData);
+              handleFinalSubmit();
             }
           }}
-          className="flex-1 bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors text-lg"
+          className="flex-1 bg-[#de6d3a] text-white py-4 rounded-2xl font-bold hover:bg-[#d65a22] transition-colors text-lg disabled:opacity-50 flex items-center justify-center gap-2"
         >
+          {isSubmitting && <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
           {step === 3 ? (isEnglish ? "Publish" : "نشر") : (isEnglish ? "Next" : "التالي")}
         </button>
         {step > 1 && (

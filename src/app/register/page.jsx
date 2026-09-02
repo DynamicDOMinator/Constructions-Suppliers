@@ -62,14 +62,32 @@ export default function RegisterPage() {
       setCurrentStep("success");
     } else {
       setError(res.error);
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
   return (
     <AuthLayout>
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-bold border border-red-100 text-right mb-4">
-          {error}
+        <div className="bg-red-50 text-red-700 p-4 rounded-2xl text-sm font-bold border border-red-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 mb-6 shadow-sm animate-in fade-in slide-in-from-top-2" dir={isEnglish ? "ltr" : "rtl"}>
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0"></span>
+            <span>{error}</span>
+          </div>
+          {(error.includes("البريد") || error.toLowerCase().includes("email") || error.includes("الهاتف") || error.toLowerCase().includes("phone")) && currentStep > 1 && (
+            <button
+              type="button"
+              onClick={() => {
+                setError("");
+                setCurrentStep(1);
+              }}
+              className="bg-red-600 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold hover:bg-red-700 transition-colors shrink-0 shadow-sm"
+            >
+              {isEnglish ? "Change Email / Phone" : "العودة لتعديل البريد / الهاتف"}
+            </button>
+          )}
         </div>
       )}
 
@@ -92,9 +110,21 @@ export default function RegisterPage() {
       {currentStep === 3 && (
         <div className={loading ? "opacity-50 pointer-events-none" : ""}>
           {formData.type === "engineer" ? (
-            <EngineerRegistration formData={formData} setFormData={setFormData} onFinish={handleFinish} />
+            <EngineerRegistration 
+              formData={formData} 
+              setFormData={setFormData} 
+              onFinish={handleFinish} 
+              registerError={error}
+              isSubmitting={loading}
+            />
           ) : (
-            <SupplierRegistration formData={formData} setFormData={setFormData} onFinish={handleFinish} />
+            <SupplierRegistration 
+              formData={formData} 
+              setFormData={setFormData} 
+              onFinish={handleFinish} 
+              registerError={error}
+              isSubmitting={loading}
+            />
           )}
         </div>
       )}

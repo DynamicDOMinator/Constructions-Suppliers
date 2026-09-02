@@ -39,9 +39,9 @@ export default function Footer() {
 
           {/* Links */}
           <div className="flex items-center gap-8 text-sm text-white">
-            <Link href="#" className="hover:text-blue-200 transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-blue-200 transition-colors">Conditions</Link>
-            <Link href="#" className="hover:text-blue-200 transition-colors">Terms</Link>
+            <Link href="/privacy" className="hover:text-blue-200 transition-colors">Privacy</Link>
+            <Link href="/conditions" className="hover:text-blue-200 transition-colors">Conditions</Link>
+            <Link href="/terms" className="hover:text-blue-200 transition-colors">Terms</Link>
           </div>
 
           {/* Social */}

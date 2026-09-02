@@ -19,3 +19,71 @@ body {
 [data-aos].aos-animate .draw-line-rtl {
   width: 96% !important;
 }
+
+/* Ads Swiper Styles */
+.ads-swiper {
+  width: 100% !important;
+  height: 250px !important;
+}
+@media (min-width: 768px) {
+  .ads-swiper {
+    height: 300px !important;
+  }
+}
+.ads-swiper .swiper-slide {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #0B0C0F !important;
+}
+.ads-swiper .swiper-slide img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+.ads-swiper .swiper-pagination-bullet {
+  background: white !important;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+.ads-swiper .swiper-pagination-bullet-active {
+  background: #EB682C !important;
+  opacity: 1;
+  width: 24px !important;
+  border-radius: 9999px !important;
+}
+.ads-swiper .swiper-pagination {
+  bottom: 14px !important;
+}
+
+/* Engineers Swiper */
+.engineers-swiper {
+  padding-bottom: 50px !important;
+}
+.engineers-swiper .swiper-pagination {
+  bottom: 0px !important;
+}
+.swiper-pagination-bullet-active {
+  background-color: #EB682C !important;
+}
+
+/* Running Partners Marquee */
+@keyframes runningLogos {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-running-logos {
+  display: flex;
+  width: max-content;
+  animation: runningLogos 45s linear infinite;
+}
+.animate-running-logos:hover {
+  animation-play-state: paused;
+}

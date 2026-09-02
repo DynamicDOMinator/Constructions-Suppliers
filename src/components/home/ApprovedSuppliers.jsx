@@ -35,11 +35,9 @@ export default function ApprovedSuppliers() {
             <div className="flex justify-between items-center text-xs text-gray-500 mb-6 bg-gray-50 p-3 rounded-lg">
               <div className="flex flex-col gap-1">
                 <span className="text-gray-400">{isEnglish ? "City - Region" : "المدينة - المنطقة"}</span>
-                <span className="font-bold text-gray-400">{isEnglish ? "Subcontractor" : "مقاول من الباطن"}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-black">{isEnglish ? "Riyadh" : "الرياض"}</span>
-                <span className="text-gray-700 text-center">0</span>
               </div>
             </div>
             

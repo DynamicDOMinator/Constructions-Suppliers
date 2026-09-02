@@ -31,7 +31,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     { name: isEnglish ? "Team Management" : "إدارة الفريق", icon: Users, href: "/dashboard/team", perm: "team" },
     { name: isEnglish ? (user?.type === "rental" ? "Equipment" : "Products") : (user?.type === "rental" ? "المعدات" : "المنتجات"), icon: Package, href: "/dashboard/products", perm: "products" },
     { name: isEnglish ? "Services" : "الخدمات", icon: Wrench, href: "/dashboard/services", perm: "services" },
-    { name: isEnglish ? "Ads" : "الاعلانات", icon: Megaphone, href: "/dashboard/ads", perm: "ads" },
+    { name: isEnglish ? "Ads" : "الاعلانات", icon: Megaphone, href: "/dashboard/ads", always: true },
     { name: isEnglish ? "Contact Us" : "تواصل معنا", icon: HeadphonesIcon, href: "/dashboard/contact", always: true },
     { name: isEnglish ? "Plans" : "الخطط", icon: Star, href: "/dashboard/plans", perm: "subscriptions" },
   ];
@@ -41,7 +41,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     if (item.perm) {
       // If user has a permissions object, check the specific permission
       if (user?.permissions) {
-        return user.permissions[item.perm] === true;
+        if (Array.isArray(user.permissions)) {
+          return user.permissions.includes(item.perm);
+        }
+        if (typeof user.permissions === "object") {
+          return user.permissions[item.perm] === true || user.permissions[item.perm] === 1;
+        }
       }
       // If no permissions object, assume it's the account owner and grant access
       return true;

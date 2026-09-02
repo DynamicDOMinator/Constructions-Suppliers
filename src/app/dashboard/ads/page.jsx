@@ -28,10 +28,11 @@ export default function AdsPage() {
   const fetchAds = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/auth/ads/my");
-      // The API returns an array directly, or sometimes wrapped in data. We'll handle both.
-      const fetchedAds = Array.isArray(res.data) ? res.data : (res.data?.data || []);
-      // Filter out nulls if any
+      const res = await api.get("/auth/ads");
+      // The API returns paginated data: { data: [...], current_page: ... } or an array directly
+      const fetchedAds = Array.isArray(res.data?.data) 
+        ? res.data.data 
+        : (Array.isArray(res.data) ? res.data : []);
       setAds(fetchedAds.filter(ad => ad !== null));
     } catch (error) {
       console.error("Failed to fetch ads:", error);
@@ -40,15 +41,79 @@ export default function AdsPage() {
     }
   };
 
+  const extractAdError = (error, fallback) => {
+    const resData = error.response?.data;
+    if (!resData) return error.message || fallback;
+
+    let rawMsg = "";
+    if (typeof resData === "string") {
+      rawMsg = resData;
+    } else if (resData.errors && typeof resData.errors === "object") {
+      const firstKey = Object.keys(resData.errors)[0];
+      const val = resData.errors[firstKey];
+      rawMsg = Array.isArray(val) ? val[0] : String(val);
+    } else if (typeof resData === "object") {
+      for (const key of Object.keys(resData)) {
+        if (key === "message" || key === "status" || key === "success") continue;
+        const val = resData[key];
+        if (Array.isArray(val) && val.length > 0) {
+          rawMsg = val[0];
+          break;
+        }
+        if (typeof val === "string" && val.length > 0) {
+          rawMsg = val;
+          break;
+        }
+      }
+      if (!rawMsg && resData.message) {
+        rawMsg = resData.message;
+      }
+    }
+
+    if (!rawMsg) return fallback;
+
+    // Clean prefix like "https://eng.prosental.online/storage/" prepended by backend
+    const cleanMsg = rawMsg.replace(/https?:\/\/[^\/]+\/storage\//gi, "").trim();
+
+    if (
+      cleanMsg.toLowerCase().includes("must not be greater than 5120 kilobytes") ||
+      cleanMsg.toLowerCase().includes("greater than 5120")
+    ) {
+      return isEnglish
+        ? "The image size must not exceed 5MB (5120 KB)."
+        : "حجم الصورة يجب ألا يتجاوز 5 ميجابايت (5120 كيلوبايت).";
+    }
+    if (cleanMsg.toLowerCase().includes("the image field is required")) {
+      return isEnglish ? "The image field is required." : "يرجى اختيار صورة للإعلان.";
+    }
+    if (cleanMsg.toLowerCase().includes("the name field is required")) {
+      return isEnglish ? "The ad name is required." : "يرجى إدخال اسم الإعلان.";
+    }
+
+    return cleanMsg;
+  };
+
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setAdImage(e.target.files[0]);
+      const file = e.target.files[0];
+      if (file.size > 5120 * 1024) {
+        showPopup(
+          isEnglish ? "Error" : "خطأ",
+          isEnglish
+            ? "The image size must not exceed 5MB (5120 KB)."
+            : "حجم الصورة يجب ألا يتجاوز 5 ميجابايت (5120 كيلوبايت).",
+          "danger"
+        );
+        e.target.value = "";
+        return;
+      }
+      setAdImage(file);
     }
   };
 
   const handleSubmitAd = async () => {
     if (!adName || !adImage) {
-      return showPopup("تنبيه", "الرجاء إدخال اسم الإعلان واختيار صورة", "alert");
+      return showPopup("تنبيه", isEnglish ? "Please enter ad name and select an image" : "الرجاء إدخال اسم الإعلان واختيار صورة", "alert");
     }
 
     setSubmitting(true);
@@ -61,8 +126,13 @@ export default function AdsPage() {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
-      showPopup("نجاح", res.data?.message || "تم إرسال الإعلان بنجاح.", "success");
+      showPopup(isEnglish ? "Success" : "نجاح", res.data?.message || (isEnglish ? "Ad submitted successfully." : "تم إرسال الإعلان بنجاح."), "success");
       
+      // If newly created ad is returned, prepend it immediately to the list
+      if (res.data?.data) {
+        setAds((prev) => [res.data.data, ...prev.filter((a) => a.uuid !== res.data.data.uuid)]);
+      }
+
       // Reset form
       setAdName("");
       setAdImage(null);
@@ -71,7 +141,8 @@ export default function AdsPage() {
       fetchAds();
     } catch (error) {
       console.error("Failed to submit ad:", error);
-      showPopup("خطأ", error.response?.data?.message || "حدث خطأ أثناء إرسال الإعلان", "danger");
+      const errMsg = extractAdError(error, isEnglish ? "Failed to submit ad." : "حدث خطأ أثناء إرسال الإعلان");
+      showPopup(isEnglish ? "Error" : "خطأ", errMsg, "danger");
     } finally {
       setSubmitting(false);
     }
@@ -84,12 +155,13 @@ export default function AdsPage() {
 
     try {
       const res = await api.delete(`/auth/ads/${uuid}`);
-      showPopup("نجاح", res.data?.message || "تم حذف الإعلان بنجاح", "success");
+      showPopup(isEnglish ? "Success" : "نجاح", res.data?.message || (isEnglish ? "Ad deleted successfully" : "تم حذف الإعلان بنجاح"), "success");
       setActiveDropdown(null);
       fetchAds();
     } catch (error) {
       console.error("Failed to delete ad:", error);
-      showPopup("خطأ", error.response?.data?.message || "حدث خطأ أثناء حذف الإعلان", "danger");
+      const errMsg = extractAdError(error, isEnglish ? "Failed to delete ad." : "حدث خطأ أثناء حذف الإعلان");
+      showPopup(isEnglish ? "Error" : "خطأ", errMsg, "danger");
     }
   };
 
@@ -168,7 +240,9 @@ export default function AdsPage() {
                   <p className="text-sm font-bold text-gray-700 mb-1">
                     {isEnglish ? 'Drag your files here or ' : 'اسحب ملفاتك هنا او '} <span className="text-[#EB682C]">{isEnglish ? 'click to upload' : 'اضغط لرفع الملفات'}</span>
                   </p>
-                  <p className="text-xs text-gray-400">PNG, JPG (max. 800x400px)</p>
+                  <p className="text-xs text-gray-400">
+                    {isEnglish ? 'PNG, JPG, WEBP (Max 5MB / 5120 KB)' : 'PNG, JPG, WEBP (الحد الأقصى 5 ميجابايت / 5120 كيلوبايت)'}
+                  </p>
                 </>
               )}
             </div>
@@ -195,10 +269,12 @@ export default function AdsPage() {
                 {/* Ad Image */}
                 <div className="h-40 w-full relative bg-gray-100">
                   {ad.image_url ? (
-                    <Image src={ad.image_url} alt={ad.name} fill className="object-cover" />
+                    <Image src={ad.image_url} alt={ad.name || "Ad"} fill className="object-cover" unoptimized />
+                  ) : ad.image ? (
+                    <Image src={ad.image} alt={ad.name || "Ad"} fill className="object-cover" unoptimized />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      <Image src={ad.image} alt={ad.name} fill className="object-cover" unoptimized />
+                      <UploadCloud className="w-8 h-8 text-gray-300" />
                     </div>
                   )}
                   {/* Status Badge */}

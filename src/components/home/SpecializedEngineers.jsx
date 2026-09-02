@@ -35,17 +35,6 @@ export default function SpecializedEngineers() {
       </div>
 
       <div className="max-w-6xl mx-auto" dir={isEnglish ? "ltr" : "rtl"}>
-        <style jsx global>{`
-          .swiper-pagination-bullet-active {
-            background-color: #EB682C !important;
-          }
-          .engineers-swiper {
-            padding-bottom: 50px !important;
-          }
-          .engineers-swiper .swiper-pagination {
-            bottom: 0px !important;
-          }
-        `}</style>
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={30}
