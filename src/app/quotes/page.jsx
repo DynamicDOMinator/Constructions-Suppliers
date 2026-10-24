@@ -4,7 +4,7 @@ import QuotesGrid from "@/components/quotes/QuotesGrid";
 
 export default function QuotesPage() {
   return (
-    <main className="min-h-screen bg-white flex flex-col font-tajawal text-right">
+    <main className="min-h-screen bg-[#EEF2F6] flex flex-col font-tajawal">
       <Navbar />
       
       <QuotesGrid />

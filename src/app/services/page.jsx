@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServicesHeader from "@/components/services/ServicesHeader";
@@ -16,6 +16,7 @@ export default function ServicesPage() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPaginationData] = useState(null);
+  const servicesSectionRef = useRef(null);
 
   // Search, filter, and sort states
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,6 +31,10 @@ export default function ServicesPage() {
         if (selectedCategory && selectedCategory !== "الكل") {
           params.category = selectedCategory;
         }
+        if (searchQuery && searchQuery.trim()) {
+          params.search = searchQuery.trim();
+        }
+
         const response = await api.get("/auth/services", { params });
         if (response.data) {
           const rawData = response.data;
@@ -53,35 +58,54 @@ export default function ServicesPage() {
     };
 
     fetchServices();
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, selectedCategory, searchQuery]);
 
   const handleSelectCategory = (cat) => {
     setSelectedCategory(cat);
     setCurrentPage(1);
   };
 
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    if (servicesSectionRef.current) {
+      const topOffset = 110;
+      const elementPosition = servicesSectionRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - topOffset;
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: "smooth",
+      });
+    } else {
+      window.scrollTo({ top: 320, behavior: "smooth" });
+    }
+  };
+
   // Derived filtered and sorted list
   const getFilteredAndSortedServices = () => {
     let result = [...services];
 
-    // Filter by search query
+    // Additional local filter check
     if (searchQuery) {
       const lowerQuery = searchQuery.toLowerCase().trim();
       result = result.filter(
         (s) =>
           (s.name && s.name.toLowerCase().includes(lowerQuery)) ||
-          (s.description && s.description.toLowerCase().includes(lowerQuery))
+          (s.description && s.description.toLowerCase().includes(lowerQuery)) ||
+          (s.category && s.category.toLowerCase().includes(lowerQuery))
       );
     }
 
-    // Filter by category if selected
-    if (selectedCategory) {
+    if (selectedCategory && selectedCategory !== "الكل") {
       const lowerCat = selectedCategory.toLowerCase();
       result = result.filter(
         (s) =>
-          (s.name && s.name.toLowerCase().includes(lowerCat)) ||
-          (s.description && s.description.toLowerCase().includes(lowerCat)) ||
-          (s.category && s.category.toLowerCase().includes(lowerCat))
+          (s.category && s.category.toLowerCase().includes(lowerCat)) ||
+          (s.name && s.name.toLowerCase().includes(lowerCat))
       );
     }
 
@@ -111,19 +135,24 @@ export default function ServicesPage() {
 
   return (
     <main
-      className={`min-h-screen bg-[#F8FAFC] flex flex-col font-tajawal ${
+      className={`min-h-screen bg-[#EEF2F6] flex flex-col font-tajawal ${
         isEnglish ? "text-left" : "text-right"
       }`}
     >
       <Navbar />
 
       <ServicesHeader
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange}
         onSortChange={setSortOrder}
         currentSort={sortOrder}
+        totalServices={pagination?.total !== undefined ? pagination.total : displayedServices.length}
       />
 
-      <section className="py-8 px-6 md:px-12 w-full" dir={isEnglish ? "ltr" : "rtl"}>
+      <section
+        ref={servicesSectionRef}
+        className="py-8 px-6 md:px-12 w-full"
+        dir={isEnglish ? "ltr" : "rtl"}
+      >
         <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-8 items-start">
           {/* Sidebar (Filters) */}
           <ServicesSidebar
@@ -132,9 +161,9 @@ export default function ServicesPage() {
           />
 
           {/* Main Grid */}
-          <div className="flex-1 w-full">
+          <div className="flex-1 w-full min-w-0">
             {loading ? (
-              <div className="flex flex-col items-center justify-center h-64 gap-4 bg-white rounded-2xl border border-gray-100 p-8">
+              <div className="flex flex-col items-center justify-center h-64 gap-4 bg-white rounded-2xl border border-gray-200/80 p-8 shadow-xs">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#EB682C]"></div>
                 <p className="text-gray-400 text-sm">
                   {isEnglish ? "Loading services..." : "جاري تحميل الخدمات..."}
@@ -142,7 +171,7 @@ export default function ServicesPage() {
               </div>
             ) : displayedServices.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {displayedServices.map((service) => {
                     const firstImage =
                       Array.isArray(service.images) && service.images.length > 0
@@ -171,16 +200,16 @@ export default function ServicesPage() {
                     totalPages={pagination.last_page}
                     totalItems={pagination.total}
                     perPage={pagination.per_page || 10}
-                    onPageChange={setCurrentPage}
+                    onPageChange={handlePageChange}
                   />
                 )}
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl border border-gray-100 p-8 text-center">
+              <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl border border-gray-200/80 p-8 text-center shadow-xs">
                 <div className="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center text-[#EB682C] mb-4">
                   <Wrench className="w-8 h-8 opacity-60" />
                 </div>
-                <p className="text-gray-600 font-bold text-base mb-1">
+                <p className="text-gray-700 font-bold text-base mb-1">
                   {isEnglish ? "No services found." : "لا توجد خدمات حالياً."}
                 </p>
                 <p className="text-gray-400 text-xs max-w-sm">

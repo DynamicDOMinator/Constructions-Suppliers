@@ -1,10 +1,15 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { ArrowRight, ChevronDown, ArrowLeft, Check } from "lucide-react";
+import { ArrowRight, ChevronDown, ArrowLeft, Check, Search, X } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
-export default function ServicesHeader({ onSearchChange, onSortChange, currentSort }) {
+export default function ServicesHeader({
+  onSearchChange,
+  onSortChange,
+  currentSort,
+  totalServices,
+}) {
   const { isEnglish } = useLanguage();
   const [searchInput, setSearchInput] = useState("");
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -22,7 +27,14 @@ export default function ServicesHeader({ onSearchChange, onSortChange, currentSo
 
   const handleSearch = () => {
     if (onSearchChange) {
-      onSearchChange(searchInput);
+      onSearchChange(searchInput.trim());
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput("");
+    if (onSearchChange) {
+      onSearchChange("");
     }
   };
 
@@ -50,81 +62,121 @@ export default function ServicesHeader({ onSearchChange, onSortChange, currentSo
 
   return (
     <div
-      className="w-full bg-white pt-8 pb-12 px-6 md:px-12 relative z-40"
-      data-aos="fade-up"
+      className="w-full pt-6 px-4 md:px-12 relative z-30"
       dir={isEnglish ? "ltr" : "rtl"}
     >
-      <div className={`max-w-[1400px] mx-auto ${isEnglish ? "text-left" : "text-right"}`}>
-        {/* Top Header */}
-        <div className="flex items-center justify-between mb-12">
-          <div className="w-8"></div>
-          <h1 className="text-2xl font-bold text-[#EB682C] font-tajawal">
-            {isEnglish ? "Services" : "الخدمات"}
-          </h1>
-          <Link
-            href="/"
-            className="text-[#EB682C] hover:text-[#d65a22] transition-colors"
-          >
-            {isEnglish ? (
-              <ArrowLeft className="w-6 h-6" />
-            ) : (
-              <ArrowRight className="w-6 h-6" />
-            )}
-          </Link>
-        </div>
+      <div className="max-w-[1400px] mx-auto">
+        {/* Hero Section with Background Image */}
+        <div
+          className="relative rounded-3xl overflow-hidden shadow-md min-h-[260px] md:min-h-[300px] flex flex-col justify-between p-6 md:p-10 text-white"
+          data-aos="fade-up"
+        >
+          {/* Background Image */}
+          <img
+            src="/services-hero.jpg"
+            alt="Services Hero Banner"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
 
-        {/* Search Section */}
-        <div className={`mb-8 ${isEnglish ? "text-left" : "text-right"}`}>
-          <h2 className="text-3xl font-bold text-gray-900 font-tajawal mb-6">
-            {isEnglish ? "Search Services" : "ابحث عن الخدمات"}
-          </h2>
+          {/* Comfortable Dark / Slate Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/75 to-slate-950/85 backdrop-blur-[0.5px]"></div>
 
-          <div className="flex flex-col mb-8">
-            <label className="text-sm font-bold text-gray-700 mb-2">
-              {isEnglish ? "Service Name or Description" : "اسم الخدمة أو الوصف"}
-            </label>
-            <div className="flex h-12">
-              <input
-                type="text"
-                placeholder={isEnglish ? "e.g. Electrical installation, Plastering..." : "مثال: تمديدات كهربائية، لياسة، تشطيبات..."}
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSearch();
-                }}
-                className={`flex-1 h-full border border-gray-200 ${
-                  isEnglish ? "rounded-l-lg pr-4" : "rounded-r-lg px-4"
-                } text-sm focus:outline-none focus:border-[#EB682C] bg-white ${
-                  isEnglish ? "-ml-1" : "-mr-1"
-                }`}
-              />
-              <button
-                onClick={handleSearch}
-                className={`bg-[#EB682C] text-white px-10 h-full ${
-                  isEnglish ? "rounded-r-lg" : "rounded-l-lg"
-                } font-bold hover:bg-[#d65a22] transition-colors shrink-0 z-10`}
-              >
-                {isEnglish ? "Search" : "بحث"}
-              </button>
-            </div>
+          {/* Top Bar inside Hero */}
+          <div className="relative z-10 flex items-center justify-between gap-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs md:text-sm px-3.5 py-1.5 rounded-full transition-all border border-white/15"
+            >
+              {isEnglish ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+              <span>{isEnglish ? "Back to Home" : "العودة للرئيسية"}</span>
+            </Link>
+
+            <span className="bg-[#EB682C] text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-sm">
+              {isEnglish ? "Engineering & Contracting Services" : "الخدمات والمقاولات الهندسية"}
+            </span>
+          </div>
+
+          {/* Content & Search in Hero */}
+          <div className="relative z-10 max-w-2xl my-auto py-2">
+            <h1 className="text-2xl md:text-4xl font-extrabold font-tajawal mb-2 tracking-tight">
+              {isEnglish ? "Search Engineering & Contracting Services" : "ابحث عن الخدمات الهندسية والمقاولات"}
+            </h1>
+            <p className="text-gray-200 text-xs md:text-sm font-tajawal leading-relaxed mb-5">
+              {isEnglish
+                ? "Connect with certified engineering consultancies, general contractors, interior fit-out and electromechanical experts."
+                : "تصفح خدمات التصميم المعماري، الإشراف، المقاولات، والتشطيبات مع نخبة من الشركات والمكاتب المعتمدة."}
+            </p>
+
+            {/* Clean, Functional Search Bar */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
+              }}
+              className="w-full max-w-xl"
+            >
+              <div className="flex items-center bg-white rounded-xl shadow-lg p-1 border border-white/20">
+                <Search className="w-5 h-5 text-gray-400 mx-3 shrink-0" />
+                <input
+                  type="text"
+                  placeholder={
+                    isEnglish
+                      ? "Search by service name or description..."
+                      : "مثال: تمديدات كهربائية، لياسة، تشطيبات، مخططات..."
+                  }
+                  value={searchInput}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setSearchInput(val);
+                    if (val === "" && onSearchChange) {
+                      onSearchChange("");
+                    }
+                  }}
+                  className="flex-1 bg-transparent text-gray-900 placeholder-gray-400 text-xs md:text-sm px-1 py-2 focus:outline-none"
+                />
+                {searchInput && (
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    className="text-gray-400 hover:text-gray-600 p-1 mx-1 transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  className="bg-[#EB682C] text-white px-5 md:px-7 py-2 md:py-2.5 rounded-lg font-bold text-xs md:text-sm hover:bg-[#d65a22] transition-colors shrink-0 shadow-sm cursor-pointer"
+                >
+                  {isEnglish ? "Search" : "بحث"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 
-        {/* Filters Row */}
-        <div className="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100 gap-4">
-          <h3 className="text-xl font-bold text-gray-900 font-tajawal">
-            {isEnglish ? "All Services" : "جميع الخدمات"}
-          </h3>
+        {/* Filters and Title Row */}
+        <div className="pt-8 pb-2 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 font-tajawal">
+              {isEnglish ? "All Services" : "جميع الخدمات"}
+            </h2>
+            {totalServices !== undefined && (
+              <span className="bg-white border border-gray-200/90 text-gray-600 text-xs font-bold px-3 py-1 rounded-full shadow-xs">
+                {totalServices} {isEnglish ? "services" : "خدمة"}
+              </span>
+            )}
+          </div>
 
           <div className="flex items-center gap-3 relative">
             {/* Sort Dropdown */}
             <div className="relative" ref={sortDropdownRef}>
               <button
                 onClick={() => setIsSortOpen(!isSortOpen)}
-                className={`flex items-center gap-2 border rounded-lg px-4 py-2 text-sm transition-colors ${
+                className={`flex items-center gap-2 border rounded-xl px-4 py-2 text-sm font-medium transition-colors shadow-xs ${
                   currentSort
-                    ? "border-[#EB682C] text-[#EB682C] bg-[#FFF5F0]"
-                    : "border-gray-200 text-gray-600 hover:bg-gray-50 bg-white"
+                    ? "border-[#EB682C] text-[#EB682C] bg-orange-50/50"
+                    : "border-gray-200 text-gray-700 hover:bg-gray-50 bg-white"
                 }`}
               >
                 <ChevronDown
@@ -137,17 +189,15 @@ export default function ServicesHeader({ onSearchChange, onSortChange, currentSo
 
               {isSortOpen && (
                 <div
-                  className={`absolute top-full mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg z-50 overflow-hidden ${
+                  className={`absolute top-full mt-2 w-48 bg-white border border-gray-200/90 rounded-xl shadow-lg z-50 overflow-hidden ${
                     isEnglish ? "right-0" : "left-0"
                   }`}
                 >
-                  <div className="flex flex-col py-2 font-tajawal">
+                  <div className="flex flex-col py-1 font-tajawal">
                     <button
                       onClick={() => handleSortSelect("")}
-                      className={`flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
-                        currentSort === ""
-                          ? "text-[#EB682C] font-bold bg-[#FFF5F0]"
-                          : "text-gray-700"
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
+                        currentSort === "" ? "text-[#EB682C] font-bold bg-orange-50/40" : "text-gray-700"
                       }`}
                     >
                       <span>{isEnglish ? "Default" : "الافتراضي"}</span>
@@ -155,10 +205,8 @@ export default function ServicesHeader({ onSearchChange, onSortChange, currentSo
                     </button>
                     <button
                       onClick={() => handleSortSelect("newest")}
-                      className={`flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
-                        currentSort === "newest"
-                          ? "text-[#EB682C] font-bold bg-[#FFF5F0]"
-                          : "text-gray-700"
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
+                        currentSort === "newest" ? "text-[#EB682C] font-bold bg-orange-50/40" : "text-gray-700"
                       }`}
                     >
                       <span>{isEnglish ? "Newest" : "الأحدث"}</span>
@@ -166,10 +214,8 @@ export default function ServicesHeader({ onSearchChange, onSortChange, currentSo
                     </button>
                     <button
                       onClick={() => handleSortSelect("oldest")}
-                      className={`flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
-                        currentSort === "oldest"
-                          ? "text-[#EB682C] font-bold bg-[#FFF5F0]"
-                          : "text-gray-700"
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
+                        currentSort === "oldest" ? "text-[#EB682C] font-bold bg-orange-50/40" : "text-gray-700"
                       }`}
                     >
                       <span>{isEnglish ? "Oldest" : "الأقدم"}</span>
@@ -177,10 +223,8 @@ export default function ServicesHeader({ onSearchChange, onSortChange, currentSo
                     </button>
                     <button
                       onClick={() => handleSortSelect("name_asc")}
-                      className={`flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
-                        currentSort === "name_asc"
-                          ? "text-[#EB682C] font-bold bg-[#FFF5F0]"
-                          : "text-gray-700"
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
+                        currentSort === "name_asc" ? "text-[#EB682C] font-bold bg-orange-50/40" : "text-gray-700"
                       }`}
                     >
                       <span>{isEnglish ? "Name: A-Z" : "الاسم: أ - ي"}</span>
@@ -188,10 +232,8 @@ export default function ServicesHeader({ onSearchChange, onSortChange, currentSo
                     </button>
                     <button
                       onClick={() => handleSortSelect("name_desc")}
-                      className={`flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50 transition-colors ${
-                        currentSort === "name_desc"
-                          ? "text-[#EB682C] font-bold bg-[#FFF5F0]"
-                          : "text-gray-700"
+                      className={`flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
+                        currentSort === "name_desc" ? "text-[#EB682C] font-bold bg-orange-50/40" : "text-gray-700"
                       }`}
                     >
                       <span>{isEnglish ? "Name: Z-A" : "الاسم: ي - أ"}</span>

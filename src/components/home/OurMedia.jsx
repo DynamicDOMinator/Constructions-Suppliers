@@ -112,7 +112,11 @@ export default function OurMedia() {
         </p>
       </div>
 
-      <div className="relative w-full max-w-[1400px] mx-auto flex items-center justify-center min-h-[450px]">
+      <div
+        data-aos="zoom-in"
+        data-aos-delay="200"
+        className="relative w-full max-w-[1400px] mx-auto flex items-center justify-center min-h-[450px]"
+      >
         
         {/* Right Blurred Image (RTL Start) */}
         {slides.length > 1 && (

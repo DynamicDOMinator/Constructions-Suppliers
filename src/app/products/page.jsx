@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductsHeader from "@/components/products/ProductsHeader";
@@ -15,6 +15,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPaginationData] = useState(null);
+  const productsSectionRef = useRef(null);
   
   // States for search, sort, and category filter
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,6 +29,9 @@ export default function ProductsPage() {
         const params = { page: currentPage };
         if (selectedCategory && selectedCategory !== "الكل") {
           params.category = selectedCategory;
+        }
+        if (searchQuery && searchQuery.trim()) {
+          params.search = searchQuery.trim();
         }
 
         const response = await api.get("/auth/products", { params });
@@ -50,11 +54,31 @@ export default function ProductsPage() {
     };
 
     fetchProducts();
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, selectedCategory, searchQuery]);
 
   const handleSelectCategory = (cat) => {
     setSelectedCategory(cat);
     setCurrentPage(1);
+  };
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    if (productsSectionRef.current) {
+      const topOffset = 110;
+      const elementPosition = productsSectionRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - topOffset;
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: "smooth",
+      });
+    } else {
+      window.scrollTo({ top: 320, behavior: "smooth" });
+    }
   };
 
   // Derived state for filtering and sorting
@@ -95,16 +119,17 @@ export default function ProductsPage() {
   const displayedProducts = getFilteredAndSortedProducts();
 
   return (
-    <main className={`min-h-screen bg-[#F8FAFC] flex flex-col font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`}>
+    <main className={`min-h-screen bg-[#EEF2F6] flex flex-col font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`}>
       <Navbar />
 
       <ProductsHeader 
-        onSearchChange={setSearchQuery} 
+        onSearchChange={handleSearchChange} 
         onSortChange={setSortOrder} 
         currentSort={sortOrder}
+        totalProducts={pagination?.total !== undefined ? pagination.total : displayedProducts.length}
       />
 
-      <section className="py-8 px-6 md:px-12 w-full" dir={isEnglish ? "ltr" : "rtl"}>
+      <section ref={productsSectionRef} className="py-8 px-6 md:px-12 w-full" dir={isEnglish ? "ltr" : "rtl"}>
         <div className={`max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-8 items-start`}>
           {/* Sidebar (Right in RTL) */}
           <ProductsSidebar 
@@ -113,14 +138,14 @@ export default function ProductsPage() {
           />
 
           {/* Main Grid (Left in RTL) */}
-          <div className="flex-1 w-full">
+          <div className="flex-1 w-full min-w-0">
             {loading ? (
               <div className="flex items-center justify-center h-64">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#EB682C]"></div>
               </div>
             ) : displayedProducts.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {displayedProducts.map((product) => (
                     <ProductCard
                       key={product.uuid || product.id}
@@ -146,7 +171,7 @@ export default function ProductsPage() {
                     totalPages={pagination.last_page}
                     totalItems={pagination.total}
                     perPage={pagination.per_page || 10}
-                    onPageChange={setCurrentPage}
+                    onPageChange={handlePageChange}
                   />
                 )}
               </>

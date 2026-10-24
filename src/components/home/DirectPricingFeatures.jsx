@@ -1,5 +1,5 @@
 "use client";
-import { FileText, Factory, Tag } from "lucide-react";
+import { FileText, Factory, Tag, Coins, ShieldCheck, Truck } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function DirectPricingFeatures() {
@@ -21,7 +21,7 @@ export default function DirectPricingFeatures() {
         <div className="relative mb-24 z-0">
           <div className="hidden md:block absolute top-[40px] right-[2%] h-[2px] bg-[#3A5DAA] z-0 draw-line-rtl"></div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 relative z-10">
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
               <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
                 <FileText className="w-8 h-8" />
               </div>
@@ -30,7 +30,7 @@ export default function DirectPricingFeatures() {
                 {isEnglish ? "The contractor uploads the project's BOQ to the platform." : "يقوم المقاول برفع مقايسة المشروع على المنصة"}
               </p>
             </div>
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
               <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
                 <Factory className="w-8 h-8" />
               </div>
@@ -39,7 +39,7 @@ export default function DirectPricingFeatures() {
                 {isEnglish ? "The BOQ reaches approved factories directly." : "تصل المقايسة مباشرة إلى المصانع المعتمدة"}
               </p>
             </div>
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
               <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
                 <Tag className="w-8 h-8" />
               </div>
@@ -48,7 +48,7 @@ export default function DirectPricingFeatures() {
                 {isEnglish ? "Factories submit their price offers directly without a middleman." : "المصانع تقدم عروض أسعارها مباشرة بدون وسيط"}
               </p>
             </div>
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="400">
               <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
                 <FileText className="w-8 h-8" />
               </div>
@@ -62,10 +62,10 @@ export default function DirectPricingFeatures() {
 
         {/* Bottom Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right">
+          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right hover:shadow-md transition-shadow duration-300" data-aos="fade-up" data-aos-delay="150">
             <div className="flex items-center justify-start gap-3 mb-6">
               <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0">
-                <FileText className="w-5 h-5" />
+                <Coins className="w-5 h-5" />
               </div>
               <h4 className="font-bold text-[#010101] text-xl font-tajawal">{isEnglish ? "Cost Savings" : "توفير في التكاليف"}</h4>
             </div>
@@ -73,10 +73,10 @@ export default function DirectPricingFeatures() {
               {isEnglish ? "Direct factory pricing saves up to 30% of total material costs by avoiding the profit margin of middlemen and wholesalers." : "التسعير المباشر من المصنع يوفر ما يصل إلى 30% من التكلفة الإجمالية للمواد بتجنب هامش ربح الوسطاء وتجار الجملة"}
             </p>
           </div>
-          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right">
-            <div className="flex items-center justify-right gap-3 mb-6">
+          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right hover:shadow-md transition-shadow duration-300" data-aos="fade-up" data-aos-delay="250">
+            <div className="flex items-center justify-start gap-3 mb-6">
               <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0">
-                <FileText className="w-5 h-5" />
+                <ShieldCheck className="w-5 h-5" />
               </div>
               <h4 className="font-bold text-[#010101] text-xl font-tajawal">{isEnglish ? "Guaranteed Quality" : "جودة مضمونة"}</h4>
             </div>
@@ -84,10 +84,10 @@ export default function DirectPricingFeatures() {
               {isEnglish ? "Dealing directly with the factory ensures high-quality materials with a manufacturer's warranty and after-sales service." : "التعامل المباشر مع المصنع يضمن الحصول على مواد بجودة عالية مع ضمان المصنع وخدمة ما بعد البيع"}
             </p>
           </div>
-          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right">
-            <div className="flex items-center justify-right gap-3 mb-6">
+          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right hover:shadow-md transition-shadow duration-300" data-aos="fade-up" data-aos-delay="350">
+            <div className="flex items-center justify-start gap-3 mb-6">
               <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0">
-                <FileText className="w-5 h-5" />
+                <Truck className="w-5 h-5" />
               </div>
               <h4 className="font-bold text-[#010101] text-xl font-tajawal">{isEnglish ? "Direct Delivery" : "توصيل مباشر"}</h4>
             </div>

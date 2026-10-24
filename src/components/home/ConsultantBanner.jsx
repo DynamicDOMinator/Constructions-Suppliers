@@ -58,7 +58,11 @@ export default function ConsultantBanner() {
 
   return (
     <section className="py-10 px-6 md:px-12 bg-[#F9FAFC]" data-aos="fade-up" dir={isEnglish ? "ltr" : "rtl"}>
-      <div className="max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-xl relative bg-black">
+      <div
+        data-aos="zoom-in"
+        data-aos-delay="100"
+        className="max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-xl relative bg-black"
+      >
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={0}

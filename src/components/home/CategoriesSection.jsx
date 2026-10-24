@@ -21,7 +21,7 @@ export default function CategoriesSection() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Manufacturing */}
-          <Link href="/suppliers?type=factory" className="block group">
+          <Link href="/suppliers?type=factory" className="block group" data-aos="fade-up" data-aos-delay="100">
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
               <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
                 <Factory className="w-6 h-6" />
@@ -42,7 +42,7 @@ export default function CategoriesSection() {
           </Link>
 
           {/* Contracting (Orange/Featured) */}
-          <Link href="/suppliers?type=contractor" className="block group md:scale-105 z-10">
+          <Link href="/suppliers?type=contractor" className="block group md:scale-105 z-10" data-aos="fade-up" data-aos-delay="200">
             <div className="bg-[#EB682C] p-8 rounded-2xl shadow-xl border border-[#EB682C] flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 text-white h-full group-hover:bg-[#d65a22]">
               <div className="mb-4 w-12 h-12 bg-white rounded-xl flex items-center justify-center text-[#EB682C] shadow-sm">
                 <Building2 className="w-6 h-6" />
@@ -63,7 +63,7 @@ export default function CategoriesSection() {
           </Link>
 
           {/* Suppliers */}
-          <Link href="/suppliers?type=supplier" className="block group">
+          <Link href="/suppliers?type=supplier" className="block group" data-aos="fade-up" data-aos-delay="300">
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
               <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
                 <Package className="w-6 h-6" />
@@ -86,7 +86,7 @@ export default function CategoriesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Equipment Rental */}
-          <Link href="/suppliers?type=rental" className="block group">
+          <Link href="/suppliers?type=rental" className="block group" data-aos="fade-up" data-aos-delay="150">
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
               <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
                 <Truck className="w-6 h-6" />
@@ -107,7 +107,7 @@ export default function CategoriesSection() {
           </Link>
 
           {/* Engineering Consultancy */}
-          <Link href="/suppliers?type=consultant" className="block group">
+          <Link href="/suppliers?type=consultant" className="block group" data-aos="fade-up" data-aos-delay="250">
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
               <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
                 <PenTool className="w-6 h-6" />

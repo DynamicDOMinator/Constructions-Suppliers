@@ -119,6 +119,8 @@ export default function HeroSection() {
         ref={searchContainerRef}
         className="w-full max-w-3xl mx-auto mb-12 relative z-50 font-tajawal"
         dir={isEnglish ? "ltr" : "rtl"}
+        data-aos="fade-down"
+        data-aos-delay="100"
       >
         <form
           onSubmit={handleSearchSubmit}
@@ -431,7 +433,11 @@ export default function HeroSection() {
           <p className="font-medium">{isEnglish ? "Over 1,500 suppliers" : "أكثر من 1500 مورد"}</p>
         </div>
 
-        <h1 className="text-4xl font-tajawal md:text-5xl lg:text-6xl font-extrabold text-[#010101] mb-4 text-center leading-tight">
+        <h1
+          data-aos="zoom-in"
+          data-aos-delay="200"
+          className="text-4xl font-tajawal md:text-5xl lg:text-6xl font-extrabold text-[#010101] mb-4 text-center leading-tight"
+        >
           {isEnglish ? (
             <>The <span className="text-[#2A5CBA]">First</span> Digital Platform<br />for the <span className="text-[#EB682C]">Construction</span> Sector</>
           ) : (
@@ -441,7 +447,11 @@ export default function HeroSection() {
       </div>
 
       {/* Hero Image */}
-      <div className="w-full max-w-[1296px] h-auto min-h-[300px] md:h-[550px] relative flex flex-col items-center justify-center">
+      <div
+        data-aos="fade-up"
+        data-aos-delay="300"
+        className="w-full max-w-[1296px] h-auto min-h-[300px] md:h-[550px] relative flex flex-col items-center justify-center"
+      >
         <Image
           className="w-full"
           src="/Home-page-Hero.png"
@@ -452,7 +462,11 @@ export default function HeroSection() {
         />
 
         {/* Badges on Hero (Desktop) */}
-        <div className="hidden md:flex items-center gap-3 absolute bottom-6 right-10">
+        <div
+          data-aos="zoom-in"
+          data-aos-delay="450"
+          className="hidden md:flex items-center gap-3 absolute bottom-6 right-10"
+        >
           <div className="flex flex-col items-center justify-center bg-white/20 backdrop-blur-sm w-[120px] h-[120px] rounded-full">
             <p className="text-white font-bold">4.8</p>
             <div className="flex items-center justify-center">

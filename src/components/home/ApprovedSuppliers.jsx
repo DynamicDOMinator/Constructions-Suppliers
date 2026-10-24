@@ -13,8 +13,13 @@ export default function ApprovedSuppliers() {
       </div>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {[1, 2, 3].map((item) => (
-          <div key={item} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow p-6 flex flex-col">
+        {[1, 2, 3].map((item, idx) => (
+          <div
+            key={item}
+            data-aos="fade-up"
+            data-aos-delay={idx * 150 + 100}
+            className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col"
+          >
             <div className="flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-gray-500">Logo</div>

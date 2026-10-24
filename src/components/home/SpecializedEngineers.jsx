@@ -34,7 +34,7 @@ export default function SpecializedEngineers() {
         </h2>
       </div>
 
-      <div className="max-w-6xl mx-auto" dir={isEnglish ? "ltr" : "rtl"}>
+      <div className="max-w-6xl mx-auto" dir={isEnglish ? "ltr" : "rtl"} data-aos="zoom-in" data-aos-delay="150">
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={30}

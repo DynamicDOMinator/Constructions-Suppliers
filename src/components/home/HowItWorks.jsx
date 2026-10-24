@@ -24,7 +24,11 @@ export default function HowItWorks() {
         </svg>
 
         {/* Step 3 (Left) */}
-        <div className="absolute bottom-[140px] left-0 w-[33%] flex flex-col items-center text-center z-10 px-4">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="300"
+          className="absolute bottom-[140px] left-0 w-[33%] flex flex-col items-center text-center z-10 px-4"
+        >
           <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-medium shadow-sm">
             {isEnglish ? "Step Three" : "الخطوة الثالثة"}
           </div>
@@ -38,7 +42,11 @@ export default function HowItWorks() {
         <div className="absolute top-[235px] left-[16.66%] -translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20"></div>
 
         {/* Step 2 (Center) */}
-        <div className="absolute top-[164px] left-[50%] -translate-x-1/2 w-[33%] flex flex-col items-center text-center z-10 px-4">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="200"
+          className="absolute top-[164px] left-[50%] -translate-x-1/2 w-[33%] flex flex-col items-center text-center z-10 px-4"
+        >
           <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-medium shadow-sm">
             {isEnglish ? "Step Two" : "الخطوة الثانية"}
           </div>
@@ -52,7 +60,11 @@ export default function HowItWorks() {
         <div className="absolute top-[135px] left-[50%] -translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20"></div>
 
         {/* Step 1 (Right) */}
-        <div className="absolute bottom-[140px] right-0 w-[33%] flex flex-col items-center text-center z-10 px-4">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="100"
+          className="absolute bottom-[140px] right-0 w-[33%] flex flex-col items-center text-center z-10 px-4"
+        >
           <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-medium shadow-sm">
             {isEnglish ? "Step One" : "الخطوة الأولى"}
           </div>
@@ -96,6 +108,8 @@ export default function HowItWorks() {
 
       {/* Blue Stats Banner */}
       <div 
+        data-aos="zoom-in-up"
+        data-aos-delay="200"
         className="max-w-5xl mx-auto rounded-2xl py-10 px-8 flex flex-col md:flex-row justify-around items-center text-white gap-10 shadow-xl overflow-hidden relative"
         style={{ backgroundImage: "url('/bg-sec.png')", backgroundSize: "cover", backgroundPosition: "center" }}
       >
