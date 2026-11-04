@@ -79,7 +79,7 @@ export default function ServicesHeader({
           />
 
           {/* Comfortable Dark / Slate Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/75 to-slate-950/85 backdrop-blur-[0.5px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/45 via-slate-900/30 to-slate-950/45"></div>
 
           {/* Top Bar inside Hero */}
           <div className="relative z-10 flex items-center justify-between gap-4">
@@ -98,10 +98,10 @@ export default function ServicesHeader({
 
           {/* Content & Search in Hero */}
           <div className="relative z-10 max-w-2xl my-auto py-2">
-            <h1 className="text-2xl md:text-4xl font-extrabold font-tajawal mb-2 tracking-tight">
+            <h1 className="text-2xl md:text-4xl font-extrabold font-tajawal mb-2 tracking-tight drop-shadow-md">
               {isEnglish ? "Search Engineering & Contracting Services" : "ابحث عن الخدمات الهندسية والمقاولات"}
             </h1>
-            <p className="text-gray-200 text-xs md:text-sm font-tajawal leading-relaxed mb-5">
+            <p className="text-white/95 text-xs md:text-sm font-tajawal leading-relaxed mb-5 drop-shadow-sm font-medium">
               {isEnglish
                 ? "Connect with certified engineering consultancies, general contractors, interior fit-out and electromechanical experts."
                 : "تصفح خدمات التصميم المعماري، الإشراف، المقاولات، والتشطيبات مع نخبة من الشركات والمكاتب المعتمدة."}

@@ -99,16 +99,18 @@ export default function ProductsSidebar({ selectedCategory, onSelectCategory }) 
               <label
                 key={idx}
                 onClick={() => onSelectCategory && onSelectCategory(isSelected ? "" : arName)}
-                className={`flex items-center justify-between cursor-pointer py-1.5 px-2 rounded-xl transition-colors group ${
-                  isSelected ? "bg-orange-50/70" : "hover:bg-gray-50"
+                className={`flex items-center justify-between cursor-pointer py-2 px-3 rounded-xl transition-all group ${
+                  isSelected
+                    ? "bg-orange-50/80 border border-orange-200/60"
+                    : "hover:bg-slate-50 border border-transparent"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`relative flex items-center justify-center w-5 h-5 border rounded-[6px] transition-colors shrink-0 ${
+                    className={`relative flex items-center justify-center w-5 h-5 border-2 rounded-[6px] transition-colors shrink-0 ${
                       isSelected
                         ? "border-[#EB682C] bg-[#EB682C]"
-                        : "border-gray-300 bg-white group-hover:border-[#EB682C]"
+                        : "border-slate-300 bg-white group-hover:border-[#EB682C]"
                     }`}
                   >
                     {isSelected && (
@@ -121,7 +123,7 @@ export default function ProductsSidebar({ selectedCategory, onSelectCategory }) 
                         <path
                           d="M1 5L4.5 8.5L13 1"
                           stroke="currentColor"
-                          strokeWidth="2.2"
+                          strokeWidth="2.4"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
@@ -130,7 +132,9 @@ export default function ProductsSidebar({ selectedCategory, onSelectCategory }) 
                   </div>
                   <span
                     className={`text-sm select-none transition-colors ${
-                      isSelected ? "text-[#EB682C] font-bold" : "text-gray-700 group-hover:text-black"
+                      isSelected
+                        ? "text-[#EB682C] font-extrabold"
+                        : "text-[#004b87] font-bold group-hover:text-[#EB682C]"
                     }`}
                   >
                     {cat}
@@ -139,8 +143,10 @@ export default function ProductsSidebar({ selectedCategory, onSelectCategory }) 
 
                 {count !== null && count !== undefined && (
                   <span
-                    className={`text-xs px-2.5 py-0.5 rounded-full ${
-                      isSelected ? "bg-[#EB682C] text-white font-bold" : "bg-gray-100 text-gray-500"
+                    className={`text-xs px-2.5 py-0.5 rounded-full font-bold ${
+                      isSelected
+                        ? "bg-[#EB682C] text-white shadow-xs"
+                        : "bg-slate-100 text-[#004b87] border border-slate-200/80"
                     }`}
                   >
                     {count}

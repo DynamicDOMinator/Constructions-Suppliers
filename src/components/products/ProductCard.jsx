@@ -32,9 +32,9 @@ export default function ProductCard({
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-50">
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 bg-gray-50">
             <span className="text-4xl opacity-40 mb-1">📦</span>
-            <span className="text-xs font-medium">
+            <span className="text-xs font-semibold">
               {isEnglish ? "No image" : "لا توجد صورة"}
             </span>
           </div>
@@ -45,19 +45,19 @@ export default function ProductCard({
       <div className="p-4 md:p-5 flex flex-col flex-1">
         {/* Title */}
         <Link href={href}>
-          <h3 className="font-bold text-gray-900 text-sm md:text-base mb-1.5 line-clamp-2 group-hover:text-[#EB682C] transition-colors leading-snug">
+          <h3 className="font-extrabold text-gray-900 text-sm md:text-base mb-1.5 line-clamp-2 group-hover:text-[#EB682C] transition-colors leading-snug">
             {title}
           </h3>
         </Link>
 
         {/* Description */}
-        <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-4 flex-1">
+        <p className="text-gray-700 text-xs md:text-sm font-medium leading-relaxed line-clamp-2 mb-4 flex-1">
           {description}
         </p>
 
         {/* Price & Unit Box */}
         <div className="bg-gray-50/90 rounded-xl p-3 border border-gray-100 mb-3.5 flex items-center justify-between">
-          <span className="text-xs text-gray-500 font-medium">
+          <span className="text-xs text-gray-700 font-semibold">
             {isEnglish ? "Price / Unit" : "السعر / للوحدة"}
           </span>
           <div className="flex items-baseline gap-1" dir="ltr">
@@ -68,7 +68,7 @@ export default function ProductCard({
               {isEnglish ? "SAR" : "ريال"}
             </span>
             {unit && (
-              <span className="text-[11px] text-gray-400">
+              <span className="text-[11px] text-gray-600 font-medium">
                 / {unit}
               </span>
             )}

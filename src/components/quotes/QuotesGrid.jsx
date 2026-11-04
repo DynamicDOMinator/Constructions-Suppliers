@@ -91,7 +91,7 @@ export default function QuotesGrid() {
             />
 
             {/* Dark Slate Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/80 to-slate-950/90 backdrop-blur-[0.5px]"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/45 via-slate-900/30 to-slate-950/45"></div>
 
             {/* Top Navigation Row */}
             <div className="relative z-10 flex items-center justify-between gap-4">

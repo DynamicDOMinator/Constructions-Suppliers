@@ -73,17 +73,16 @@ body {
 /* Running Partners Marquee */
 @keyframes runningLogos {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
-.animate-running-logos {
-  display: flex;
-  width: max-content;
-  animation: runningLogos 45s linear infinite;
-}
-.animate-running-logos:hover {
-  animation-play-state: paused;
+.animate-running-logos,
+.partners-marquee-track {
+  display: flex !important;
+  width: max-content !important;
+  animation: runningLogos 25s linear infinite !important;
+  will-change: transform !important;
 }

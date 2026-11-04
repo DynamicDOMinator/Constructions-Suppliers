@@ -70,7 +70,7 @@ export default function ProductsHeader({
           />
 
           {/* Comfortable Dark / Slate Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/75 to-slate-950/85 backdrop-blur-[0.5px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/45 via-slate-900/30 to-slate-950/45"></div>
 
           {/* Top Bar inside Hero */}
           <div className="relative z-10 flex items-center justify-between gap-4">
@@ -89,10 +89,10 @@ export default function ProductsHeader({
 
           {/* Content & Search in Hero */}
           <div className="relative z-10 max-w-2xl my-auto py-2">
-            <h1 className="text-2xl md:text-4xl font-extrabold font-tajawal mb-2 tracking-tight">
+            <h1 className="text-2xl md:text-4xl font-extrabold font-tajawal mb-2 tracking-tight drop-shadow-md">
               {isEnglish ? "Search Building Materials & Products" : "ابحث عن المنتجات ومواد البناء"}
             </h1>
-            <p className="text-gray-200 text-xs md:text-sm font-tajawal leading-relaxed mb-5">
+            <p className="text-white/95 text-xs md:text-sm font-tajawal leading-relaxed mb-5 drop-shadow-sm font-medium">
               {isEnglish
                 ? "Browse certified construction materials, insulation, marble, and supplies from verified vendors."
                 : "تصفح مئات الأصناف المعمارية، العوازل، والتشطيبات بأسعار تنافسية من أفضل الموردين والمصانع المعتمدة."}

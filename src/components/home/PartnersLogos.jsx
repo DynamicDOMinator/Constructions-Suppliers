@@ -78,26 +78,48 @@ export default function PartnersLogos() {
   }, []);
 
   const displayPartners = partners.length > 0 ? partners : DEFAULT_PARTNERS;
-  // Duplicate array so marquee wraps infinitely and seamlessly
-  const repeatedPartners = [...displayPartners, ...displayPartners, ...displayPartners, ...displayPartners];
+  // Duplicate array multiple times for completely seamless infinite loop
+  const repeatedPartners = [
+    ...displayPartners,
+    ...displayPartners,
+    ...displayPartners,
+    ...displayPartners,
+  ];
 
   return (
-    <section className="py-8 md:py-10 bg-white border-b border-gray-100 overflow-hidden relative" data-aos="fade-up" dir="ltr">
+    <section className="py-10 md:py-14 bg-white border-b border-gray-100 overflow-hidden relative" dir="ltr">
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes scrollPartnersMarquee {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
+        .partners-marquee-track {
+          display: flex !important;
+          width: max-content !important;
+          animation: scrollPartnersMarquee 25s linear infinite !important;
+          will-change: transform !important;
+        }
+      `}} />
+
       {/* Left and Right Fade Gradients */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 bg-gradient-to-r from-white to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 bg-gradient-to-l from-white to-transparent z-10" />
 
       {/* Continuous Running Track */}
       <div className="w-full flex items-center overflow-hidden">
-        <div className="animate-running-logos flex items-center gap-10 sm:gap-14">
+        <div className="partners-marquee-track animate-running-logos flex items-center gap-12 sm:gap-16 md:gap-20">
           {repeatedPartners.map((partner, idx) => {
             const imgUrl = partner.image_url || partner.image;
             const logoNode = (
-              <div className="h-16 flex items-center justify-center px-4 py-2 rounded-xl transition-all duration-300 hover:bg-gray-50/80 group shrink-0">
+              <div className="h-20 sm:h-24 md:h-28 flex items-center justify-center px-5 sm:px-7 py-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 group shrink-0">
                 <img
                   src={imgUrl}
                   alt={partner.name || "Partner Logo"}
-                  className="h-9 sm:h-11 md:h-12 w-auto max-w-[160px] object-contain transition-transform duration-300 group-hover:scale-110"
+                  className="h-14 sm:h-16 md:h-20 lg:h-22 w-auto max-w-[180px] sm:max-w-[220px] md:max-w-[260px] object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-xs"
                   loading="lazy"
                 />
               </div>

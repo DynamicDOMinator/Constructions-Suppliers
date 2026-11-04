@@ -32,7 +32,7 @@ export default function ServiceCard({
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-orange-50/70 to-slate-100 flex flex-col items-center justify-center text-[#EB682C]">
             <Wrench className="w-10 h-10 text-[#EB682C]/70 group-hover:scale-110 transition-transform duration-300" />
-            <span className="text-xs text-gray-400 mt-2 font-medium">
+            <span className="text-xs text-gray-600 mt-2 font-semibold">
               {isEnglish ? "Engineering Service" : "خدمة هندسية"}
             </span>
           </div>
@@ -44,13 +44,13 @@ export default function ServiceCard({
       <div className="p-4 md:p-5 flex flex-col flex-1">
         {/* Title */}
         <Link href={href}>
-          <h3 className="font-bold text-gray-900 text-sm md:text-base mb-1.5 line-clamp-2 group-hover:text-[#EB682C] transition-colors leading-snug">
+          <h3 className="font-extrabold text-gray-900 text-sm md:text-base mb-1.5 line-clamp-2 group-hover:text-[#EB682C] transition-colors leading-snug">
             {title || (isEnglish ? "Untitled Service" : "خدمة بدون اسم")}
           </h3>
         </Link>
 
         {/* Description */}
-        <p className="text-gray-500 text-xs leading-relaxed line-clamp-3 mb-4 flex-1">
+        <p className="text-gray-700 text-xs md:text-sm font-medium leading-relaxed line-clamp-3 mb-4 flex-1">
           {description ||
             (isEnglish
               ? "No description available for this service."

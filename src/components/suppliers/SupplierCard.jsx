@@ -16,42 +16,41 @@ export default function SupplierCard({ id, status, title, category, description,
         <div className="flex justify-between items-start mb-4">
           <div className="flex gap-4 items-start">
             {/* Logo */}
-            <div className="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0 overflow-hidden">
+            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0 overflow-hidden shadow-xs">
               {logo ? (
                 <img src={logo} alt={title} className="w-full h-full object-cover" />
               ) : (
-                <span className="font-bold text-gray-500 text-lg">{title ? title.charAt(0) : "S"}</span>
+                <span className="font-extrabold text-gray-700 text-xl">{title ? title.charAt(0) : "S"}</span>
               )}
             </div>
             {/* Title & Category */}
             <div className={`pt-1 ${isEnglish ? 'text-left' : 'text-right'}`}>
-              <h3 className="font-bold text-gray-900 text-base">{title}</h3>
-              <p className="text-gray-500 text-xs mt-1">{category}</p>
+              <h3 className="font-extrabold text-gray-900 text-base md:text-lg group-hover:text-[#EB682C] transition-colors leading-snug">{title}</h3>
+              <p className="text-[#EB682C] text-xs font-bold mt-1">{category}</p>
             </div>
           </div>
           
           {/* Status Badge */}
-          <span className={`${badgeColor} text-white px-4 py-1 rounded-full text-xs font-bold shrink-0`}>
+          <span className={`${badgeColor} text-white px-3.5 py-1 rounded-full text-xs font-bold shrink-0 shadow-xs`}>
             {status}
           </span>
         </div>
 
         {/* Description */}
-        <p className={`text-gray-500 text-xs leading-relaxed mb-6 ${isEnglish ? 'text-left' : 'text-right'}`}>
+        <p className={`text-gray-700 text-xs md:text-sm font-medium leading-relaxed line-clamp-3 mb-6 min-h-[40px] ${isEnglish ? 'text-left' : 'text-right'}`}>
           {description}
         </p>
 
         {/* Info Rows */}
-        <div className="flex flex-col gap-3 mb-6 mt-auto">
-          <div className="flex justify-between items-center text-xs">
-            <span className="text-gray-400">{isEnglish ? "City : Region" : "المدينة : المنطقة"}</span>
-            <span className="font-bold text-gray-700">{city}</span>
+        <div className="flex flex-col gap-3 mb-6 mt-auto pt-3 border-t border-gray-100">
+          <div className="flex justify-between items-center text-xs md:text-sm">
+            <span className="text-gray-600 font-semibold">{isEnglish ? "City : Region" : "المدينة : المنطقة"}</span>
+            <span className="font-extrabold text-gray-900">{city}</span>
           </div>
-
         </div>
 
         {/* Action Button */}
-        <button className="w-full bg-[#EB682C] text-white py-2.5 rounded-lg text-sm font-bold hover:bg-[#d65a22] transition-colors">
+        <button className="w-full bg-[#EB682C] text-white py-2.5 rounded-xl text-sm font-bold hover:bg-[#d65a22] transition-colors shadow-xs group-hover:shadow-md">
           {isEnglish ? "Request Pricing" : "طلب تسعير"}
         </button>
 
