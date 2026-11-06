@@ -54,7 +54,7 @@ export default function PricingComparisonTable({ onSelectPlan }) {
     },
   ];
 
-  // 17 exact features from the screenshot
+  // Features list
   const features = [
     {
       titleAr: "التسجيل مع إضافة غير محدودة من المنتجات والخدمات والعلامات التجارية والموافقات",
@@ -129,8 +129,11 @@ export default function PricingComparisonTable({ onSelectPlan }) {
     return plan.annualPrice;
   };
 
+  const colDividerClass = isEnglish ? "border-r border-[#E5E7EB]" : "border-l border-[#E5E7EB]";
+  const planDividerClass = isEnglish ? "border-r border-[#E5E7EB] last:border-r-0" : "border-l border-[#E5E7EB] last:border-l-0";
+
   return (
-    <div className="w-full font-tajawal max-w-[1240px] mx-auto py-6" dir={isEnglish ? "ltr" : "rtl"}>
+    <div className={`w-full ${isEnglish ? 'font-sans' : 'font-tajawal'} max-w-[1240px] mx-auto py-6`} dir={isEnglish ? "ltr" : "rtl"}>
       
       {/* Outer Table Container */}
       <div className="overflow-x-auto pb-4">
@@ -139,25 +142,29 @@ export default function PricingComparisonTable({ onSelectPlan }) {
           {/* Table Header Row */}
           <div className="grid grid-cols-12 border-b border-[#E5E7EB]">
             
-            {/* Right Header Cell (Billing Cycles) */}
-            <div className="col-span-4 p-5 flex flex-col justify-end items-end pr-6">
-              <div className="flex flex-col items-center">
-                {/* Savings Pill labels */}
-                <div className="flex items-center justify-between w-full px-2 mb-1.5 text-[11px] font-bold text-[#EB682C]">
-                  <span className="opacity-0">.</span>
-                  <span className="bg-orange-50 text-[#EB682C] px-1.5 py-0.5 rounded-md font-extrabold text-[10px]">
-                    {isEnglish ? "Save 23%" : "وفّر 23%"}
-                  </span>
-                  <span className="bg-[#EB682C] text-white px-2 py-0.5 rounded-md font-extrabold text-[10px] shadow-sm">
-                    {isEnglish ? "Save 50%" : "وفّر 50%"}
-                  </span>
+            {/* First Header Cell (Billing Cycle Switcher) */}
+            <div className={`col-span-4 p-5 flex flex-col justify-center ${colDividerClass} ${isEnglish ? 'items-start pl-6 pr-4' : 'items-end pr-6 pl-4'}`}>
+              <div className="w-[280px]">
+                {/* Savings Pill labels aligned with buttons */}
+                <div className="grid grid-cols-3 w-full mb-1.5 text-[11px] font-bold text-[#EB682C] text-center">
+                  <div>{/* Empty above Monthly */}</div>
+                  <div className="flex justify-center">
+                    <span className="bg-orange-50 text-[#EB682C] px-1.5 py-0.5 rounded-md font-extrabold text-[10px] whitespace-nowrap">
+                      {isEnglish ? "Save 23%" : "وفّر 23%"}
+                    </span>
+                  </div>
+                  <div className="flex justify-center">
+                    <span className="bg-[#EB682C] text-white px-2 py-0.5 rounded-md font-extrabold text-[10px] shadow-sm whitespace-nowrap">
+                      {isEnglish ? "Save 50%" : "وفّر 50%"}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Pill switch */}
-                <div className="flex items-center bg-[#F1F5F9] p-1 rounded-full border border-gray-200/80">
+                <div className="grid grid-cols-3 bg-[#F1F5F9] p-1 rounded-full border border-gray-200/80">
                   <button
                     onClick={() => setBillingCycle("monthly")}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    className={`py-1.5 rounded-full text-xs font-bold transition-all text-center ${
                       billingCycle === "monthly"
                         ? "bg-white text-gray-900 shadow-sm"
                         : "text-gray-500 hover:text-gray-800"
@@ -167,7 +174,7 @@ export default function PricingComparisonTable({ onSelectPlan }) {
                   </button>
                   <button
                     onClick={() => setBillingCycle("quarterly")}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    className={`py-1.5 rounded-full text-xs font-bold transition-all text-center ${
                       billingCycle === "quarterly"
                         ? "bg-white text-gray-900 shadow-sm"
                         : "text-gray-500 hover:text-gray-800"
@@ -177,7 +184,7 @@ export default function PricingComparisonTable({ onSelectPlan }) {
                   </button>
                   <button
                     onClick={() => setBillingCycle("annual")}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    className={`py-1.5 rounded-full text-xs font-bold transition-all text-center ${
                       billingCycle === "annual"
                         ? "bg-[#EB682C] text-white shadow-sm"
                         : "text-gray-500 hover:text-gray-800"
@@ -202,7 +209,7 @@ export default function PricingComparisonTable({ onSelectPlan }) {
                     setSelectedPlanId(plan.id);
                     onSelectPlan && onSelectPlan(plan, billingCycle);
                   }}
-                  className={`col-span-2 cursor-pointer transition-all p-4 flex flex-col items-center justify-between border-r border-[#E5E7EB] first:border-r-0 relative ${
+                  className={`col-span-2 cursor-pointer transition-all p-4 flex flex-col items-center justify-between ${planDividerClass} relative ${
                     isHighlighted
                       ? "bg-[#EB682C] text-white rounded-t-2xl md:rounded-t-3xl shadow-sm z-10"
                       : "bg-white text-gray-800 hover:bg-orange-50/20"
@@ -242,8 +249,8 @@ export default function PricingComparisonTable({ onSelectPlan }) {
 
                   {/* Plan Title */}
                   <h3
-                    className={`text-base font-extrabold mb-3 tracking-wide ${
-                      isHighlighted ? "text-white" : "text-gray-800"
+                    className={`text-base font-black mb-3 tracking-wide ${
+                      isHighlighted ? "text-white" : "text-gray-950"
                     }`}
                   >
                     {isEnglish ? plan.titleEn : plan.titleAr}
@@ -264,7 +271,7 @@ export default function PricingComparisonTable({ onSelectPlan }) {
             })}
           </div>
 
-          {/* Table Body (17 Comparison Rows) */}
+          {/* Table Body (Comparison Rows) */}
           <div className="divide-y divide-gray-100">
             {features.map((feature, idx) => {
               const isEven = idx % 2 === 0;
@@ -276,8 +283,8 @@ export default function PricingComparisonTable({ onSelectPlan }) {
                     isEven ? "bg-white" : "bg-[#F8FAFC]/60"
                   }`}
                 >
-                  {/* Feature Title (Right in RTL) */}
-                  <div className="col-span-4 py-3.5 px-6 text-sm font-semibold text-gray-700 leading-snug">
+                  {/* Feature Title (Left in LTR, Right in RTL) */}
+                  <div className={`col-span-4 py-4 ${colDividerClass} ${isEnglish ? 'text-left pl-6 pr-4' : 'text-right pr-6 pl-4'} text-sm font-bold text-gray-900 leading-snug flex items-center`}>
                     {isEnglish ? feature.titleEn : feature.titleAr}
                   </div>
 
@@ -289,8 +296,8 @@ export default function PricingComparisonTable({ onSelectPlan }) {
                     return (
                       <div
                         key={plan.id}
-                        className={`col-span-2 py-3.5 flex items-center justify-center border-r border-[#E5E7EB] first:border-r-0 ${
-                          isHighlighted ? "bg-[#EB682C] text-white border-r-orange-400/30" : ""
+                        className={`col-span-2 py-3.5 flex items-center justify-center ${planDividerClass} ${
+                          isHighlighted ? "bg-[#EB682C] text-white border-orange-400/30" : ""
                         }`}
                       >
                         {available ? (
@@ -324,7 +331,7 @@ export default function PricingComparisonTable({ onSelectPlan }) {
 
           {/* Table Footer Action Row */}
           <div className="grid grid-cols-12 border-t border-[#E5E7EB] bg-gray-50/50">
-            <div className="col-span-4 py-5 px-6 flex items-center text-xs font-bold text-gray-500">
+            <div className={`col-span-4 py-5 ${colDividerClass} ${isEnglish ? 'text-left pl-6 pr-4' : 'text-right pr-6 pl-4'} flex items-center text-xs font-bold text-gray-800`}>
               {isEnglish
                 ? "All plans include 24/7 technical support and cloud security."
                 : "جميع الباقات تشمل الدعم الفني 24/7 والحماية السحابية."}
@@ -337,8 +344,8 @@ export default function PricingComparisonTable({ onSelectPlan }) {
               return (
                 <div
                   key={plan.id}
-                  className={`col-span-2 py-5 px-3 flex items-center justify-center border-r border-[#E5E7EB] first:border-r-0 relative ${
-                    isHighlighted ? "bg-[#EB682C] border-r-orange-400/30 rounded-b-2xl md:rounded-b-3xl" : ""
+                  className={`col-span-2 py-5 px-3 flex items-center justify-center ${planDividerClass} relative ${
+                    isHighlighted ? "bg-[#EB682C] border-orange-400/30 rounded-b-2xl md:rounded-b-3xl" : ""
                   }`}
                 >
                   <button
@@ -346,12 +353,12 @@ export default function PricingComparisonTable({ onSelectPlan }) {
                       setSelectedPlanId(plan.id);
                       onSelectPlan && onSelectPlan(plan, billingCycle);
                     }}
-                    className={`w-full py-2.5 px-2 rounded-xl font-extrabold text-xs transition-all duration-200 shadow-sm ${
+                    className={`w-full py-2.5 px-2 rounded-xl font-black text-xs transition-all duration-200 shadow-sm ${
                       isHighlighted
-                        ? "bg-white text-[#EB682C] hover:bg-orange-50 hover:shadow-md"
+                        ? "bg-white text-[#EB682C] hover:bg-orange-50 hover:shadow-md hover:scale-105"
                         : isSelected
-                        ? "bg-[#EB682C] text-white hover:bg-[#d9571e]"
-                        : "bg-white border border-gray-200 text-gray-700 hover:border-[#EB682C] hover:text-[#EB682C]"
+                        ? "bg-[#EB682C] text-white hover:bg-[#d9571e] hover:scale-105"
+                        : "bg-white border-2 border-gray-300 text-gray-950 hover:border-[#EB682C] hover:text-[#EB682C] hover:scale-105"
                     }`}
                   >
                     {isEnglish ? "Choose Plan" : "اختيار الباقة"}

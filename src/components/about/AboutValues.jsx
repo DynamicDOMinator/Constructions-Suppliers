@@ -49,11 +49,11 @@ export default function AboutValues() {
           {/* Top Label */}
           <div className="flex items-center gap-2 mb-4">
             <div className="w-6 h-[2px] bg-[#EB682C]"></div>
-            <span className="text-gray-500 text-sm font-medium">{isEnglish ? "Values" : "القيم"}</span>
+            <span className="text-gray-900 text-sm font-bold">{isEnglish ? "Values" : "القيم"}</span>
           </div>
 
           {/* Title */}
-          <h2 className="text-3xl md:text-4xl font-bold font-tajawal mb-10 leading-snug">
+          <h2 className="text-3xl md:text-4xl font-extrabold font-tajawal mb-10 leading-snug">
             <span className="text-black">{isEnglish ? "Our Core " : "قيمنا "}</span>
             <span className="text-[#EB682C]">{isEnglish ? "Values" : "الاساسية"}</span>
           </h2>
@@ -61,12 +61,12 @@ export default function AboutValues() {
           {/* Grid of Values */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {values.map((item, index) => (
-              <div key={index} className="flex flex-col gap-3">
-                <div className="w-10 h-10 rounded-full  flex items-center justify-center text-[#2653A6]">
+              <div key={index} className="flex flex-col gap-3 group p-4 rounded-2xl hover:bg-slate-50 transition-colors">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-[#2653A6] group-hover:scale-110 transition-transform">
                   <CheckCircle2 className="w-6 h-6 fill-current text-[#2653A6]" stroke="white" strokeWidth={2} />
                 </div>
-                <h3 className="font-bold text-lg text-black font-tajawal">{item.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">
+                <h3 className="font-extrabold text-lg text-gray-950 font-tajawal">{item.title}</h3>
+                <p className="text-gray-800 text-sm font-semibold leading-relaxed">
                   {item.description}
                 </p>
               </div>

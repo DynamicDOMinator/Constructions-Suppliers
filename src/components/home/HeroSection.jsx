@@ -128,7 +128,7 @@ export default function HeroSection() {
         >
           <button
             type="submit"
-            className={`px-3 text-gray-400 hover:text-[#EB682C] transition-colors cursor-pointer`}
+            className={`px-3 text-gray-700 hover:text-[#EB682C] transition-colors cursor-pointer`}
             aria-label="Search"
           >
             <Search className="w-5 h-5" />
@@ -146,7 +146,7 @@ export default function HeroSection() {
                 ? "Search for products, suppliers, services, articles..."
                 : "ابحث هنا عن منتجات، موردين، خدمات، مقالات..."
             }
-            className="w-full px-2 py-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder-gray-400 font-medium"
+            className="w-full px-2 py-2 bg-transparent focus:outline-none text-sm text-gray-900 placeholder-gray-500 font-semibold"
           />
 
           {loading ? (
@@ -157,7 +157,7 @@ export default function HeroSection() {
             <button
               type="button"
               onClick={clearSearch}
-              className="px-3 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+              className="px-3 text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -238,10 +238,10 @@ export default function HeroSection() {
                                 {name}
                               </p>
                               {field && (
-                                <p className="text-xs text-gray-400 truncate">{field}</p>
+                                <p className="text-xs text-gray-700 font-medium truncate">{field}</p>
                               )}
                             </div>
-                            <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-[#EB682C] transition-colors shrink-0" />
+                            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#EB682C] transition-colors shrink-0" />
                           </Link>
                         );
                       })}
@@ -253,7 +253,7 @@ export default function HeroSection() {
                 {results.products.length > 0 && (
                   <div className="pt-3">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
                         <Package className="w-3.5 h-3.5 text-[#2A5CBA]" />
                         {isEnglish ? "Products" : "المنتجات"}
                       </span>
@@ -286,7 +286,7 @@ export default function HeroSection() {
                               <p className="text-sm font-bold text-gray-800 group-hover:text-[#2A5CBA] transition-colors truncate">
                                 {prod.name}
                               </p>
-                              <div className="flex items-center gap-2 text-xs text-gray-400">
+                              <div className="flex items-center gap-2 text-xs text-gray-700 font-medium">
                                 {prod.category && <span>{prod.category}</span>}
                                 {prod.price && (
                                   <span className="text-[#EB682C] font-bold">
@@ -295,7 +295,7 @@ export default function HeroSection() {
                                 )}
                               </div>
                             </div>
-                            <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-[#2A5CBA] transition-colors shrink-0" />
+                            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#2A5CBA] transition-colors shrink-0" />
                           </Link>
                         );
                       })}
@@ -307,7 +307,7 @@ export default function HeroSection() {
                 {results.services.length > 0 && (
                   <div className="pt-3">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
                         <Wrench className="w-3.5 h-3.5 text-emerald-600" />
                         {isEnglish ? "Services" : "الخدمات الإنشائية"}
                       </span>
@@ -341,10 +341,10 @@ export default function HeroSection() {
                                 {srv.name}
                               </p>
                               {srv.category && (
-                                <p className="text-xs text-gray-400 truncate">{srv.category}</p>
+                                <p className="text-xs text-gray-700 font-medium truncate">{srv.category}</p>
                               )}
                             </div>
-                            <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-emerald-600 transition-colors shrink-0" />
+                            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors shrink-0" />
                           </Link>
                         );
                       })}
@@ -356,7 +356,7 @@ export default function HeroSection() {
                 {results.blogs.length > 0 && (
                   <div className="pt-3">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
                         <Newspaper className="w-3.5 h-3.5 text-purple-600" />
                         {isEnglish ? "Articles & Blogs" : "المقالات والمدونات"}
                       </span>
@@ -392,10 +392,10 @@ export default function HeroSection() {
                               {b.title}
                             </p>
                             {b.category && (
-                              <p className="text-xs text-gray-400 truncate">{b.category}</p>
+                              <p className="text-xs text-gray-700 font-medium truncate">{b.category}</p>
                             )}
                           </div>
-                          <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-purple-600 transition-colors shrink-0" />
+                          <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors shrink-0" />
                         </Link>
                       ))}
                     </div>
@@ -421,16 +421,16 @@ export default function HeroSection() {
 
       {/* Hero Headline */}
       <div className="relative">
-        <div className="absolute -left-35 -top-2 bg-white/50 backdrop-blur-2xl p-2 rounded-3xl hidden lg:block">
-          <p className="font-medium">{isEnglish ? "Over 2,400 reviews" : "أكثر من 2.4 ألف تقييم"}</p>
+        <div className="absolute -left-35 -top-2 bg-white/85 backdrop-blur-2xl px-4 py-2 rounded-2xl hidden lg:block shadow-lg border border-white/90 animate-float hover:scale-105 transition-all cursor-default">
+          <p className="font-extrabold text-gray-900 text-sm">{isEnglish ? "Over 2,400 reviews" : "أكثر من 2.4 ألف تقييم"}</p>
         </div>
 
-        <div className="absolute -right-30 top-12 bg-white/50 backdrop-blur-2xl p-2 rounded-3xl hidden lg:block">
-          <p className="font-medium">{isEnglish ? "Over 1,000 users" : "أكثر من 1000 مستخدم"}</p>
+        <div className="absolute -right-30 top-12 bg-white/85 backdrop-blur-2xl px-4 py-2 rounded-2xl hidden lg:block shadow-lg border border-white/90 animate-float-delayed hover:scale-105 transition-all cursor-default">
+          <p className="font-extrabold text-gray-900 text-sm">{isEnglish ? "Over 1,000 users" : "أكثر من 1000 مستخدم"}</p>
         </div>
 
-        <div className="absolute top-35 left-1/3 -translate-x-1/2 bg-white/50 backdrop-blur-2xl p-2 rounded-3xl hidden lg:block">
-          <p className="font-medium">{isEnglish ? "Over 1,500 suppliers" : "أكثر من 1500 مورد"}</p>
+        <div className="absolute top-35 left-1/3 -translate-x-1/2 bg-white/85 backdrop-blur-2xl px-4 py-2 rounded-2xl hidden lg:block shadow-lg border border-white/90 animate-float-slow hover:scale-105 transition-all cursor-default">
+          <p className="font-extrabold text-gray-900 text-sm">{isEnglish ? "Over 1,500 suppliers" : "أكثر من 1500 مورد"}</p>
         </div>
 
         <h1
@@ -461,44 +461,44 @@ export default function HeroSection() {
           priority
         />
 
-        {/* Badges on Hero (Desktop) */}
+        {/* Badges on Hero (Desktop) with Floating Motion */}
         <div
           data-aos="zoom-in"
           data-aos-delay="450"
-          className="hidden md:flex items-center gap-3 absolute bottom-6 right-10"
+          className="hidden md:flex items-center gap-3 absolute bottom-6 right-10 animate-float-slow"
         >
-          <div className="flex flex-col items-center justify-center bg-white/20 backdrop-blur-sm w-[120px] h-[120px] rounded-full">
-            <p className="text-white font-bold">4.8</p>
-            <div className="flex items-center justify-center">
-              <FaStar className="text-yellow-500" />
-              <FaStar className="text-yellow-500" />
-              <FaStar className="text-yellow-500" />
-              <FaStar className="text-yellow-500" />
-              <FaStar className="text-gray-400" />
+          <div className="flex flex-col items-center justify-center bg-white/25 backdrop-blur-md w-[120px] h-[120px] rounded-full shadow-lg border border-white/30 hover:scale-105 transition-transform">
+            <p className="text-white font-black text-lg">4.8</p>
+            <div className="flex items-center justify-center gap-0.5">
+              <FaStar className="text-yellow-400 w-3.5 h-3.5" />
+              <FaStar className="text-yellow-400 w-3.5 h-3.5" />
+              <FaStar className="text-yellow-400 w-3.5 h-3.5" />
+              <FaStar className="text-yellow-400 w-3.5 h-3.5" />
+              <FaStar className="text-yellow-400 w-3.5 h-3.5" />
             </div>
-            <p className="text-white text-sm text-center">
+            <p className="text-white text-xs font-bold text-center mt-1">
               {isEnglish ? <>Average<br />Rating</> : <>متوسط <br />التقييمات</>}
             </p>
           </div>
 
-          <div className="flex items-center justify-center bg-white/20 backdrop-blur-sm w-[120px] h-[120px] rounded-full">
-            <HiOutlineArrowSmallUp className="text-5xl text-white -rotate-30" />
+          <div className="flex items-center justify-center bg-white/25 backdrop-blur-md w-[120px] h-[120px] rounded-full shadow-lg border border-white/30 hover:scale-105 transition-transform group">
+            <HiOutlineArrowSmallUp className="text-5xl text-white -rotate-30 group-hover:scale-110 transition-transform" />
           </div>
         </div>
 
-        {/* Action Buttons (Desktop) */}
+        {/* Action Buttons (Desktop) with Pulse Glow */}
         <div className="hidden md:flex absolute bottom-2 left-2 lg:left-4 z-20 items-center gap-2 md:gap-2.5">
           <div className="flex items-center gap-2 md:gap-2.5 justify-center">
             <Link
               href="/services"
-              className="font-bold text-gray-800 hover:text-[#EB682C] transition-colors cursor-pointer text-sm whitespace-nowrap px-1"
+              className="font-extrabold text-gray-900 hover:text-[#EB682C] transition-colors cursor-pointer text-sm whitespace-nowrap px-1"
             >
               {isEnglish ? "Explore Now" : "استكشف الآن"}
             </Link>
 
             <Link
               href="/suppliers"
-              className="bg-[#EB682C] px-4 py-2.5 rounded-full text-white font-bold text-sm hover:bg-[#d9571e] transition-all transform hover:scale-105 shadow-md flex items-center justify-center cursor-pointer whitespace-nowrap"
+              className="bg-[#EB682C] px-5 py-2.5 rounded-full text-white font-extrabold text-sm hover:bg-[#d9571e] transition-all transform hover:scale-105 shadow-md animate-pulse-glow flex items-center justify-center cursor-pointer whitespace-nowrap"
             >
               {isEnglish ? "Send a Quote Request" : "أرسل طلب عرض أسعار"}
             </Link>

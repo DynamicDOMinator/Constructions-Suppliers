@@ -98,20 +98,20 @@ function SuppliersPageContent() {
                   <button 
                     onClick={() => setPage(p => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-4 py-2 border-2 border-gray-300 rounded-lg text-sm font-black text-gray-950 hover:bg-orange-50 hover:text-[#EB682C] hover:border-[#EB682C] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                   >
                     {isEnglish ? 'Previous' : 'السابق'}
                   </button>
                   
-                  <div className="flex flex-wrap justify-center items-center gap-1">
+                  <div className="flex flex-wrap justify-center items-center gap-1.5">
                     {Array.from({ length: pagination.last_page }, (_, i) => i + 1).map((pageNum) => (
                       <button
                         key={pageNum}
                         onClick={() => setPage(pageNum)}
-                        className={`w-10 h-10 rounded-lg text-sm font-bold transition-colors flex items-center justify-center ${
+                        className={`w-10 h-10 rounded-lg text-sm font-black transition-all flex items-center justify-center shadow-xs ${
                           page === pageNum 
-                            ? "bg-[#EB682C] text-white" 
-                            : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+                            ? "bg-[#EB682C] text-white shadow-md shadow-orange-500/20" 
+                            : "border-2 border-gray-300 text-gray-950 hover:bg-orange-50 hover:text-[#EB682C] hover:border-[#EB682C]"
                         }`}
                       >
                         {pageNum}
@@ -122,7 +122,7 @@ function SuppliersPageContent() {
                   <button 
                     onClick={() => setPage(p => Math.min(pagination.last_page, p + 1))}
                     disabled={page === pagination.last_page}
-                    className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-4 py-2 border-2 border-gray-300 rounded-lg text-sm font-black text-gray-950 hover:bg-orange-50 hover:text-[#EB682C] hover:border-[#EB682C] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                   >
                     {isEnglish ? 'Next' : 'التالي'}
                   </button>
@@ -131,7 +131,7 @@ function SuppliersPageContent() {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl border border-gray-100 p-8 text-center">
-              <p className="text-gray-600 font-bold text-base mb-2">{isEnglish ? 'No companies currently.' : 'لا توجد شركات مطابقة حالياً.'}</p>
+              <p className="text-gray-950 font-black text-base mb-2">{isEnglish ? 'No companies currently.' : 'لا توجد شركات مطابقة حالياً.'}</p>
               {selectedCategory && (
                 <button
                   onClick={() => setSelectedCategory("")}

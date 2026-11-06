@@ -296,8 +296,8 @@ export default function EngineerProfilePage() {
                 )}
               </div>
               <div className="mt-4">
-                <h1 className="text-3xl font-bold text-gray-900 mb-1">{engineer?.name || "محمد عادل"}</h1>
-                <p className="text-sm text-gray-500 max-w-lg">
+                <h1 className="text-3xl font-extrabold text-gray-950 mb-1">{engineer?.name || "محمد عادل"}</h1>
+                <p className="text-sm text-gray-800 font-bold max-w-lg">
                   {engineer?.specialization || "مهندس تشطيبات و ديكورات في شقق و الفيلات والفنادق على أعلى مستوى"}
                 </p>
               </div>
@@ -394,7 +394,7 @@ export default function EngineerProfilePage() {
                     placeholder="اكتب نبذة تعريفية عنك وعن مجالك..."
                   />
                 ) : (
-                  <p className="text-sm text-gray-600 leading-relaxed max-w-4xl">
+                  <p className="text-sm text-gray-800 font-semibold leading-relaxed max-w-4xl">
                     {engineer?.bio ? engineer.bio : (isOwner ? "لم تقم بإضافة نبذة تعريفية بعد. اضغط على تعديل البيانات." : "خبرة في الاشراف على اعمال التشطيبات والديكور تشمل التخطيط، اختيار الخامات، ومتابعة التنفيذ وفق معايير الجودة والالتزام الفني، بما يضمن تحقيق نتائج تلبي تطلعات العملاء.")}
                   </p>
                 )}
@@ -429,9 +429,9 @@ export default function EngineerProfilePage() {
                       )}
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900 text-sm mb-1">{exp.company_name || exp.company}</h3>
-                      <p className="text-xs text-gray-500 mb-1">{exp.job_title || exp.role}</p>
-                      <p className="text-xs text-gray-400">{exp.start_date || exp.date}</p>
+                      <h3 className="font-extrabold text-gray-950 text-sm mb-1">{exp.company_name || exp.company}</h3>
+                      <p className="text-xs text-gray-800 font-bold mb-1">{exp.job_title || exp.role}</p>
+                      <p className="text-xs text-gray-600 font-semibold">{exp.start_date || exp.date}</p>
                     </div>
 
                     {isEditMode && (

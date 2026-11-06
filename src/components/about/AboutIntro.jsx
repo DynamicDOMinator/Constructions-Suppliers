@@ -13,45 +13,37 @@ export default function AboutIntro() {
           {/* Top Label */}
           <div className="flex items-center gap-2 mb-4">
             <div className="w-6 h-[2px] bg-[#EB682C]"></div>
-            <span className="text-gray-500 text-sm font-medium">{isEnglish ? "About Us" : "من نحن"}</span>
+            <span className="text-gray-900 text-sm font-bold">{isEnglish ? "About Us" : "من نحن"}</span>
           </div>
 
           {/* Title */}
-          <h2 className="text-3xl md:text-4xl font-bold font-tajawal mb-6 leading-snug">
+          <h2 className="text-3xl md:text-4xl font-extrabold font-tajawal mb-6 leading-snug">
             <span className="text-black">{isEnglish ? "Introductory " : "نبذة "}</span>
             <span className="text-[#EB682C]">{isEnglish ? "Overview" : "تعريفية"}</span>
           </h2>
 
           {/* Intro Paragraph */}
-          <p className="text-gray-600 text-base leading-relaxed mb-6">
+          <p className="text-gray-800 text-base leading-relaxed mb-6 font-medium">
             {isEnglish ? "We are a digital platform specialized in connecting suppliers, factories, engineers, and buyers in the construction and building sector. Our goal is to create an integrated work environment that allows:" : "نحن منصة رقمية متخصصة في ربط الموردين والمصانع والمهندسين والمشترين في قطاع البناء والتشييد. هدفنا هو خلق بيئة عمل متكاملة تتيح:"}
           </p>
 
           {/* Bullet Points */}
           <ul className="space-y-4 mb-8">
             <li className="flex items-center gap-3">
-              <div className="mt-1 flex-shrink-0 w-2 h-2 bg-[#2653A6] rounded-full ">
-           
-              </div>
-              <p className="text-gray-700">{isEnglish ? "For Suppliers: Display their products and reach a wide customer base." : "للموردين: عرض منتجاتهم والوصول إلى قاعدة واسعة من العملاء."}</p>
+              <div className="mt-1 flex-shrink-0 w-2.5 h-2.5 bg-[#2653A6] rounded-full shadow-xs"></div>
+              <p className="text-gray-950 font-bold">{isEnglish ? "For Suppliers: Display their products and reach a wide customer base." : "للموردين: عرض منتجاتهم والوصول إلى قاعدة واسعة من العملاء."}</p>
             </li>
             <li className="flex items-center gap-3">
-              <div className="mt-1 flex-shrink-0 w-2 h-2 bg-[#2653A6] rounded-full ">
-           
-              </div>
-              <p className="text-gray-700">{isEnglish ? "For Factories: Expand their presence and network of companies." : "للمصانع: توسيع حضورهم وتوسيع شبكة شركاتهم."}</p>
+              <div className="mt-1 flex-shrink-0 w-2.5 h-2.5 bg-[#2653A6] rounded-full shadow-xs"></div>
+              <p className="text-gray-950 font-bold">{isEnglish ? "For Factories: Expand their presence and network of companies." : "للمصانع: توسيع حضورهم وتوسيع شبكة شركاتهم."}</p>
             </li>
             <li className="flex items-center gap-3">
-              <div className="mt-1 flex-shrink-0 w-2 h-2 bg-[#2653A6] rounded-full ">
-           
-              </div>
-              <p className="text-gray-700">{isEnglish ? "For Engineers: Obtain practical solutions and reliable materials for their projects." : "للمهندسين: الحصول على حلول عملية ومواد موثوقة لمشاريعهم."}</p>
+              <div className="mt-1 flex-shrink-0 w-2.5 h-2.5 bg-[#2653A6] rounded-full shadow-xs"></div>
+              <p className="text-gray-950 font-bold">{isEnglish ? "For Engineers: Obtain practical solutions and reliable materials for their projects." : "للمهندسين: الحصول على حلول عملية ومواد موثوقة لمشاريعهم."}</p>
             </li>
             <li className="flex items-center gap-3">
-              <div className="mt-1 flex-shrink-0 w-2 h-2 bg-[#2653A6] rounded-full ">
-           
-              </div>
-              <p className="text-gray-700">{isEnglish ? "For Buyers: Find the best offers and options easily and transparently." : "للمشترين: إيجاد أفضل العروض والخيارات بسهولة وشفافية."}</p>
+              <div className="mt-1 flex-shrink-0 w-2.5 h-2.5 bg-[#2653A6] rounded-full shadow-xs"></div>
+              <p className="text-gray-950 font-bold">{isEnglish ? "For Buyers: Find the best offers and options easily and transparently." : "للمشترين: إيجاد أفضل العروض والخيارات بسهولة وشفافية."}</p>
             </li>
           </ul>
 

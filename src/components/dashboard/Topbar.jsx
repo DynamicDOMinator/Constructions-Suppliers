@@ -210,7 +210,7 @@ export default function Topbar({ onMenuClick }) {
 
                       {/* Text */}
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm leading-snug ${!n.read_at ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}>
+                        <p className={`text-sm leading-snug ${!n.read_at ? 'font-bold text-gray-950' : 'font-semibold text-gray-800'}`}>
                           {n.message}
                         </p>
                         {n.status && (

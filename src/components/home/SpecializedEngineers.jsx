@@ -53,20 +53,20 @@ export default function SpecializedEngineers() {
             <SwiperSlide key={person.uuid || i} className="!h-auto">
               <div className="flex flex-col items-center group cursor-pointer h-full justify-between">
                 <Link href={`/engineer/${person.uuid}`} className="flex flex-col items-center flex-grow">
-                  <div className="w-[224px] h-[224px] mb-4 relative bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                  <div className="w-[200px] h-[200px] mb-4 relative bg-gray-100 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-orange-200/50 group-hover:ring-[#EB682C] group-hover:scale-105 transition-all duration-300 shadow-md">
                     {person.avatar ? (
                       <img src={person.avatar} alt={person.name} className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-5xl text-gray-500 font-bold uppercase">{person.name?.[0] || 'U'}</span>
+                      <span className="text-5xl text-gray-700 font-extrabold uppercase">{person.name?.[0] || 'U'}</span>
                     )}
                   </div>
-                  <h3 className="font-bold text-black text-lg mb-1">{person.name}</h3>
-                  <p className="text-xs text-gray-500 mb-3">{person.specialization || (isEnglish ? "Specialized Engineer" : "مهندس متخصص")}</p>
-                  <p className="text-xs text-gray-500 mb-3 text-center max-w-[160px]">{person.bio || (isEnglish ? "Expert in supervision of finishing and decoration works" : "خبرة في الاشراف علي اعمال التشطيبات والديكور")}</p>
+                  <h3 className="font-extrabold text-gray-950 text-lg mb-1 group-hover:text-[#EB682C] transition-colors">{person.name}</h3>
+                  <p className="text-xs font-extrabold text-[#EB682C] bg-orange-50 px-3.5 py-1 rounded-full mb-2">{person.specialization || (isEnglish ? "Specialized Engineer" : "مهندس متخصص")}</p>
+                  <p className="text-xs text-gray-800 font-bold mb-3 text-center max-w-[190px] line-clamp-2 leading-relaxed">{person.bio || (isEnglish ? "Expert in supervision of finishing and decoration works" : "خبرة في الاشراف علي اعمال التشطيبات والديكور")}</p>
                 </Link>
-                <div className="mt-auto w-[224px]">
+                <div className="mt-auto w-[200px]">
                   <Link href={`/chat?user=${person.uuid}`} className="w-full block">
-                    <button className="bg-[#EB682C] text-center text-white text-xs px-6 py-2 rounded-full w-full font-bold shadow-sm">
+                    <button className="bg-[#EB682C] text-center text-white text-xs px-6 py-2.5 rounded-full w-full font-bold shadow-md shadow-orange-500/20 hover:bg-[#d65a22] hover:scale-105 active:scale-95 transition-all">
                       {isEnglish ? "Start Chat" : "ابدء المحادثة"}
                     </button>
                   </Link>

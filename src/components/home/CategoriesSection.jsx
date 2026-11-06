@@ -22,20 +22,20 @@ export default function CategoriesSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Manufacturing */}
           <Link href="/suppliers?type=factory" className="block group" data-aos="fade-up" data-aos-delay="100">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
-              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200/80 flex flex-col items-start relative hover:-translate-y-2.5 hover:shadow-xl hover:border-orange-200 transition-all duration-300 h-full">
+              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                 <Factory className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-gray-900 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Manufacturing Companies" : "شركات التصنيع"}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+              <h3 className="font-extrabold text-gray-950 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Manufacturing Companies" : "شركات التصنيع"}</h3>
+              <p className="text-sm text-gray-800 font-semibold leading-relaxed mb-6">
                 {isEnglish ? "Transform your factory from \"waiting for orders\" to active supply. Get full visibility into market projects before they start." : "حوّل مصنعك من \"انتظار الطلب\" إلى التوريد النشط. احصل على رؤية كاملة لمشاريع السوق قبل بدئها."}
               </p>
-              <ul className="text-sm text-gray-500 space-y-3 font-medium mt-auto">
+              <ul className="text-sm text-gray-900 space-y-3 font-bold mt-auto">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Direct sales without middlemen" : "بيع مباشر بدون وسطاء"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Direct sales without middlemen" : "بيع مباشر بدون وسطاء"}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Future demand forecasts" : "توقعات الطلب المستقبلي"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Future demand forecasts" : "توقعات الطلب المستقبلي"}
                 </li>
               </ul>
             </div>
@@ -43,20 +43,20 @@ export default function CategoriesSection() {
 
           {/* Contracting (Orange/Featured) */}
           <Link href="/suppliers?type=contractor" className="block group md:scale-105 z-10" data-aos="fade-up" data-aos-delay="200">
-            <div className="bg-[#EB682C] p-8 rounded-2xl shadow-xl border border-[#EB682C] flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 text-white h-full group-hover:bg-[#d65a22]">
-              <div className="mb-4 w-12 h-12 bg-white rounded-xl flex items-center justify-center text-[#EB682C] shadow-sm">
+            <div className="bg-[#EB682C] p-8 rounded-2xl shadow-xl border border-[#EB682C] flex flex-col items-start relative hover:-translate-y-2.5 hover:shadow-2xl transition-all duration-300 text-white h-full group-hover:bg-[#d65a22]">
+              <div className="mb-4 w-12 h-12 bg-white rounded-xl flex items-center justify-center text-[#EB682C] group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-md">
                 <Building2 className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-white text-xl mb-4 font-tajawal">{isEnglish ? "Contracting Companies" : "شركات المقاولات"}</h3>
-              <p className="text-sm text-orange-50 leading-relaxed mb-6">
+              <h3 className="font-extrabold text-white text-xl mb-4 font-tajawal">{isEnglish ? "Contracting Companies" : "شركات المقاولات"}</h3>
+              <p className="text-sm text-white/95 font-semibold leading-relaxed mb-6">
                 {isEnglish ? "A complete control room for your procurement — compare offers technically and financially, and verify supplier quality with a single click." : "غرفة تحكم كاملة لمشترياتك، قارن العروض فنياً ومالياً وتحقق من جودة الموردين بضغطة زر."}
               </p>
-              <ul className="text-sm text-orange-100 space-y-3 font-medium mt-auto">
+              <ul className="text-sm text-white space-y-3 font-bold mt-auto">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-white rounded-full opacity-80"></span> {isEnglish ? "Vetted Suppliers" : "موردين موثوقين (Vetted)"}
+                  <span className="w-2 h-2 bg-white rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Vetted Suppliers" : "موردين موثوقين (Vetted)"}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-white rounded-full opacity-80"></span> {isEnglish ? "Smart offer comparison" : "مقارنة عروض ذكية"}
+                  <span className="w-2 h-2 bg-white rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Smart offer comparison" : "مقارنة عروض ذكية"}
                 </li>
               </ul>
             </div>
@@ -64,20 +64,20 @@ export default function CategoriesSection() {
 
           {/* Suppliers */}
           <Link href="/suppliers?type=supplier" className="block group" data-aos="fade-up" data-aos-delay="300">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
-              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200/80 flex flex-col items-start relative hover:-translate-y-2.5 hover:shadow-xl hover:border-orange-200 transition-all duration-300 h-full">
+              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                 <Package className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-gray-900 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Supplier Companies" : "شركات الموردين"}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+              <h3 className="font-extrabold text-gray-950 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Supplier Companies" : "شركات الموردين"}</h3>
+              <p className="text-sm text-gray-800 font-semibold leading-relaxed mb-6">
                 {isEnglish ? "Don't waste time searching for customers — get ready (Hot Leads) that match your inventory." : "لا تضيع وقتك في البحث عن عملاء احصل على طلبات جاهزة (Hot Leads) تناسب مخزونك."}
               </p>
-              <ul className="text-sm text-gray-500 space-y-3 font-medium mt-auto">
+              <ul className="text-sm text-gray-900 space-y-3 font-bold mt-auto">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Daily sales opportunities" : "فرص بيع يومية"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Daily sales opportunities" : "فرص بيع يومية"}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Growth without operational cost" : "نمو بدون تكلفة تشغيل"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Growth without operational cost" : "نمو بدون تكلفة تشغيل"}
                 </li>
               </ul>
             </div>
@@ -87,20 +87,20 @@ export default function CategoriesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Equipment Rental */}
           <Link href="/suppliers?type=rental" className="block group" data-aos="fade-up" data-aos-delay="150">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
-              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200/80 flex flex-col items-start relative hover:-translate-y-2.5 hover:shadow-xl hover:border-orange-200 transition-all duration-300 h-full">
+              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                 <Truck className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-gray-900 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Equipment Rental Companies" : "شركات تاجير المعدات"}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+              <h3 className="font-extrabold text-gray-950 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Equipment Rental Companies" : "شركات تاجير المعدات"}</h3>
+              <p className="text-sm text-gray-800 font-semibold leading-relaxed mb-6">
                 {isEnglish ? "Ensure the quality of materials used in your projects and reduce costly Change Orders." : "اضمن جودة المواد المستخدمة في مشاريعك، وقلل أوامر التغيير المكلفة (Change Orders)."}
               </p>
-              <ul className="text-sm text-gray-500 space-y-3 font-medium mt-auto">
+              <ul className="text-sm text-gray-900 space-y-3 font-bold mt-auto">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Price transparency" : "شفافية الأسعار"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Price transparency" : "شفافية الأسعار"}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Specification compliance" : "مطابقة المواصفات"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Specification compliance" : "مطابقة المواصفات"}
                 </li>
               </ul>
             </div>
@@ -108,20 +108,20 @@ export default function CategoriesSection() {
 
           {/* Engineering Consultancy */}
           <Link href="/suppliers?type=consultant" className="block group" data-aos="fade-up" data-aos-delay="250">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start relative hover:-translate-y-2 transition-all duration-300 h-full">
-              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white transition-colors">
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200/80 flex flex-col items-start relative hover:-translate-y-2.5 hover:shadow-xl hover:border-orange-200 transition-all duration-300 h-full">
+              <div className="mb-4 w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-[#EB682C] group-hover:bg-[#EB682C] group-hover:text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                 <PenTool className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-gray-900 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Engineering Consultancy Office" : "مكتب الاستشارات الهندسية"}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+              <h3 className="font-extrabold text-gray-950 text-xl mb-4 font-tajawal group-hover:text-[#EB682C] transition-colors">{isEnglish ? "Engineering Consultancy Office" : "مكتب الاستشارات الهندسية"}</h3>
+              <p className="text-sm text-gray-800 font-semibold leading-relaxed mb-6">
                 {isEnglish ? "Ensure the quality of materials used in your projects and reduce costly Change Orders." : "اضمن جودة المواد المستخدمة في مشاريعك، وقلل أوامر التغيير المكلفة (Change Orders)."}
               </p>
-              <ul className="text-sm text-gray-500 space-y-3 font-medium mt-auto">
+              <ul className="text-sm text-gray-900 space-y-3 font-bold mt-auto">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Price transparency" : "شفافية الأسعار"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Price transparency" : "شفافية الأسعار"}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#EB682C] rounded-full"></span> {isEnglish ? "Specification compliance" : "مطابقة المواصفات"}
+                  <span className="w-2 h-2 bg-[#EB682C] rounded-full shrink-0 shadow-xs"></span> {isEnglish ? "Specification compliance" : "مطابقة المواصفات"}
                 </li>
               </ul>
             </div>

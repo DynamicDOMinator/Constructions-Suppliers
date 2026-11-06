@@ -61,7 +61,7 @@ export default function ConsultantBanner() {
       <div
         data-aos="zoom-in"
         data-aos-delay="100"
-        className="max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-xl relative bg-black"
+        className="max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-lg relative bg-white border border-gray-100"
       >
         <Swiper
           modules={[Autoplay, Pagination]}

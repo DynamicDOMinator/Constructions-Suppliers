@@ -179,14 +179,18 @@ export default function Navbar() {
       </div>
 
       {/* Nav Links (Center) */}
-      <div className="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium">
+      <div className="hidden lg:flex items-center gap-5 xl:gap-7 font-bold text-sm md:text-[15px]">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
           return (
             <Link 
               key={link.name} 
               href={link.href} 
-              className={`transition-colors ${isActive ? "text-[#010101] font-bold" : "text-[#666666] hover:text-[#010101]"}`}
+              className={`transition-all duration-200 font-extrabold ${
+                isActive 
+                  ? "text-[#EB682C] font-black" 
+                  : "text-[#111827] hover:text-[#EB682C]"
+              }`}
             >
               {link.name}
             </Link>
@@ -225,7 +229,11 @@ export default function Navbar() {
               <Link 
                 key={link.name} 
                 href={link.href} 
-                className={`py-3 px-4 border-b border-gray-50 text-right transition-colors ${isActive ? "text-[#010101] font-bold bg-gray-50" : "text-[#666666]"}`}
+                className={`py-3 px-4 border-b border-gray-50 text-right transition-all font-extrabold ${
+                  isActive 
+                    ? "text-[#EB682C] font-black bg-orange-50/70" 
+                    : "text-[#111827] hover:text-[#EB682C]"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}

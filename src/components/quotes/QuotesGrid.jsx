@@ -130,45 +130,45 @@ export default function QuotesGrid() {
           {/* Stats Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8" data-aos="fade-up" data-aos-delay="50">
             {/* Total Requests */}
-            <div className="bg-white border border-gray-200/90 rounded-2xl p-4 flex items-center gap-4 shadow-xs">
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#EB682C] shrink-0">
                 <FileText className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs text-gray-500 font-medium block">
+                <span className="text-xs text-gray-700 font-bold block">
                   {isEnglish ? "Total Requests" : "إجمالي الطلبات"}
                 </span>
-                <span className="text-xl md:text-2xl font-extrabold text-gray-900">
+                <span className="text-xl md:text-2xl font-black text-gray-950">
                   {stats.total}
                 </span>
               </div>
             </div>
 
             {/* Pending Requests */}
-            <div className="bg-white border border-gray-200/90 rounded-2xl p-4 flex items-center gap-4 shadow-xs">
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs text-gray-500 font-medium block">
+                <span className="text-xs text-gray-700 font-bold block">
                   {isEnglish ? "Awaiting Reply" : "قيد الانتظار"}
                 </span>
-                <span className="text-xl md:text-2xl font-extrabold text-amber-600">
+                <span className="text-xl md:text-2xl font-black text-amber-600">
                   {stats.pending}
                 </span>
               </div>
             </div>
 
             {/* Replied Requests */}
-            <div className="bg-white border border-gray-200/90 rounded-2xl p-4 flex items-center gap-4 shadow-xs">
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs text-gray-500 font-medium block">
+                <span className="text-xs text-gray-700 font-bold block">
                   {isEnglish ? "Offers Received" : "تم الرد والتسعير"}
                 </span>
-                <span className="text-xl md:text-2xl font-extrabold text-emerald-600">
+                <span className="text-xl md:text-2xl font-black text-emerald-600">
                   {stats.replied}
                 </span>
               </div>

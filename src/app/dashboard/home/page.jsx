@@ -92,10 +92,10 @@ export default function DashboardHome() {
         className={`flex ${isEnglish ? "flex-row" : "flex-row"} justify-between items-start mb-8`}
       >
         <div className={isEnglish ? "text-left" : "text-right"}>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-extrabold text-gray-950 mb-2">
             {isEnglish ? "Home" : "الصفحة الرئيسية"}
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-800 font-bold">
             {isEnglish
               ? "View all financial analytics and compare with last month"
               : "اطلع على جميع تحليلات الشؤون المالية وقارنها بالشهر الماضي"}
@@ -113,7 +113,7 @@ export default function DashboardHome() {
               {subscription.message ||
                 (isEnglish ? "No subscriptions" : "لا توجد اشتراكات")}
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-800 font-semibold">
               {subscription.description ||
                 (isEnglish
                   ? "Upgrade your account to access a higher level with features"

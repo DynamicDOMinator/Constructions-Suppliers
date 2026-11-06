@@ -27,55 +27,55 @@ export default function HowItWorks() {
         <div
           data-aos="fade-up"
           data-aos-delay="300"
-          className="absolute bottom-[140px] left-0 w-[33%] flex flex-col items-center text-center z-10 px-4"
+          className="absolute bottom-[140px] left-0 w-[33%] flex flex-col items-center text-center z-10 px-4 group"
         >
-          <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-medium shadow-sm">
+          <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-bold shadow-md hover:scale-105 transition-transform">
             {isEnglish ? "Step Three" : "الخطوة الثالثة"}
           </div>
-          <h3 className="font-bold text-[#010101] text-lg mb-3">
+          <h3 className="font-extrabold text-[#010101] text-lg mb-3">
             {isEnglish ? "Receive Offers & Choose the Best" : "تلقي العروض واختيار الأفضل"}
           </h3>
-          <p className="text-sm text-gray-500 leading-relaxed max-w-[280px]">
+          <p className="text-sm text-gray-800 font-bold leading-relaxed max-w-[280px]">
             {isEnglish ? "Receive price quotes, compare them, and choose the offer that best suits your company's needs." : "تلقي عروض الأسعار، ومقارنتها، واختيار العرض الذي يناسب احتياجات شركتك على أفضل وجه."}
           </p>
         </div>
-        <div className="absolute top-[235px] left-[16.66%] -translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20"></div>
+        <div className="absolute top-[235px] left-[16.66%] -translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20 animate-ripple"></div>
 
         {/* Step 2 (Center) */}
         <div
           data-aos="fade-up"
           data-aos-delay="200"
-          className="absolute top-[164px] left-[50%] -translate-x-1/2 w-[33%] flex flex-col items-center text-center z-10 px-4"
+          className="absolute top-[164px] left-[50%] -translate-x-1/2 w-[33%] flex flex-col items-center text-center z-10 px-4 group"
         >
-          <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-medium shadow-sm">
+          <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-bold shadow-md hover:scale-105 transition-transform">
             {isEnglish ? "Step Two" : "الخطوة الثانية"}
           </div>
-          <h3 className="font-bold text-[#010101] text-lg mb-3">
+          <h3 className="font-extrabold text-[#010101] text-lg mb-3">
             {isEnglish ? "Compare & Send RFQs" : "قارن وأرسل طلبات عروض الأسعار"}
           </h3>
-          <p className="text-sm text-gray-500 leading-relaxed max-w-[280px]">
+          <p className="text-sm text-gray-800 font-bold leading-relaxed max-w-[280px]">
             {isEnglish ? "Compare suppliers and send a Request for Quote (RFQ) to multiple suppliers at once." : "قارن بين الموردين وأرسل طلب عرض أسعار (RFQ) إلى عدة موردين في وقت واحد."}
           </p>
         </div>
-        <div className="absolute top-[135px] left-[50%] -translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20"></div>
+        <div className="absolute top-[135px] left-[50%] -translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20 animate-ripple"></div>
 
         {/* Step 1 (Right) */}
         <div
           data-aos="fade-up"
           data-aos-delay="100"
-          className="absolute bottom-[140px] right-0 w-[33%] flex flex-col items-center text-center z-10 px-4"
+          className="absolute bottom-[140px] right-0 w-[33%] flex flex-col items-center text-center z-10 px-4 group"
         >
-          <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-medium shadow-sm">
+          <div className="bg-[#EB682C] text-white text-sm px-6 py-1.5 rounded-full mb-6 font-bold shadow-md hover:scale-105 transition-transform">
             {isEnglish ? "Step One" : "الخطوة الأولى"}
           </div>
-          <h3 className="font-bold text-[#010101] text-lg mb-3">
+          <h3 className="font-extrabold text-[#010101] text-lg mb-3">
             {isEnglish ? "Find Suppliers" : "البحث عن الموردين"}
           </h3>
-          <p className="text-sm text-gray-500 leading-relaxed max-w-[280px]">
+          <p className="text-sm text-gray-800 font-bold leading-relaxed max-w-[280px]">
             {isEnglish ? "Use advanced search tools to find suitable suppliers based on sector, location, and certifications." : "استخدم أدوات البحث المتقدمة للعثور على موردين مناسبين بناءً على القطاع والموقع والشهادات."}
           </p>
         </div>
-        <div className="absolute top-[235px] right-[16.66%] translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20"></div>
+        <div className="absolute top-[235px] right-[16.66%] translate-x-1/2 w-6 h-6 bg-[#EB682C] rounded-full shadow-[0_0_0_6px_#fff] z-20 animate-ripple"></div>
       </div>
 
       {/* Mobile View */}
@@ -98,10 +98,10 @@ export default function HowItWorks() {
           },
         ].map((item, i) => (
           <div key={i} className="flex flex-col items-center">
-            <div className="w-6 h-6 bg-[#EB682C] rounded-full mb-6 shadow-[0_0_0_4px_#fff] ring-1 ring-gray-100"></div>
-            <div className="bg-[#EB682C] text-white text-xs px-6 py-1.5 rounded-full mb-4 font-medium">{item.step}</div>
-            <h3 className="font-bold text-[#010101] text-lg mb-2">{item.title}</h3>
-            <p className="text-sm text-gray-500 leading-relaxed px-4">{item.desc}</p>
+            <div className="w-6 h-6 bg-[#EB682C] rounded-full mb-6 shadow-[0_0_0_4px_#fff] ring-1 ring-gray-100 animate-ripple"></div>
+            <div className="bg-[#EB682C] text-white text-xs px-6 py-1.5 rounded-full mb-4 font-bold shadow-sm">{item.step}</div>
+            <h3 className="font-extrabold text-[#010101] text-lg mb-2">{item.title}</h3>
+            <p className="text-sm text-gray-800 font-bold leading-relaxed px-4">{item.desc}</p>
           </div>
         ))}
       </div>
@@ -110,31 +110,31 @@ export default function HowItWorks() {
       <div 
         data-aos="zoom-in-up"
         data-aos-delay="200"
-        className="max-w-5xl mx-auto rounded-2xl py-10 px-8 flex flex-col md:flex-row justify-around items-center text-white gap-10 shadow-xl overflow-hidden relative"
+        className="max-w-5xl mx-auto rounded-2xl py-10 px-8 flex flex-col md:flex-row justify-around items-center text-white gap-10 shadow-2xl overflow-hidden relative"
         style={{ backgroundImage: "url('/bg-sec.png')", backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        <div className="text-center relative z-10 flex flex-col items-center">
-          <Image src="/users.png" alt="Registered Suppliers" width={40} height={40} className="mb-3 object-contain" />
-          <div className="text-3xl md:text-4xl font-bold mb-1 font-tajawal">
+        <div className="text-center relative z-10 flex flex-col items-center group cursor-default p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
+          <Image src="/users.png" alt="Registered Suppliers" width={40} height={40} className="mb-3 object-contain group-hover:scale-110 transition-transform duration-300" />
+          <div className="text-3xl md:text-4xl font-extrabold mb-1 font-tajawal">
             +<CountUp end={1.5} decimals={1} duration={2.5} enableScrollSpy /> {isEnglish ? "K" : "ألف"}
           </div>
-          <div className="text-blue-100 text-sm">{isEnglish ? "Registered Suppliers" : "الموردون المسجلون"}</div>
+          <div className="text-white text-sm font-bold">{isEnglish ? "Registered Suppliers" : "الموردون المسجلون"}</div>
         </div>
         <div className="hidden md:block w-px h-20 bg-blue-400/30 relative z-10"></div>
-        <div className="text-center relative z-10 flex flex-col items-center">
-          <Image src="/money.png" alt="Total Transactions" width={40} height={40} className="mb-3 object-contain" />
-          <div className="text-3xl md:text-4xl font-bold mb-1 font-tajawal">
+        <div className="text-center relative z-10 flex flex-col items-center group cursor-default p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
+          <Image src="/money.png" alt="Total Transactions" width={40} height={40} className="mb-3 object-contain group-hover:scale-110 transition-transform duration-300" />
+          <div className="text-3xl md:text-4xl font-extrabold mb-1 font-tajawal">
             <CountUp end={10} duration={2.5} enableScrollSpy /> {isEnglish ? "M" : "ملايين"}
           </div>
-          <div className="text-blue-100 text-sm">{isEnglish ? "Total Transactions" : "إجمالي المعاملات"}</div>
+          <div className="text-white text-sm font-bold">{isEnglish ? "Total Transactions" : "إجمالي المعاملات"}</div>
         </div>
         <div className="hidden md:block w-px h-20 bg-blue-400/30 relative z-10"></div>
-        <div className="text-center relative z-10 flex flex-col items-center">
-          <Image src="/Heart.png" alt="Customer Satisfaction" width={40} height={40} className="mb-3 object-contain" />
-          <div className="text-3xl md:text-4xl font-bold mb-1 font-tajawal">
+        <div className="text-center relative z-10 flex flex-col items-center group cursor-default p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
+          <Image src="/Heart.png" alt="Customer Satisfaction" width={40} height={40} className="mb-3 object-contain group-hover:scale-110 transition-transform duration-300" />
+          <div className="text-3xl md:text-4xl font-extrabold mb-1 font-tajawal">
             <CountUp end={95} duration={2.5} enableScrollSpy />%
           </div>
-          <div className="text-blue-100 text-sm">{isEnglish ? "Customer Satisfaction" : "رضا العملاء"}</div>
+          <div className="text-white text-sm font-bold">{isEnglish ? "Customer Satisfaction" : "رضا العملاء"}</div>
         </div>
       </div>
     </section>

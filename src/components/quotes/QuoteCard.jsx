@@ -83,13 +83,13 @@ export default function QuoteCard({ req, type = "pricing" }) {
 
   return (
     <div
-      className="bg-white border border-gray-200/90 rounded-2xl p-5 shadow-xs hover:shadow-lg hover:border-gray-300 transition-all duration-300 font-tajawal flex flex-col h-full group"
+      className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:-translate-y-2 hover:border-orange-200 transition-all duration-300 font-tajawal flex flex-col h-full group"
       dir={isEnglish ? "ltr" : "rtl"}
     >
       {/* Top Header: Logo, Name & Status */}
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center font-bold text-[#EB682C] text-lg shrink-0 overflow-hidden shadow-xs">
+          <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center font-bold text-[#EB682C] text-lg shrink-0 overflow-hidden shadow-xs group-hover:scale-105 transition-transform">
             {avatar ? (
               <img src={avatar} alt={supplierName} className="w-full h-full object-cover" />
             ) : (
@@ -97,10 +97,10 @@ export default function QuoteCard({ req, type = "pricing" }) {
             )}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-sm md:text-base font-bold text-gray-900 truncate group-hover:text-[#EB682C] transition-colors">
+            <h3 className="text-sm md:text-base font-extrabold text-gray-950 truncate group-hover:text-[#EB682C] transition-colors">
               {supplierName}
             </h3>
-            <p className="text-xs text-gray-400 truncate mt-0.5">{supplierBio}</p>
+            <p className="text-xs text-gray-700 font-semibold truncate mt-0.5">{supplierBio}</p>
           </div>
         </div>
 
@@ -114,13 +114,13 @@ export default function QuoteCard({ req, type = "pricing" }) {
       </div>
 
       {/* Location */}
-      <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-3 font-medium">
+      <div className="flex items-center gap-1.5 text-xs text-gray-800 mb-3 font-bold">
         <MapPin className="w-3.5 h-3.5 text-[#EB682C] shrink-0" />
         <span className="truncate">{locationFallback}</span>
       </div>
 
       {/* Description / Notes Box */}
-      <div className="bg-gray-50/80 rounded-xl p-3 border border-gray-100 text-xs text-gray-600 leading-relaxed mb-4 flex-1">
+      <div className="bg-gray-50/80 rounded-xl p-3 border border-gray-100 text-xs text-gray-800 font-semibold leading-relaxed mb-4 flex-1">
         <p className="line-clamp-2">
           {replyNotes ? `${isEnglish ? "Supplier: " : "رد المورد: "}${replyNotes}` : description}
         </p>
@@ -130,11 +130,11 @@ export default function QuoteCard({ req, type = "pricing" }) {
       {isAnswered && totalPrice > 0 ? (
         <div className="bg-orange-50/50 rounded-xl p-3 border border-orange-100/80 mb-4 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[11px] text-gray-500 font-medium">
+            <span className="text-[11px] text-gray-700 font-bold">
               {isEnglish ? "Quoted Price" : "السعر المقدم"}
             </span>
             <div className="flex items-baseline gap-1" dir="ltr">
-              <span className="text-base font-extrabold text-gray-900">
+              <span className="text-base font-black text-gray-950">
                 {totalPrice.toLocaleString()}
               </span>
               <span className="text-xs font-bold text-[#EB682C]">
@@ -145,20 +145,20 @@ export default function QuoteCard({ req, type = "pricing" }) {
 
           {duration && duration !== "—" && (
             <div className="text-right">
-              <span className="text-[11px] text-gray-500 font-medium block">
+              <span className="text-[11px] text-gray-700 font-bold block">
                 {isEnglish ? "Duration" : "مدة التوريد"}
               </span>
-              <span className="text-xs font-bold text-gray-800">{duration}</span>
+              <span className="text-xs font-extrabold text-gray-950">{duration}</span>
             </div>
           )}
         </div>
       ) : (
-        <div className="flex items-center justify-between text-xs text-gray-500 py-2 border-t border-gray-100 mb-4">
+        <div className="flex items-center justify-between text-xs text-gray-700 font-bold py-2 border-t border-gray-100 mb-4">
           <span className="flex items-center gap-1">
-            <Calendar className="w-3.5 h-3.5 text-gray-400" />
+            <Calendar className="w-3.5 h-3.5 text-gray-500" />
             <span>{isEnglish ? "Requested on" : "تاريخ الطلب:"}</span>
           </span>
-          <span className="font-bold text-gray-800">
+          <span className="font-extrabold text-gray-950">
             {req?.created_at
               ? new Date(req.created_at).toLocaleDateString(isEnglish ? "en-US" : "ar-EG")
               : "—"}
@@ -168,7 +168,7 @@ export default function QuoteCard({ req, type = "pricing" }) {
 
       {/* Action Button */}
       <Link href={linkHref} className="mt-auto block w-full">
-        <button className="w-full bg-[#EB682C] text-white py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-colors flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md cursor-pointer">
+        <button className="w-full bg-[#EB682C] text-white py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-all group-hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md cursor-pointer shadow-orange-500/20">
           <span>{isEnglish ? "View Details" : "عرض التفاصيل"}</span>
           <ArrowUpRight
             className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${

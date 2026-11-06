@@ -39,7 +39,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   const filteredNavItems = navItems.filter(item => {
     if (item.always) return true;
     if (item.perm) {
-      // If user has a permissions object, check the specific permission
       if (user?.permissions) {
         if (Array.isArray(user.permissions)) {
           return user.permissions.includes(item.perm);
@@ -48,7 +47,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           return user.permissions[item.perm] === true || user.permissions[item.perm] === 1;
         }
       }
-      // If no permissions object, assume it's the account owner and grant access
       return true;
     }
     return true;
@@ -74,7 +72,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-4 space-y-1 scrollbar-hide">
+      <nav className="flex-1 overflow-y-auto px-4 space-y-1.5 scrollbar-hide">
         {filteredNavItems.map((item) => {
           const isActive = item.href === "/dashboard" 
             ? pathname === "/dashboard" 
@@ -85,14 +83,14 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               key={item.name} 
               href={item.href}
               onClick={() => setIsOpen && setIsOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all group ${
                 isActive 
-                  ? `text-[#EB682C] font-bold ${isEnglish ? 'border-l-4' : 'border-r-4'} border-[#EB682C] bg-orange-50/50` 
-                  : "text-gray-500 font-medium hover:text-[#EB682C] hover:bg-gray-50"
+                  ? `text-[#EB682C] font-black ${isEnglish ? 'border-l-4' : 'border-r-4'} border-[#EB682C] bg-orange-50/80 shadow-xs` 
+                  : "text-[#111827] font-extrabold hover:text-[#EB682C] hover:bg-orange-50/50"
               }`}
             >
-              <item.icon className={`w-5 h-5 ${isActive ? "text-[#EB682C]" : "text-gray-400"}`} />
-              <span>{item.name}</span>
+              <item.icon className={`w-5 h-5 transition-colors ${isActive ? "text-[#EB682C]" : "text-gray-700 group-hover:text-[#EB682C]"}`} />
+              <span className="tracking-wide">{item.name}</span>
             </Link>
           );
         })}

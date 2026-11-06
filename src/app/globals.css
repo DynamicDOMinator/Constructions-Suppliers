@@ -36,7 +36,7 @@ body {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: #0B0C0F !important;
+  background: #FFFFFF !important;
 }
 .ads-swiper .swiper-slide img {
   width: 100% !important;
@@ -85,4 +85,87 @@ body {
   width: max-content !important;
   animation: runningLogos 25s linear infinite !important;
   will-change: transform !important;
+}
+.partners-marquee-track:hover {
+  animation-play-state: paused !important;
+}
+
+/* Modern Platform Animations & Effects */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(0.8deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(235, 104, 44, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 24px 6px rgba(235, 104, 44, 0.25);
+  }
+}
+
+@keyframes softRipple {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(235, 104, 44, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(235, 104, 44, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(235, 104, 44, 0);
+  }
+}
+
+.animate-float {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: floatSlow 5s ease-in-out 1.5s infinite;
+}
+
+.animate-float-slow {
+  animation: floatGentle 6s ease-in-out 0.8s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-ripple {
+  animation: softRipple 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Card & Button Interactive Hover Micro-interactions */
+.interactive-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.interactive-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+.interactive-btn {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.interactive-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(235, 104, 44, 0.3);
 }

@@ -27,7 +27,7 @@ export default function ProfileSections({ supplier }) {
         {/* Section 1: Company Information */}
         <section className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
           <h2 className={`text-xl font-bold text-[#2A5CBA] mb-4 font-tajawal ${isEnglish ? 'text-left' : 'text-right'}`}>{isEnglish ? "Company Information" : "معلومات عن الشركة"}</h2>
-          <p className="text-gray-600 text-sm leading-loose">
+          <p className="text-gray-800 text-sm font-semibold leading-loose">
             {bio}
           </p>
         </section>
@@ -119,9 +119,9 @@ export default function ProfileSections({ supplier }) {
                     )}
                   </div>
                   <div className={`flex-1 ${isEnglish ? 'text-left' : 'text-right'}`}>
-                    <h3 className="font-bold text-gray-900 text-lg mb-1 font-tajawal">{product.name}</h3>
-                    {product.model && <p className="text-gray-500 text-sm mb-2">{isEnglish ? "Model:" : "موديل:"} {product.model}</p>}
-                    <p className="text-gray-500 text-xs mb-4 line-clamp-2">{product.description || (isEnglish ? "No description" : "لا يوجد وصف")}</p>
+                    <h3 className="font-extrabold text-gray-950 text-lg mb-1 font-tajawal">{product.name}</h3>
+                    {product.model && <p className="text-gray-800 font-bold text-sm mb-2">{isEnglish ? "Model:" : "موديل:"} {product.model}</p>}
+                    <p className="text-gray-800 text-xs font-semibold mb-4 line-clamp-2">{product.description || (isEnglish ? "No description" : "لا يوجد وصف")}</p>
                     <div className={`flex flex-wrap items-center justify-between gap-4 mt-auto ${isEnglish ? 'flex-row' : 'flex-row'}`}>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-900">{product.price ? `${product.price} ${isEnglish ? "SAR" : "ريال"}` : (isEnglish ? "Price not specified" : "السعر غير محدد")}</span>
@@ -148,8 +148,8 @@ export default function ProfileSections({ supplier }) {
               {services.map((service, idx) => (
                 <div key={idx} className={`flex ${isEnglish ? 'flex-row' : 'flex-row-reverse'} items-start gap-4 p-4 border border-gray-50 rounded-xl`}>
                   <div className={`flex-1 ${isEnglish ? 'text-left' : 'text-right'}`}>
-                    <h3 className="font-bold text-gray-900 text-base mb-2 font-tajawal">{service.name}</h3>
-                    <p className="text-gray-500 text-xs mb-4 leading-relaxed line-clamp-2">{service.description || (isEnglish ? "No description for service" : "لا يوجد وصف للخدمة")}</p>
+                    <h3 className="font-extrabold text-gray-950 text-base mb-2 font-tajawal">{service.name}</h3>
+                    <p className="text-gray-800 text-xs font-semibold mb-4 leading-relaxed line-clamp-2">{service.description || (isEnglish ? "No description for service" : "لا يوجد وصف للخدمة")}</p>
                     <button className="w-full bg-[#EB682C] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-[#d65a22] transition-colors">
                       {isEnglish ? "Request Pricing" : "طلب عرض تسعير"}
                     </button>
@@ -182,9 +182,9 @@ export default function ProfileSections({ supplier }) {
                     )}
                   </div>
                   <div className={`flex-1 ${isEnglish ? 'text-left' : 'text-right'}`}>
-                    <h3 className="font-bold text-gray-900 text-lg mb-1 font-tajawal">{equipment.name}</h3>
-                    {equipment.model && <p className="text-gray-500 text-sm mb-2">{isEnglish ? "Model:" : "موديل:"} {equipment.model}</p>}
-                    <p className="text-gray-500 text-xs mb-4 line-clamp-2">{equipment.description || (isEnglish ? "No description" : "لا يوجد وصف")}</p>
+                    <h3 className="font-extrabold text-gray-950 text-lg mb-1 font-tajawal">{equipment.name}</h3>
+                    {equipment.model && <p className="text-gray-800 font-bold text-sm mb-2">{isEnglish ? "Model:" : "موديل:"} {equipment.model}</p>}
+                    <p className="text-gray-800 text-xs font-semibold mb-4 line-clamp-2">{equipment.description || (isEnglish ? "No description" : "لا يوجد وصف")}</p>
                     <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-900">{equipment.price ? `${equipment.price} ${isEnglish ? "SAR" : "ريال"}` : (isEnglish ? "Price not specified" : "السعر غير محدد")}</span>

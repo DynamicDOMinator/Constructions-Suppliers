@@ -21,39 +21,39 @@ export default function DirectPricingFeatures() {
         <div className="relative mb-24 z-0">
           <div className="hidden md:block absolute top-[40px] right-[2%] h-[2px] bg-[#3A5DAA] z-0 draw-line-rtl"></div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 relative z-10">
-            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
-              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
+            <div className="flex flex-col items-center text-center group cursor-default" data-aos="fade-up" data-aos-delay="100">
+              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                 <FileText className="w-8 h-8" />
               </div>
-              <h3 className="font-bold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Upload BOQ" : "رفع المقايسة"}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed px-4">
+              <h3 className="font-extrabold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Upload BOQ" : "رفع المقايسة"}</h3>
+              <p className="text-sm text-gray-800 font-bold leading-relaxed px-4">
                 {isEnglish ? "The contractor uploads the project's BOQ to the platform." : "يقوم المقاول برفع مقايسة المشروع على المنصة"}
               </p>
             </div>
-            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
-              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
+            <div className="flex flex-col items-center text-center group cursor-default" data-aos="fade-up" data-aos-delay="200">
+              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                 <Factory className="w-8 h-8" />
               </div>
-              <h3 className="font-bold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Factory Access" : "وصول للمصانع"}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed px-4">
+              <h3 className="font-extrabold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Factory Access" : "وصول للمصانع"}</h3>
+              <p className="text-sm text-gray-800 font-bold leading-relaxed px-4">
                 {isEnglish ? "The BOQ reaches approved factories directly." : "تصل المقايسة مباشرة إلى المصانع المعتمدة"}
               </p>
             </div>
-            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
-              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
+            <div className="flex flex-col items-center text-center group cursor-default" data-aos="fade-up" data-aos-delay="300">
+              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                 <Tag className="w-8 h-8" />
               </div>
-              <h3 className="font-bold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Price Quotes" : "عروض الأسعار"}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed px-4">
+              <h3 className="font-extrabold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Price Quotes" : "عروض الأسعار"}</h3>
+              <p className="text-sm text-gray-800 font-bold leading-relaxed px-4">
                 {isEnglish ? "Factories submit their price offers directly without a middleman." : "المصانع تقدم عروض أسعارها مباشرة بدون وسيط"}
               </p>
             </div>
-            <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="400">
-              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6">
+            <div className="flex flex-col items-center text-center group cursor-default" data-aos="fade-up" data-aos-delay="400">
+              <div className="w-20 h-20 bg-[#3A5DAA] rounded-full flex items-center justify-center text-white mb-6 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                 <FileText className="w-8 h-8" />
               </div>
-              <h3 className="font-bold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Direct Contract" : "التعاقد المباشر"}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed px-4">
+              <h3 className="font-extrabold text-[#010101] text-lg mb-2 font-tajawal">{isEnglish ? "Direct Contract" : "التعاقد المباشر"}</h3>
+              <p className="text-sm text-gray-800 font-bold leading-relaxed px-4">
                 {isEnglish ? "A direct contract between the contractor and the factory." : "تعاقد مباشر بين المقاول والمصنع"}
               </p>
             </div>
@@ -62,36 +62,36 @@ export default function DirectPricingFeatures() {
 
         {/* Bottom Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right hover:shadow-md transition-shadow duration-300" data-aos="fade-up" data-aos-delay="150">
-            <div className="flex items-center justify-start gap-3 mb-6">
-              <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0">
+          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col border border-gray-100 hover:border-blue-200 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group" data-aos="fade-up" data-aos-delay="150">
+            <div className={`flex items-center gap-3 mb-6 ${isEnglish ? 'justify-start' : 'justify-start'}`}>
+              <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0 group-hover:scale-110 group-hover:bg-[#3A5DAA] group-hover:text-white transition-all duration-300">
                 <Coins className="w-5 h-5" />
               </div>
-              <h4 className="font-bold text-[#010101] text-xl font-tajawal">{isEnglish ? "Cost Savings" : "توفير في التكاليف"}</h4>
+              <h4 className="font-extrabold text-[#010101] text-xl font-tajawal">{isEnglish ? "Cost Savings" : "توفير في التكاليف"}</h4>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed text-right">
+            <p className={`text-sm text-gray-800 font-semibold leading-relaxed ${isEnglish ? 'text-left' : 'text-right'}`}>
               {isEnglish ? "Direct factory pricing saves up to 30% of total material costs by avoiding the profit margin of middlemen and wholesalers." : "التسعير المباشر من المصنع يوفر ما يصل إلى 30% من التكلفة الإجمالية للمواد بتجنب هامش ربح الوسطاء وتجار الجملة"}
             </p>
           </div>
-          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right hover:shadow-md transition-shadow duration-300" data-aos="fade-up" data-aos-delay="250">
-            <div className="flex items-center justify-start gap-3 mb-6">
-              <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0">
+          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col border border-gray-100 hover:border-blue-200 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group" data-aos="fade-up" data-aos-delay="250">
+            <div className={`flex items-center gap-3 mb-6 ${isEnglish ? 'justify-start' : 'justify-start'}`}>
+              <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0 group-hover:scale-110 group-hover:bg-[#3A5DAA] group-hover:text-white transition-all duration-300">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <h4 className="font-bold text-[#010101] text-xl font-tajawal">{isEnglish ? "Guaranteed Quality" : "جودة مضمونة"}</h4>
+              <h4 className="font-extrabold text-[#010101] text-xl font-tajawal">{isEnglish ? "Guaranteed Quality" : "جودة مضمونة"}</h4>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed text-right">
+            <p className={`text-sm text-gray-800 font-semibold leading-relaxed ${isEnglish ? 'text-left' : 'text-right'}`}>
               {isEnglish ? "Dealing directly with the factory ensures high-quality materials with a manufacturer's warranty and after-sales service." : "التعامل المباشر مع المصنع يضمن الحصول على مواد بجودة عالية مع ضمان المصنع وخدمة ما بعد البيع"}
             </p>
           </div>
-          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col text-right hover:shadow-md transition-shadow duration-300" data-aos="fade-up" data-aos-delay="350">
-            <div className="flex items-center justify-start gap-3 mb-6">
-              <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0">
+          <div className="bg-[#FAFBFC] p-8 rounded-2xl flex flex-col border border-gray-100 hover:border-blue-200 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group" data-aos="fade-up" data-aos-delay="350">
+            <div className={`flex items-center gap-3 mb-6 ${isEnglish ? 'justify-start' : 'justify-start'}`}>
+              <div className="w-10 h-10 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#3A5DAA] shrink-0 group-hover:scale-110 group-hover:bg-[#3A5DAA] group-hover:text-white transition-all duration-300">
                 <Truck className="w-5 h-5" />
               </div>
-              <h4 className="font-bold text-[#010101] text-xl font-tajawal">{isEnglish ? "Direct Delivery" : "توصيل مباشر"}</h4>
+              <h4 className="font-extrabold text-[#010101] text-xl font-tajawal">{isEnglish ? "Direct Delivery" : "توصيل مباشر"}</h4>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed text-right">
+            <p className={`text-sm text-gray-800 font-semibold leading-relaxed ${isEnglish ? 'text-left' : 'text-right'}`}>
               {isEnglish ? "Direct shipping from the factory to the project site, reducing transportation costs and risks of damage in transit." : "شحن مباشر من المصنع إلى موقع المشروع مما يقلل من تكاليف النقل ومخاطر التلف أثناء النقل."}
             </p>
           </div>

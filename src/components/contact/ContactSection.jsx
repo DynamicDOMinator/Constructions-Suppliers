@@ -33,35 +33,35 @@ export default function ContactSection() {
           <div className="flex flex-col gap-4">
             
             {/* Email Card */}
-            <div className="flex items-center gap-4 bg-[#F1F5F9] rounded-2xl p-4 border border-gray-100">
+            <div className="flex items-center gap-4 bg-[#F1F5F9] rounded-2xl p-4 border border-gray-100 hover:shadow-md transition-shadow">
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
                 <Mail className="w-5 h-5 text-[#2A5CBA]" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-sm mb-1">{isEnglish ? "Email" : "البريد الالكتروني"}</h3>
-                <p className="text-gray-500 text-xs" dir="ltr">info@construction-supplier.com</p>
+                <h3 className="font-bold text-gray-950 text-sm mb-1">{isEnglish ? "Email" : "البريد الالكتروني"}</h3>
+                <p className="text-gray-900 font-bold text-xs" dir="ltr">info@construction-supplier.com</p>
               </div>
             </div>
 
             {/* Phone Card */}
-            <div className="flex items-center gap-4 bg-[#F1F5F9] rounded-2xl p-4 border border-gray-100">
+            <div className="flex items-center gap-4 bg-[#F1F5F9] rounded-2xl p-4 border border-gray-100 hover:shadow-md transition-shadow">
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
                 <Phone className="w-5 h-5 text-[#2A5CBA]" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-sm mb-1">{isEnglish ? "Phone Number" : "رقم الهاتف"}</h3>
-                <p className="text-gray-500 text-xs" dir="ltr">15930 / 01000005536</p>
+                <h3 className="font-bold text-gray-950 text-sm mb-1">{isEnglish ? "Phone Number" : "رقم الهاتف"}</h3>
+                <p className="text-gray-900 font-bold text-xs" dir="ltr">15930 / 01000005536</p>
               </div>
             </div>
 
             {/* Location Card */}
-            <div className="flex items-center gap-4 bg-[#F1F5F9] rounded-2xl p-4 border border-gray-100">
+            <div className="flex items-center gap-4 bg-[#F1F5F9] rounded-2xl p-4 border border-gray-100 hover:shadow-md transition-shadow">
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
                 <MapPin className="w-5 h-5 text-[#2A5CBA]" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-sm mb-1">{isEnglish ? "Location" : "الموقع"}</h3>
-                <p className="text-gray-500 text-xs">{isEnglish ? "Riyadh, Saudi Arabia" : "الرياض، المملكة العربية السعودية"}</p>
+                <h3 className="font-bold text-gray-950 text-sm mb-1">{isEnglish ? "Location" : "الموقع"}</h3>
+                <p className="text-gray-900 font-bold text-xs">{isEnglish ? "Riyadh, Saudi Arabia" : "الرياض، المملكة العربية السعودية"}</p>
               </div>
             </div>
 
@@ -70,14 +70,14 @@ export default function ContactSection() {
 
         {/* Left Column: Form Container (Second in RTL flex-row) */}
         <div className="w-full lg:w-1/2">
-          <div className="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-10 shadow-sm">
+          <div className="bg-white border border-gray-200 rounded-[2rem] p-8 md:p-10 shadow-sm hover:shadow-xl transition-shadow">
             
             <div className={`${isEnglish ? 'text-left' : 'text-right'} mb-8`}>
               <span className="text-[#EB682C] text-xs font-bold mb-2 block">{isEnglish ? "Get an Inquiry" : "احصل على استفسار"}</span>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+              <h3 className="text-2xl md:text-3xl font-extrabold text-gray-950 mb-4 leading-tight">
                 {isEnglish ? "Get in touch, we are here to help" : "تواصل معنا، نحن هنا لمساعدتك"}
               </h3>
-              <p className="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto">
+              <p className="text-gray-800 text-sm font-semibold leading-relaxed max-w-sm mx-auto">
                 {isEnglish ? "Have questions or feedback? We are here to help. Send us a message, and we will respond within 24 hours." : "هل لديك أسئلة أو ملاحظات؟ نحن هنا لمساعدتك. أرسل لنا رسالة، وسنقوم بالرد خلال 24 ساعة."}
               </p>
             </div>

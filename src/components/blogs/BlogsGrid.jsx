@@ -226,7 +226,7 @@ export default function BlogsGrid() {
               return (
                 <article 
                   key={blog.uuid || blog.id || idx} 
-                  className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col"
+                  className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-orange-200 transition-all duration-300 group flex flex-col"
                   data-aos="fade-up" 
                   data-aos-delay={idx * 80}
                 >
@@ -240,7 +240,7 @@ export default function BlogsGrid() {
                     />
                     {/* Category Badge */}
                     {blog.category && (
-                      <div className={`absolute top-4 ${isEnglish ? 'left-4' : 'right-4'} bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold text-[#EB682C] shadow-md`}>
+                      <div className={`absolute top-4 ${isEnglish ? 'left-4' : 'right-4'} bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-black text-[#EB682C] shadow-md`}>
                         {blog.category}
                       </div>
                     )}
@@ -249,16 +249,16 @@ export default function BlogsGrid() {
                   {/* Content Body */}
                   <div className="p-6 flex flex-col flex-grow">
                     {/* Meta info */}
-                    <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400 mb-3">
+                    <div className="flex flex-wrap items-center gap-4 text-xs text-gray-700 font-bold mb-3">
                       {blog.formatted_date && (
                         <div className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                          <Calendar className="w-3.5 h-3.5 text-gray-500" />
                           <span>{blog.formatted_date}</span>
                         </div>
                       )}
                       {blog.author && (
                         <div className="flex items-center gap-1.5">
-                          <User className="w-3.5 h-3.5 text-gray-400" />
+                          <User className="w-3.5 h-3.5 text-gray-500" />
                           <span>{blog.author}</span>
                         </div>
                       )}
@@ -271,12 +271,12 @@ export default function BlogsGrid() {
                     </div>
 
                     {/* Title & Excerpt */}
-                    <h3 className={`text-lg font-bold text-gray-900 mb-2.5 line-clamp-2 group-hover:text-[#2A5CBA] transition-colors leading-snug ${isEnglish ? 'text-left' : 'text-right'}`}>
+                    <h3 className={`text-lg font-black text-gray-950 mb-2.5 line-clamp-2 group-hover:text-[#2A5CBA] transition-colors leading-snug ${isEnglish ? 'text-left' : 'text-right'}`}>
                       <Link href={`/blogs/${postSlug}`}>
                         {blog.title}
                       </Link>
                     </h3>
-                    <p className={`text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3 ${isEnglish ? 'text-left' : 'text-right'}`}>
+                    <p className={`text-gray-800 text-sm font-semibold leading-relaxed mb-6 line-clamp-3 ${isEnglish ? 'text-left' : 'text-right'}`}>
                       {blog.excerpt}
                     </p>
 
@@ -284,7 +284,7 @@ export default function BlogsGrid() {
                     {Array.isArray(blog.tags) && blog.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-4">
                         {blog.tags.slice(0, 3).map((tag, tIdx) => (
-                          <span key={tIdx} className="text-[11px] bg-gray-50 text-gray-600 px-2 py-0.5 rounded-md border border-gray-100">
+                          <span key={tIdx} className="text-[11px] bg-orange-50/70 text-[#EB682C] font-bold px-2 py-0.5 rounded-md border border-orange-200/60">
                             #{tag}
                           </span>
                         ))}

@@ -97,10 +97,10 @@ export default function RecommendedSuppliers() {
       {/* Marketing Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8" data-aos="fade-up">
         <div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
+          <h2 className="text-2xl md:text-3xl font-black text-gray-950 tracking-tight">
             {isEnglish ? "Recommended Suppliers for Direct Quotes" : "شركات ومصانع موصى بها للتسعير المباشر"}
           </h2>
-          <p className="text-gray-500 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed">
+          <p className="text-gray-900 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed font-bold">
             {isEnglish
               ? "Connect directly with leading factories to receive competitive quotes and exclusive project discounts."
               : "تواصل مباشرة مع نخبة من المصانع والموردين للحصول على عروض أسعار منافسة لمشروعك."}
@@ -110,7 +110,7 @@ export default function RecommendedSuppliers() {
         {/* View All Suppliers Link */}
         <Link
           href="/suppliers"
-          className="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-[#EB682C] hover:text-[#d65a22] transition-colors shrink-0 group self-start md:self-auto"
+          className="inline-flex items-center gap-2 text-xs md:text-sm font-black text-[#EB682C] hover:text-[#d65a22] transition-colors shrink-0 group self-start md:self-auto"
         >
           <span>{isEnglish ? "View all certified suppliers" : "تصفح كافة الموردين والمصانع"}</span>
           {isEnglish ? (
@@ -128,31 +128,31 @@ export default function RecommendedSuppliers() {
             key={item.id}
             data-aos="fade-up"
             data-aos-delay={idx * 100}
-            className="bg-white border border-gray-200/90 rounded-2xl p-5 shadow-xs hover:shadow-lg hover:border-gray-300 transition-all duration-300 flex flex-col h-full group relative overflow-hidden"
+            className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-orange-200 transition-all duration-300 flex flex-col h-full group relative overflow-hidden"
           >
             {/* Top Accent Gradient Bar on Hover */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#EB682C] via-orange-400 to-[#3A5DAA] opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
             {/* Avatar / Logo */}
-            <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center font-bold text-[#EB682C] text-xl shrink-0 overflow-hidden shadow-xs mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-orange-50/80 border border-orange-200/80 flex items-center justify-center font-black text-[#EB682C] text-2xl shrink-0 overflow-hidden shadow-xs mb-4">
               {item.logo ? (
-                <img src={item.logo} alt={item.name} className="w-full h-full object-cover" />
+                <img src={item.logo} alt={item.name} className="w-full h-full object-cover brightness-105 contrast-105" />
               ) : (
                 <span>{item.initial}</span>
               )}
             </div>
 
             {/* Name & Specialty */}
-            <h3 className="text-base font-bold text-gray-900 group-hover:text-[#EB682C] transition-colors leading-snug mb-1 line-clamp-1">
+            <h3 className="text-base md:text-lg font-black text-gray-950 group-hover:text-[#EB682C] transition-colors leading-snug mb-1 line-clamp-1">
               {isEnglish ? item.nameEn : item.name}
             </h3>
-            <p className="text-xs text-gray-500 mb-3 line-clamp-1">
+            <p className="text-xs md:text-sm font-extrabold text-[#EB682C] mb-3 line-clamp-1">
               {isEnglish ? item.categoryEn : item.category}
             </p>
 
             {/* Location */}
-            <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-5 font-medium">
-              <MapPin className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+            <div className="flex items-center gap-1.5 text-xs md:text-sm text-gray-950 mb-5 font-black">
+              <MapPin className="w-4 h-4 text-[#EB682C] shrink-0" />
               <span className="truncate">{isEnglish ? item.locationEn : item.location}</span>
             </div>
 
@@ -161,10 +161,10 @@ export default function RecommendedSuppliers() {
               href={`/suppliers/${item.id}`}
               className="mt-auto block w-full"
             >
-              <button className="w-full bg-[#EB682C] text-white py-2.5 px-4 rounded-xl text-xs font-bold hover:bg-[#d65a22] transition-colors flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md cursor-pointer">
+              <button className="w-full bg-[#EB682C] text-white py-3 px-4 rounded-xl text-xs md:text-sm font-black hover:bg-[#d65a22] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-sm group-hover:shadow-md cursor-pointer">
                 <span>{isEnglish ? "Request Direct Quote" : "طلب تسعير مباشر"}</span>
                 <ArrowUpRight
-                  className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${
+                  className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${
                     isEnglish ? "" : "rotate-[-90deg]"
                   }`}
                 />

@@ -20,7 +20,7 @@ export default function PricingSection() {
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
             {isEnglish ? "Plans & Packages Comparison" : "مقارنة باقات وخطط الاشتراك"}
           </h1>
-          <p className="text-sm md:text-base text-gray-500 mt-2 max-w-2xl">
+          <p className="text-sm md:text-base text-gray-800 font-semibold mt-2 max-w-2xl">
             {isEnglish 
               ? "Choose the ideal plan tailored to your business needs and expand your reach to top construction suppliers and buyers." 
               : "اختر الباقة المناسبة لحجم أعمالك وانضم لأكبر شبكة موردين ومقاولي إنشاءات في المنطقة."}

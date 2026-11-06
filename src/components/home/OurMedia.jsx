@@ -105,7 +105,7 @@ export default function OurMedia() {
             <><span className="text-[#EB682C]">وسائل الإعلام </span><span className="text-black">والمقالات</span></>
           )}
         </h2>
-        <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto font-tajawal">
+        <p className="text-gray-800 text-sm font-bold mt-3 max-w-xl mx-auto font-tajawal">
           {isEnglish 
             ? "Explore our latest insights, construction market analytics, and guides."
             : "استكشف أحدث المقالات والتحليلات المتخصصة في قطاع المقاولات والبناء."}
@@ -141,7 +141,7 @@ export default function OurMedia() {
         )}
 
         {/* Center Active Image */}
-        <div className="relative w-[90%] md:w-[850px] h-[450px] rounded-3xl overflow-hidden shadow-2xl z-10 shrink-0 bg-gray-900 transition-all duration-500">
+        <div className="relative w-[90%] md:w-[850px] h-[450px] rounded-3xl overflow-hidden shadow-2xl z-10 shrink-0 bg-slate-100 transition-all duration-500">
           <img 
             key={centerSlide.id} 
             src={centerSlide.image} 

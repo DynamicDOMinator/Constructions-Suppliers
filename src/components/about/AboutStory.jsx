@@ -25,7 +25,7 @@ export default function AboutStory() {
           </h3>
 
           {/* Story Paragraphs */}
-          <div className={`space-y-6 text-gray-600 leading-loose text-base lg:text-lg ${isEnglish ? 'text-left' : 'text-right'}`}>
+          <div className={`space-y-6 text-gray-800 leading-loose text-base lg:text-lg font-medium ${isEnglish ? 'text-left' : 'text-right'}`}>
             <p>
               {isEnglish ? "Our journey began with our realization of the significant challenges facing the construction and building sector, where the supplier needs quick access to factories, the engineer looks for reliable materials, while the buyer seeks the best quality at the best price." : "بدأت رحلتنا من إدراكنا للتحديات الكبيرة التي تواجه قطاع البناء والتشييد، حيث يحتاج المورد إلى الوصول السريع للمصانع، ويبحث المهندس عن مواد موثوقة، بينما يسعى المشتري إلى أفضل جودة بأفضل سعر."}
             </p>

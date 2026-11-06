@@ -47,6 +47,62 @@ const DEFAULT_PARTNERS = [
   },
 ];
 
+function PartnerLogoImage({ src, alt, className }) {
+  const [cleanSrc, setCleanSrc] = useState(src);
+
+  useEffect(() => {
+    if (!src) return;
+    let isMounted = true;
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      try {
+        const w = img.naturalWidth || 300;
+        const h = img.naturalHeight || 100;
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        // Clear the 4 extreme corner marks (crop marks) present in server images
+        const cornerW = Math.min(22, Math.max(16, Math.round(w * 0.08)));
+        const cornerH = Math.min(22, Math.max(16, Math.round(h * 0.20)));
+
+        ctx.clearRect(0, 0, cornerW, cornerH);
+        ctx.clearRect(w - cornerW, 0, cornerW, cornerH);
+        ctx.clearRect(0, h - cornerH, cornerW, cornerH);
+        ctx.clearRect(w - cornerW, h - cornerH, cornerW, cornerH);
+
+        const dataUrl = canvas.toDataURL("image/png");
+        if (isMounted) {
+          setCleanSrc(dataUrl);
+        }
+      } catch (err) {
+        // Fallback to original src if cross-origin or canvas not supported
+      }
+    };
+    img.src = src;
+
+    return () => {
+      isMounted = false;
+    };
+  }, [src]);
+
+  return (
+    <img
+      src={cleanSrc}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      style={{
+        clipPath:
+          "polygon(16px 0%, calc(100% - 16px) 0%, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0% calc(100% - 16px), 0% 16px)",
+      }}
+    />
+  );
+}
+
 export default function PartnersLogos() {
   const [partners, setPartners] = useState(DEFAULT_PARTNERS);
 
@@ -115,12 +171,11 @@ export default function PartnersLogos() {
           {repeatedPartners.map((partner, idx) => {
             const imgUrl = partner.image_url || partner.image;
             const logoNode = (
-              <div className="h-20 sm:h-24 md:h-28 flex items-center justify-center px-5 sm:px-7 py-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 group shrink-0">
-                <img
+              <div className="h-20 sm:h-24 md:h-28 flex items-center justify-center px-6 sm:px-8 py-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 group shrink-0">
+                <PartnerLogoImage
                   src={imgUrl}
                   alt={partner.name || "Partner Logo"}
-                  className="h-14 sm:h-16 md:h-20 lg:h-22 w-auto max-w-[180px] sm:max-w-[220px] md:max-w-[260px] object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-xs"
-                  loading="lazy"
+                  className="h-12 sm:h-14 md:h-18 lg:h-20 w-auto max-w-[180px] sm:max-w-[220px] md:max-w-[260px] object-contain transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
             );
