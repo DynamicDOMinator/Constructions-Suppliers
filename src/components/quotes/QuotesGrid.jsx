@@ -12,24 +12,35 @@ import {
   Search,
   X,
   FileText,
-  ShoppingBag
+  ShoppingBag,
+  Lock,
+  LogIn,
+  UserPlus
 } from "lucide-react";
 import Link from "next/link";
 import api from "@/lib/axios";
 import QuoteCard from "@/components/quotes/QuoteCard";
 import RecommendedSuppliers from "@/components/quotes/RecommendedSuppliers";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function QuotesGrid() {
   const { isEnglish } = useLanguage();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState("pricing"); // "pricing" | "boq"
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    if (authLoading) return;
+    if (!user && !isAuthenticated) {
+      setLoading(false);
+      setRequests([]);
+      return;
+    }
     fetchRequests(activeTab);
-  }, [activeTab]);
+  }, [activeTab, user, isAuthenticated, authLoading]);
 
   const fetchRequests = async (tab) => {
     setLoading(true);
@@ -126,181 +137,218 @@ export default function QuotesGrid() {
       {/* 2. Main Content Section */}
       <section className="py-8 px-4 md:px-12 w-full">
         <div className="max-w-[1400px] mx-auto">
-          
-          {/* Stats Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8" data-aos="fade-up" data-aos-delay="50">
-            {/* Total Requests */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#EB682C] shrink-0">
-                <FileText className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="text-xs text-gray-700 font-bold block">
-                  {isEnglish ? "Total Requests" : "إجمالي الطلبات"}
-                </span>
-                <span className="text-xl md:text-2xl font-black text-gray-950">
-                  {stats.total}
-                </span>
-              </div>
-            </div>
-
-            {/* Pending Requests */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
-                <Clock className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="text-xs text-gray-700 font-bold block">
-                  {isEnglish ? "Awaiting Reply" : "قيد الانتظار"}
-                </span>
-                <span className="text-xl md:text-2xl font-black text-amber-600">
-                  {stats.pending}
-                </span>
-              </div>
-            </div>
-
-            {/* Replied Requests */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
-                <CheckCircle2 className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="text-xs text-gray-700 font-bold block">
-                  {isEnglish ? "Offers Received" : "تم الرد والتسعير"}
-                </span>
-                <span className="text-xl md:text-2xl font-black text-emerald-600">
-                  {stats.replied}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive Navigation Row: Tabs & Search Filter */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8" data-aos="fade-up" data-aos-delay="100">
-            {/* Segmented Tab Pill */}
-            <div className="flex bg-gray-200/80 p-1.5 rounded-2xl shadow-inner w-full sm:w-auto">
-              <button
-                onClick={() => {
-                  setActiveTab("pricing");
-                  setSearchQuery("");
-                }}
-                className={`flex items-center justify-center gap-2 px-6 py-2.5 text-xs md:text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer ${
-                  activeTab === "pricing"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                <Tag className={`w-4 h-4 ${activeTab === "pricing" ? "text-[#EB682C]" : "text-gray-400"}`} />
-                <span>{isEnglish ? "Pricing Requests" : "طلبات التسعير"}</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setActiveTab("boq");
-                  setSearchQuery("");
-                }}
-                className={`flex items-center justify-center gap-2 px-6 py-2.5 text-xs md:text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer ${
-                  activeTab === "boq"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                <FileSpreadsheet className={`w-4 h-4 ${activeTab === "boq" ? "text-[#EB682C]" : "text-gray-400"}`} />
-                <span>{isEnglish ? "BOQ Requests" : "طلبات المقايسة"}</span>
-              </button>
-            </div>
-
-            {/* Quick Search Input */}
-            <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-gray-400 absolute top-1/2 -translate-y-1/2 right-3 pointer-events-none" />
-              <input
-                type="text"
-                placeholder={isEnglish ? "Filter requests..." : "بحث في الطلبات..."}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-gray-200/90 rounded-xl pr-9 pl-8 py-2.5 text-xs md:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#EB682C] focus:ring-1 focus:ring-[#EB682C] transition-all shadow-xs"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400 hover:text-gray-600"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Section Subheading with Count */}
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg md:text-xl font-bold text-gray-900 flex items-center gap-2">
-              <span>
-                {activeTab === "pricing"
-                  ? (isEnglish ? "Sent Pricing Requests" : "طلبات التسعير المرسلة")
-                  : (isEnglish ? "Sent BOQ Requests" : "طلبات المقايسة المرسلة")}
-              </span>
-              <span className="text-xs bg-[#EB682C]/10 text-[#EB682C] px-2.5 py-0.5 rounded-full font-bold">
-                {filteredRequests.length}
-              </span>
-            </h2>
-          </div>
-
-          {/* 3. Cards Grid / States */}
-          {loading ? (
-            <div className="flex flex-col justify-center items-center py-28 bg-white border border-gray-200/80 rounded-3xl shadow-xs">
+          {authLoading ? (
+            <div className="flex flex-col justify-center items-center py-20 bg-white border border-gray-200/80 rounded-3xl shadow-xs">
               <Loader2 className="w-10 h-10 animate-spin text-[#EB682C] mb-3" />
-              <p className="text-sm text-gray-500 font-medium">
-                {isEnglish ? "Loading requests..." : "جاري تحميل الطلبات..."}
-              </p>
             </div>
-          ) : filteredRequests.length === 0 ? (
-            <div className="text-center py-20 px-6 bg-white border border-gray-200/80 rounded-3xl shadow-xs" data-aos="fade-up">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#EB682C] mb-4">
-                {activeTab === "pricing" ? (
-                  <Tag className="w-8 h-8" />
-                ) : (
-                  <FileSpreadsheet className="w-8 h-8" />
-                )}
+          ) : !user && !isAuthenticated ? (
+            <div className="text-center py-16 px-6 bg-white border border-gray-200/90 rounded-3xl shadow-sm max-w-2xl mx-auto my-6 animate-in fade-in duration-200" data-aos="fade-up">
+              <div className="w-16 h-16 rounded-2xl bg-orange-50 border border-orange-200 text-[#EB682C] flex items-center justify-center mx-auto mb-4 shadow-sm ring-8 ring-orange-50/50">
+                <Lock className="w-8 h-8 stroke-[2.2]" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                {searchQuery
-                  ? (isEnglish ? "No matching requests found" : "لا توجد نتائج مطابقة لبحثك")
-                  : (isEnglish ? "No requests found" : "لا توجد طلبات حتى الآن")}
+              <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-2 font-tajawal">
+                {isEnglish ? "Sign In to View Your Requests" : "تسجيل الدخول مطلوب لعرض طلباتك"}
               </h3>
-              <p className="text-gray-500 text-xs md:text-sm max-w-md mx-auto mb-6 leading-relaxed">
-                {searchQuery
-                  ? (isEnglish ? "Try adjusting your search terms to find what you are looking for." : "جرّب استخدام كلمات بحث أخرى أو إزالة الفلتر لعرض جميع الطلبات.")
-                  : activeTab === "pricing"
-                  ? (isEnglish ? "You haven't sent any pricing requests yet. Explore our verified products and suppliers." : "لم تقم بإرسال أي طلبات تسعير حتى الآن. يمكنك تصفح مواد البناء وطلب تسعير فوري من الموردين.")
-                  : (isEnglish ? "You haven't sent any BOQ requests yet. You can submit your project bills of quantities to get accurate quotes." : "لم تقم بإرسال أي طلبات مقايسة حتى الآن. يمكنك رفع جدول كميات مشروعك والحصول على عروض أسعار متكاملة.")}
+              <p className="text-gray-500 text-xs md:text-sm max-w-md mx-auto mb-8 leading-relaxed">
+                {isEnglish 
+                  ? "Please sign in or create an account to view and track your sent pricing and BOQ requests." 
+                  : "يرجى تسجيل الدخول أو إنشاء حساب جديد للتمكن من متابعة وإدارة كافة طلبات التسعير والمقايسة الخاصة بك."}
               </p>
-
-              {!searchQuery && (
-                <div className="flex flex-wrap items-center justify-center gap-3">
-                  <Link
-                    href="/products"
-                    className="inline-flex items-center gap-2 bg-[#EB682C] text-white text-xs md:text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-[#d65a22] transition-colors shadow-xs"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>{isEnglish ? "Browse Products" : "تصفح المنتجات"}</span>
-                  </Link>
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center gap-2 bg-gray-100 text-gray-800 text-xs md:text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-gray-200 transition-colors"
-                  >
-                    <span>{isEnglish ? "Browse Services" : "تصفح الخدمات"}</span>
-                  </Link>
-                </div>
-              )}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-sm mx-auto">
+                <Link
+                  href="/login"
+                  className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-[#EB682C] hover:bg-[#d65a22] text-white font-bold text-sm transition-all shadow-md shadow-orange-500/20 active:scale-[0.98]"
+                >
+                  <LogIn className={`w-4 h-4 ${isEnglish ? '' : 'rotate-180'}`} />
+                  <span>{isEnglish ? "Sign In" : "تسجيل الدخول"}</span>
+                </Link>
+                <Link
+                  href="/register"
+                  className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl border-2 border-[#2A5CBA] text-[#2A5CBA] hover:bg-blue-50 font-bold text-sm transition-all active:scale-[0.98]"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <span>{isEnglish ? "Create Account" : "إنشاء حساب جديد"}</span>
+                </Link>
+              </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredRequests.map((req, idx) => (
-                <div key={req.uuid || req.id || idx} data-aos="fade-up" data-aos-delay={(idx % 6) * 50}>
-                  <QuoteCard req={req} type={activeTab} />
+            <>
+              {/* Stats Bar */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8" data-aos="fade-up" data-aos-delay="50">
+                {/* Total Requests */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#EB682C] shrink-0">
+                    <FileText className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-700 font-bold block">
+                      {isEnglish ? "Total Requests" : "إجمالي الطلبات"}
+                    </span>
+                    <span className="text-xl md:text-2xl font-black text-gray-950">
+                      {stats.total}
+                    </span>
+                  </div>
                 </div>
-              ))}
-            </div>
+
+                {/* Pending Requests */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                    <Clock className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-700 font-bold block">
+                      {isEnglish ? "Awaiting Reply" : "قيد الانتظار"}
+                    </span>
+                    <span className="text-xl md:text-2xl font-black text-amber-600">
+                      {stats.pending}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Replied Requests */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                    <CheckCircle2 className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-700 font-bold block">
+                      {isEnglish ? "Offers Received" : "تم الرد والتسعير"}
+                    </span>
+                    <span className="text-xl md:text-2xl font-black text-emerald-600">
+                      {stats.replied}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Interactive Navigation Row: Tabs & Search Filter */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8" data-aos="fade-up" data-aos-delay="100">
+                {/* Segmented Tab Pill */}
+                <div className="flex bg-gray-200/80 p-1.5 rounded-2xl shadow-inner w-full sm:w-auto">
+                  <button
+                    onClick={() => {
+                      setActiveTab("pricing");
+                      setSearchQuery("");
+                    }}
+                    className={`flex items-center justify-center gap-2 px-6 py-2.5 text-xs md:text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer ${
+                      activeTab === "pricing"
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    <Tag className={`w-4 h-4 ${activeTab === "pricing" ? "text-[#EB682C]" : "text-gray-400"}`} />
+                    <span>{isEnglish ? "Pricing Requests" : "طلبات التسعير"}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab("boq");
+                      setSearchQuery("");
+                    }}
+                    className={`flex items-center justify-center gap-2 px-6 py-2.5 text-xs md:text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer ${
+                      activeTab === "boq"
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    <FileSpreadsheet className={`w-4 h-4 ${activeTab === "boq" ? "text-[#EB682C]" : "text-gray-400"}`} />
+                    <span>{isEnglish ? "BOQ Requests" : "طلبات المقايسة"}</span>
+                  </button>
+                </div>
+
+                {/* Quick Search Input */}
+                <div className="relative w-full sm:w-72">
+                  <Search className="w-4 h-4 text-gray-400 absolute top-1/2 -translate-y-1/2 right-3 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder={isEnglish ? "Filter requests..." : "بحث في الطلبات..."}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-white border border-gray-200/90 rounded-xl pr-9 pl-8 py-2.5 text-xs md:text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#EB682C] focus:ring-1 focus:ring-[#EB682C] transition-all shadow-xs"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Section Subheading with Count */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <span>
+                    {activeTab === "pricing"
+                      ? (isEnglish ? "Sent Pricing Requests" : "طلبات التسعير المرسلة")
+                      : (isEnglish ? "Sent BOQ Requests" : "طلبات المقايسة المرسلة")}
+                  </span>
+                  <span className="text-xs bg-[#EB682C]/10 text-[#EB682C] px-2.5 py-0.5 rounded-full font-bold">
+                    {filteredRequests.length}
+                  </span>
+                </h2>
+              </div>
+
+              {/* 3. Cards Grid / States */}
+              {loading ? (
+                <div className="flex flex-col justify-center items-center py-28 bg-white border border-gray-200/80 rounded-3xl shadow-xs">
+                  <Loader2 className="w-10 h-10 animate-spin text-[#EB682C] mb-3" />
+                  <p className="text-sm text-gray-500 font-medium">
+                    {isEnglish ? "Loading requests..." : "جاري تحميل الطلبات..."}
+                  </p>
+                </div>
+              ) : filteredRequests.length === 0 ? (
+                <div className="text-center py-20 px-6 bg-white border border-gray-200/80 rounded-3xl shadow-xs" data-aos="fade-up">
+                  <div className="w-16 h-16 mx-auto rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#EB682C] mb-4">
+                    {activeTab === "pricing" ? (
+                      <Tag className="w-8 h-8" />
+                    ) : (
+                      <FileSpreadsheet className="w-8 h-8" />
+                    )}
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {searchQuery
+                      ? (isEnglish ? "No matching requests found" : "لا توجد نتائج مطابقة لبحثك")
+                      : (isEnglish ? "No requests found" : "لا توجد طلبات حتى الآن")}
+                  </h3>
+                  <p className="text-gray-500 text-xs md:text-sm max-w-md mx-auto mb-6 leading-relaxed">
+                    {searchQuery
+                      ? (isEnglish ? "Try adjusting your search terms to find what you are looking for." : "جرّب استخدام كلمات بحث أخرى أو إزالة الفلتر لعرض جميع الطلبات.")
+                      : activeTab === "pricing"
+                      ? (isEnglish ? "You haven't sent any pricing requests yet. Explore our verified products and suppliers." : "لم تقم بإرسال أي طلبات تسعير حتى الآن. يمكنك تصفح مواد البناء وطلب تسعير فوري من الموردين.")
+                      : (isEnglish ? "You haven't sent any BOQ requests yet. You can submit your project bills of quantities to get accurate quotes." : "لم تقم بإرسال أي طلبات مقايسة حتى الآن. يمكنك رفع جدول كميات مشروعك والحصول على عروض أسعار متكاملة.")}
+                  </p>
+
+                  {!searchQuery && (
+                    <div className="flex flex-wrap items-center justify-center gap-3">
+                      <Link
+                        href="/products"
+                        className="inline-flex items-center gap-2 bg-[#EB682C] text-white text-xs md:text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-[#d65a22] transition-colors shadow-xs"
+                      >
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>{isEnglish ? "Browse Products" : "تصفح المنتجات"}</span>
+                      </Link>
+                      <Link
+                        href="/services"
+                        className="inline-flex items-center gap-2 bg-gray-100 text-gray-800 text-xs md:text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-gray-200 transition-colors"
+                      >
+                        <span>{isEnglish ? "Browse Services" : "تصفح الخدمات"}</span>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredRequests.map((req, idx) => (
+                    <div key={req.uuid || req.id || idx} data-aos="fade-up" data-aos-delay={(idx % 6) * 50}>
+                      <QuoteCard req={req} type={activeTab} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* 4. Marketing Suggested Companies & Direct Quote Recommendations */}

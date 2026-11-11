@@ -19,9 +19,16 @@ export const LanguageProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("language", isEnglish ? "en" : "ar");
     
-    // Also update document dir and lang for base styling
+    // Also update document dir, lang and class for typography and layout
     document.documentElement.dir = isEnglish ? "ltr" : "rtl";
     document.documentElement.lang = isEnglish ? "en" : "ar";
+    if (isEnglish) {
+      document.documentElement.classList.add("lang-en");
+      document.documentElement.classList.remove("lang-ar");
+    } else {
+      document.documentElement.classList.add("lang-ar");
+      document.documentElement.classList.remove("lang-en");
+    }
   }, [isEnglish]);
 
   const toggleLanguage = () => {

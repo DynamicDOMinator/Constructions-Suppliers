@@ -1,14 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:wght@300;400;500;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
-  --font-tajawal: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-app), 'Almarai', 'Open Sans', 'Roboto', sans-serif;
+  --font-tajawal: var(--font-app), 'Almarai', 'Open Sans', 'Roboto', sans-serif;
+  --font-almarai: var(--font-almarai), 'Almarai', sans-serif;
+  --font-open-sans: var(--font-open-sans), 'Open Sans', 'Roboto', sans-serif;
+}
+
+:root {
+  --font-app: var(--font-almarai), 'Almarai', sans-serif;
+}
+
+/* Arabic mode: Almarai */
+html[lang="ar"],
+html.lang-ar,
+[dir="rtl"] {
+  --font-app: var(--font-almarai), 'Almarai', sans-serif;
+  font-family: var(--font-almarai), 'Almarai', sans-serif;
+}
+
+/* English mode: Open Sans, Roboto */
+html[lang="en"],
+html.lang-en,
+[dir="ltr"] {
+  --font-app: var(--font-open-sans), 'Open Sans', 'Roboto', sans-serif;
+  font-family: var(--font-open-sans), 'Open Sans', 'Roboto', sans-serif;
 }
 
 body {
   background-color: #E5E7EB; /* Light gray background like Figma frame */
   color: #171717;
-  font-family: var(--font-sans);
+  font-family: var(--font-app);
+}
+
+html[lang="ar"] body,
+html.lang-ar body,
+[dir="rtl"] body {
+  font-family: var(--font-almarai), 'Almarai', sans-serif;
+}
+
+html[lang="en"] body,
+html.lang-en body,
+[dir="ltr"] body {
+  font-family: var(--font-open-sans), 'Open Sans', 'Roboto', sans-serif;
+}
+
+/* Seamlessly map font-tajawal usages so Arabic gets Almarai and English gets Open Sans */
+html[lang="ar"] .font-tajawal,
+html.lang-ar .font-tajawal,
+[dir="rtl"] .font-tajawal {
+  font-family: var(--font-almarai), 'Almarai', sans-serif !important;
+}
+
+html[lang="en"] .font-tajawal,
+html.lang-en .font-tajawal,
+[dir="ltr"] .font-tajawal {
+  font-family: var(--font-open-sans), 'Open Sans', 'Roboto', sans-serif !important;
+}
+
+/* Direct language utility classes */
+.font-almarai {
+  font-family: var(--font-almarai), 'Almarai', sans-serif !important;
+}
+
+.font-open-sans {
+  font-family: var(--font-open-sans), 'Open Sans', 'Roboto', sans-serif !important;
 }
 
 /* Custom Animation for Drawing Lines in RTL */
@@ -168,4 +225,15 @@ body {
 .interactive-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(235, 104, 44, 0.3);
+}
+
+/* Chrome / Safari / Edge Autofill Fix: prevent square blue backgrounds from breaking rounded borders */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: #171717 !important;
+  transition: background-color 5000s ease-in-out 0s;
+  border-radius: inherit !important;
 }

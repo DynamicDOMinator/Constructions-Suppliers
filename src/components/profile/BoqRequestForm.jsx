@@ -4,9 +4,11 @@ import { Trash2, UploadCloud, ChevronDown, Plus, X, Loader2 } from "lucide-react
 import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 
-export default function BoqRequestForm({ onBack }) {
+export default function BoqRequestForm({ onBack, supplier }) {
   const { isEnglish } = useLanguage();
+  const { user, isAuthenticated } = useAuth();
   const router = useRouter();
   
   const [suppliersList, setSuppliersList] = useState([]);
@@ -19,11 +21,9 @@ export default function BoqRequestForm({ onBack }) {
   const [projectLocation, setProjectLocation] = useState("");
   const [description, setDescription] = useState("");
 
+  // Start with 1 clean empty row, with zero default mock data
   const [boqItems, setBoqItems] = useState([
-    { id: 1, name: isEnglish ? "Main Cables" : "كابلات رئيسية", spec: isEnglish ? "Copper Cable (NYA) 4x16 mm2" : "كابل نحاس (NYA) 4x16 مم2", qty: 1, unit: isEnglish ? "Linear Meter" : "متر طولي" },
-    { id: 2, name: isEnglish ? "Air Ducts" : "مجاري هواء", spec: isEnglish ? "Linear Meter" : "متر طولي", qty: 1, unit: isEnglish ? "Piece" : "قطعة" },
-    { id: 3, name: isEnglish ? "PPR Pipes" : "مواسير ppr", spec: isEnglish ? "Linear Meter" : "متر طولي", qty: 1, unit: isEnglish ? "Roll" : "لفة" },
-    { id: 4, name: "", spec: "", qty: 1, unit: isEnglish ? "Roll" : "لفة" },
+    { id: 1, name: "", spec: "", qty: 1, unit: isEnglish ? "Piece" : "قطعة" },
   ]);
 
   const [originalBoqFile, setOriginalBoqFile] = useState(null);
@@ -74,15 +74,19 @@ export default function BoqRequestForm({ onBack }) {
 
   const FileBox = ({ label, file, setter }) => (
     <div>
-      <h4 className="text-right text-xs font-bold text-gray-700 mb-2">{label}</h4>
-      <label className="border border-dashed border-orange-300 rounded-xl py-8 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-orange-50 transition-colors w-full h-full min-h-[120px]">
+      <h4 className={`text-sm font-extrabold text-gray-900 mb-2.5 ${isEnglish ? 'text-left' : 'text-right'}`}>{label}</h4>
+      <label className="border-2 border-dashed border-[#EB682C]/50 hover:border-[#EB682C] rounded-2xl py-8 flex flex-col items-center justify-center gap-3 cursor-pointer bg-orange-50/20 hover:bg-orange-50/50 transition-all w-full h-full min-h-[130px] shadow-xs group">
         <input type="file" className="hidden" onChange={(e) => handleFileChange(e, setter)} />
         {file ? (
-          <span className="text-xs font-bold text-green-600 text-center px-4 line-clamp-1 break-all" dir="ltr">{file.name}</span>
+          <span className="text-sm font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-300 px-4 py-2 rounded-xl text-center line-clamp-1 break-all shadow-xs" dir="ltr">
+            ✓ {file.name}
+          </span>
         ) : (
           <>
-            <UploadCloud className="w-6 h-6 text-orange-200" />
-            <span className="text-xs font-medium text-[#2A5CBA]">{isEnglish ? "Choose files from your device to upload" : "اختر الملفات من جهازك للرفع"}</span>
+            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <UploadCloud className="w-6 h-6 text-[#EB682C]" />
+            </div>
+            <span className="text-sm font-bold text-[#2A5CBA] group-hover:underline">{isEnglish ? "Choose files from your device to upload" : "اختر الملفات من جهازك للرفع"}</span>
           </>
         )}
       </label>
@@ -90,6 +94,12 @@ export default function BoqRequestForm({ onBack }) {
   );
 
   const handleSubmit = async () => {
+    if (!user && !isAuthenticated) {
+      alert(isEnglish ? "You must be logged in to send a BOQ request. Please log in or register." : "يجب تسجيل الدخول لإرسال طلب المقايسة. يرجى تسجيل الدخول أو إنشاء حساب جديد.");
+      router.push('/login');
+      return;
+    }
+
     if (selectedSuppliers.length === 0) {
       alert(isEnglish ? "Please select at least one company" : "الرجاء اختيار شركة واحدة على الأقل");
       return;
@@ -158,29 +168,33 @@ export default function BoqRequestForm({ onBack }) {
         {/* Top Form */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <div className="w-full relative">
-            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-bold text-gray-700 mb-3 text-sm`}>{isEnglish ? "Company Name" : "اسم الشركة"}</label>
+            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-extrabold text-gray-900 mb-2.5 text-sm`}>
+              {isEnglish ? "Company Name" : "اسم الشركة"}
+            </label>
             <div 
-              className="w-full bg-white border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-500 flex items-center justify-between min-h-[44px] cursor-pointer"
+              className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-bold text-gray-900 flex items-center justify-between min-h-[48px] cursor-pointer shadow-xs hover:border-[#EB682C] transition-colors"
               onClick={() => setShowSuppliersDropdown(!showSuppliersDropdown)}
             >
               <div className="flex gap-2 flex-wrap">
-                {selectedSuppliers.length === 0 ? (isEnglish ? "Select Companies..." : "اختر الشركات...") : selectedSuppliers.map(sup => (
-                  <span key={sup.uuid} className="bg-gray-100 px-2 py-1 rounded-md flex items-center gap-1" onClick={(e) => { e.stopPropagation(); toggleSupplier(sup); }}>
-                    <X className="w-3 h-3 cursor-pointer" /> {sup.company_profile?.company_name || sup.name}
+                {selectedSuppliers.length === 0 ? (
+                  <span className="text-gray-400 font-normal">{isEnglish ? "Select Companies..." : "اختر الشركات..."}</span>
+                ) : selectedSuppliers.map(sup => (
+                  <span key={sup.uuid} className="bg-orange-50 border border-orange-200 text-[#EB682C] font-bold px-3 py-1 rounded-lg flex items-center gap-1.5 shadow-xs text-xs" onClick={(e) => { e.stopPropagation(); toggleSupplier(sup); }}>
+                    <X className="w-3.5 h-3.5 cursor-pointer hover:text-red-600" /> {sup.company_profile?.company_name || sup.name}
                   </span>
                 ))}
               </div>
-              {loadingSuppliers ? <Loader2 className="w-4 h-4 text-gray-400 animate-spin" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+              {loadingSuppliers ? <Loader2 className="w-4 h-4 text-gray-400 animate-spin" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
             </div>
             
             {showSuppliersDropdown && (
-              <div className="absolute top-[80px] left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto">
+              <div className="absolute top-[85px] left-0 right-0 mt-1 bg-white border-2 border-gray-200 rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto">
                 {suppliersList.map(sup => {
                   const isSelected = selectedSuppliers.find(s => s.uuid === sup.uuid);
                   return (
                     <div 
                       key={sup.uuid} 
-                      className={`px-4 py-3 text-sm cursor-pointer border-b border-gray-100 last:border-0 hover:bg-orange-50 ${isSelected ? 'bg-orange-50 text-[#EB682C] font-bold' : 'text-gray-700'}`}
+                      className={`px-4 py-3 text-sm cursor-pointer border-b border-gray-100 last:border-0 hover:bg-orange-50 transition-colors ${isSelected ? 'bg-orange-50 text-[#EB682C] font-extrabold' : 'text-gray-900 font-bold'}`}
                       onClick={() => toggleSupplier(sup)}
                     >
                       {sup.company_profile?.company_name || sup.name}
@@ -188,89 +202,111 @@ export default function BoqRequestForm({ onBack }) {
                   );
                 })}
                 {suppliersList.length === 0 && !loadingSuppliers && (
-                  <div className="px-4 py-3 text-sm text-gray-500 text-center">{isEnglish ? "No companies left" : "لا يوجد شركات متبقية"}</div>
+                  <div className="px-4 py-3 text-sm text-gray-500 font-bold text-center">{isEnglish ? "No companies left" : "لا يوجد شركات متبقية"}</div>
                 )}
               </div>
             )}
           </div>
           
           <div className="w-full">
-            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-bold text-gray-700 mb-3 text-sm`}>{isEnglish ? "Company Specialization" : "تخصص الشركة"}</label>
+            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-extrabold text-gray-900 mb-2.5 text-sm`}>
+              {isEnglish ? "Company Specialization" : "تخصص الشركة"}
+            </label>
             <div className="relative">
-              <select className={`w-full bg-white border border-gray-100 rounded-xl px-4 py-3.5 text-xs text-gray-700 appearance-none outline-none ${isEnglish ? 'text-left' : 'text-right'}`}>
+              <select className={`w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3.5 text-sm font-bold text-gray-900 appearance-none outline-none focus:border-[#EB682C] shadow-xs cursor-pointer transition-colors ${isEnglish ? 'text-left' : 'text-right'}`}>
                 <option>{isEnglish ? "Supplies" : "توريدات"}</option>
                 <option>{isEnglish ? "Contracting" : "مقاولات"}</option>
                 <option>{isEnglish ? "Design & Consulting" : "تصميم واستشارات"}</option>
               </select>
-              <ChevronDown className={`w-4 h-4 text-gray-400 absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 pointer-events-none`} />
+              <ChevronDown className={`w-4 h-4 text-gray-500 absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 pointer-events-none`} />
             </div>
           </div>
 
           <div className="w-full">
-            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-bold text-gray-700 mb-3 text-sm`}>{isEnglish ? "Project Name" : "اسم المشروع"}</label>
+            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-extrabold text-gray-900 mb-2.5 text-sm`}>
+              {isEnglish ? "Project Name" : "اسم المشروع"}
+            </label>
             <input 
               type="text" 
               placeholder={isEnglish ? "Project Name" : "اسم المشروع"} 
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              className={`w-full bg-white border border-gray-100 rounded-xl px-4 py-3.5 text-xs text-gray-700 outline-none ${isEnglish ? 'text-left' : 'text-right'}`} 
+              className={`w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3.5 text-sm font-bold text-gray-900 outline-none focus:border-[#EB682C] placeholder:text-gray-400 placeholder:font-normal shadow-xs transition-colors ${isEnglish ? 'text-left' : 'text-right'}`} 
             />
           </div>
 
           <div className="w-full">
-            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-bold text-gray-700 mb-3 text-sm`}>{isEnglish ? "Project Type" : "نوع المشروع"}</label>
+            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-extrabold text-gray-900 mb-2.5 text-sm`}>
+              {isEnglish ? "Project Type" : "نوع المشروع"}
+            </label>
             <div className="relative">
               <select 
                 value={projectType}
                 onChange={(e) => setProjectType(e.target.value)}
-                className={`w-full bg-white border border-gray-100 rounded-xl px-4 py-3.5 text-xs text-gray-700 appearance-none outline-none ${isEnglish ? 'text-left' : 'text-right'}`}
+                className={`w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3.5 text-sm font-bold text-gray-900 appearance-none outline-none focus:border-[#EB682C] shadow-xs cursor-pointer transition-colors ${isEnglish ? 'text-left' : 'text-right'}`}
               >
                 <option value="خدمي">{isEnglish ? "Service" : "خدمي"}</option>
                 <option value="تجاري">{isEnglish ? "Commercial" : "تجاري"}</option>
                 <option value="سكني">{isEnglish ? "Residential" : "سكني"}</option>
                 <option value="صناعي">{isEnglish ? "Industrial" : "صناعي"}</option>
               </select>
-              <ChevronDown className={`w-4 h-4 text-gray-400 absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 pointer-events-none`} />
+              <ChevronDown className={`w-4 h-4 text-gray-500 absolute ${isEnglish ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 pointer-events-none`} />
             </div>
           </div>
         </div>
 
         <div className="flex flex-col md:flex-row items-end gap-6 mb-12">
           <div className="flex-1 w-full">
-            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-bold text-gray-700 mb-3 text-sm`}>{isEnglish ? "Project Location" : "موقع المشروع"}</label>
+            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-extrabold text-gray-900 mb-2.5 text-sm`}>
+              {isEnglish ? "Project Location" : "موقع المشروع"}
+            </label>
             <input 
               type="text" 
               placeholder={isEnglish ? "Governorate / Region" : "المحافظة / المنطقة"} 
               value={projectLocation}
               onChange={(e) => setProjectLocation(e.target.value)}
-              className={`w-full bg-white border border-gray-100 rounded-xl px-4 py-3.5 text-xs text-gray-700 outline-none ${isEnglish ? 'text-left' : 'text-right'}`} 
+              className={`w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3.5 text-sm font-bold text-gray-900 outline-none focus:border-[#EB682C] placeholder:text-gray-400 placeholder:font-normal shadow-xs transition-colors ${isEnglish ? 'text-left' : 'text-right'}`} 
             />
           </div>
           <div className="flex-[2] w-full">
-            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-bold text-gray-700 mb-3 text-sm`}>{isEnglish ? "Project Description / Specifications" : "وصف/مواصفات المشروع"}</label>
+            <label className={`block ${isEnglish ? 'text-left' : 'text-right'} font-extrabold text-gray-900 mb-2.5 text-sm`}>
+              {isEnglish ? "Project Description / Specifications" : "وصف/مواصفات المشروع"}
+            </label>
             <input 
               type="text" 
               placeholder={isEnglish ? "Enter an accurate description of the project and general specs..." : "ادخل وصفا دقيقا للمشروع والمواصفات العامة..."} 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={`w-full bg-white border border-gray-100 rounded-xl px-4 py-3.5 text-xs text-gray-700 outline-none ${isEnglish ? 'text-left' : 'text-right'}`} 
+              className={`w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3.5 text-sm font-bold text-gray-900 outline-none focus:border-[#EB682C] placeholder:text-gray-400 placeholder:font-normal shadow-xs transition-colors ${isEnglish ? 'text-left' : 'text-right'}`} 
             />
           </div>
         </div>
 
         {/* BOQ Table Section */}
-        <div className="bg-white border border-orange-200 rounded-2xl p-6 shadow-sm mb-8">
-          <h3 className={`font-bold text-[#EB682C] text-lg mb-1 ${isEnglish ? 'text-left' : 'text-right'}`}>{isEnglish ? "Electronic BOQ Table and Attachments" : "جدول المقايسة الإلكتروني (BOQ) والمرفقات"}</h3>
-          <p className={`text-xs text-gray-500 mb-6 ${isEnglish ? 'text-left' : 'text-right'}`}>{isEnglish ? "Add items freely - The system will automatically compare offers" : "أضف البنود بحرية - سيقوم النظام بمقارنة العروض تلقائياً"}</p>
+        <div className="bg-white border-2 border-orange-200 rounded-2xl p-6 md:p-8 shadow-sm mb-8">
+          <h3 className={`font-extrabold text-[#EB682C] text-xl mb-1.5 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            {isEnglish ? "Electronic BOQ Table and Attachments" : "جدول المقايسة الإلكتروني (BOQ) والمرفقات"}
+          </h3>
+          <p className={`text-sm font-bold text-gray-700 mb-6 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            {isEnglish ? "Add items freely - The system will automatically compare offers" : "أضف البنود بحرية - سيقوم النظام بمقارنة العروض تلقائياً"}
+          </p>
 
           <div className="overflow-x-auto">
             <table className={`w-full ${isEnglish ? 'text-left' : 'text-right'} border-separate border-spacing-y-3`}>
-              <thead className="text-xs text-gray-500 bg-gray-50">
+              <thead className="text-sm font-extrabold text-gray-900 bg-gray-100/90 border border-gray-200">
                 <tr>
-                  <th className={`py-3 px-4 font-bold ${isEnglish ? 'rounded-l-lg' : 'rounded-r-lg'} w-[30%]`}>{isEnglish ? "Item Name" : "اسم البند"} ↕</th>
-                  <th className="py-3 px-4 font-bold w-[40%]">{isEnglish ? "Technical Description / Specs" : "الوصف الفني/ المواصفات"} ↕</th>
-                  <th className="py-3 px-4 font-bold w-[10%]">{isEnglish ? "Quantity" : "الكمية"} ↕</th>
-                  <th className={`py-3 px-4 font-bold ${isEnglish ? 'rounded-r-lg' : 'rounded-l-lg'} w-[20%]`}>{isEnglish ? "Unit" : "الوحدة"} ↕</th>
+                  <th className={`py-3.5 px-4 font-extrabold text-gray-900 text-sm md:text-base ${isEnglish ? 'rounded-l-xl' : 'rounded-r-xl'} w-[30%]`}>
+                    {isEnglish ? "Item Name" : "اسم البند"} ↕
+                  </th>
+                  <th className="py-3.5 px-4 font-extrabold text-gray-900 text-sm md:text-base w-[40%]">
+                    {isEnglish ? "Technical Description / Specs" : "الوصف الفني/ المواصفات"} ↕
+                  </th>
+                  <th className="py-3.5 px-4 font-extrabold text-gray-900 text-sm md:text-base w-[10%] text-center">
+                    {isEnglish ? "Quantity" : "الكمية"} ↕
+                  </th>
+                  <th className={`py-3.5 px-4 font-extrabold text-gray-900 text-sm md:text-base ${isEnglish ? 'rounded-r-xl' : 'rounded-l-xl'} w-[20%]`}>
+                    {isEnglish ? "Unit" : "الوحدة"} ↕
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -282,7 +318,7 @@ export default function BoqRequestForm({ onBack }) {
                         placeholder={isEnglish ? "Item Name" : "اسم البند"} 
                         value={item.name} 
                         onChange={(e) => handleItemChange(item.id, 'name', e.target.value)} 
-                        className={`w-full border border-gray-100 rounded-lg px-4 py-2.5 text-xs text-gray-700 outline-none focus:border-orange-300 bg-white ${isEnglish ? 'text-left' : 'text-right'}`} 
+                        className={`w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-bold text-gray-900 outline-none focus:border-[#EB682C] focus:bg-orange-50/10 placeholder:text-gray-400 placeholder:font-normal bg-white shadow-xs transition-colors ${isEnglish ? 'text-left' : 'text-right'}`} 
                       />
                     </td>
                     <td className="px-2">
@@ -291,7 +327,7 @@ export default function BoqRequestForm({ onBack }) {
                         placeholder={isEnglish ? "Technical Description" : "الوصف الفني"} 
                         value={item.spec} 
                         onChange={(e) => handleItemChange(item.id, 'spec', e.target.value)} 
-                        className={`w-full border border-gray-100 rounded-lg px-4 py-2.5 text-xs text-gray-700 outline-none focus:border-orange-300 bg-white ${isEnglish ? 'text-left' : 'text-right'}`} 
+                        className={`w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-bold text-gray-900 outline-none focus:border-[#EB682C] focus:bg-orange-50/10 placeholder:text-gray-400 placeholder:font-normal bg-white shadow-xs transition-colors ${isEnglish ? 'text-left' : 'text-right'}`} 
                       />
                     </td>
                     <td className="px-2">
@@ -300,11 +336,11 @@ export default function BoqRequestForm({ onBack }) {
                           type="number" 
                           value={item.qty} 
                           onChange={(e) => handleItemChange(item.id, 'qty', e.target.value)} 
-                          className={`w-full border border-gray-100 rounded-lg px-4 py-2.5 text-xs text-gray-700 outline-none focus:border-orange-300 text-center bg-white`} 
+                          className="w-full border-2 border-gray-200 rounded-xl px-3 py-3 text-sm font-extrabold text-gray-900 outline-none focus:border-[#EB682C] text-center bg-white shadow-xs transition-colors" 
                         />
                         <div className={`absolute ${isEnglish ? 'right-2' : 'left-2'} top-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer`}>
-                          <ChevronDown className="w-3 h-3 text-gray-400 rotate-180" onClick={() => handleItemChange(item.id, 'qty', Number(item.qty || 0) + 1)} />
-                          <ChevronDown className="w-3 h-3 text-gray-400" onClick={() => handleItemChange(item.id, 'qty', Math.max(1, Number(item.qty || 0) - 1))} />
+                          <ChevronDown className="w-3.5 h-3.5 text-gray-600 hover:text-[#EB682C] rotate-180 transition-colors" onClick={() => handleItemChange(item.id, 'qty', Number(item.qty || 0) + 1)} />
+                          <ChevronDown className="w-3.5 h-3.5 text-gray-600 hover:text-[#EB682C] transition-colors" onClick={() => handleItemChange(item.id, 'qty', Math.max(1, Number(item.qty || 0) - 1))} />
                         </div>
                       </div>
                     </td>
@@ -314,7 +350,7 @@ export default function BoqRequestForm({ onBack }) {
                           <select 
                             value={item.unit} 
                             onChange={(e) => handleItemChange(item.id, 'unit', e.target.value)} 
-                            className={`w-full appearance-none bg-white border border-gray-100 rounded-lg px-4 py-2.5 text-xs text-gray-700 outline-none focus:border-orange-300 ${isEnglish ? 'text-left' : 'text-right'}`}
+                            className={`w-full appearance-none bg-white border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-bold text-gray-900 outline-none focus:border-[#EB682C] shadow-xs cursor-pointer transition-colors ${isEnglish ? 'text-left' : 'text-right'}`}
                           >
                             <option value={isEnglish ? "Piece" : "قطعة"}>{isEnglish ? "Piece" : "قطعة"}</option>
                             <option value={isEnglish ? "Meter" : "متر"}>{isEnglish ? "Meter" : "متر"}</option>
@@ -326,11 +362,13 @@ export default function BoqRequestForm({ onBack }) {
                             <option value={isEnglish ? "Set" : "طقم"}>{isEnglish ? "Set" : "طقم"}</option>
                             <option value={isEnglish ? "Linear Meter" : "متر طولي"}>{isEnglish ? "Linear Meter" : "متر طولي"}</option>
                           </select>
-                          <ChevronDown className={`w-4 h-4 text-gray-400 absolute ${isEnglish ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 pointer-events-none`} />
+                          <ChevronDown className={`w-4 h-4 text-gray-500 absolute ${isEnglish ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 pointer-events-none`} />
                         </div>
                         <button 
+                          type="button"
                           onClick={() => handleRemoveItem(item.id)} 
-                          className="text-red-400 hover:text-red-600 transition-colors bg-white border border-gray-100 p-2.5 rounded-lg"
+                          className="text-red-500 hover:text-white hover:bg-red-500 transition-all bg-red-50 border-2 border-red-200 p-3 rounded-xl shadow-xs cursor-pointer flex items-center justify-center shrink-0"
+                          title={isEnglish ? "Delete Row" : "حذف البند"}
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -342,19 +380,22 @@ export default function BoqRequestForm({ onBack }) {
             </table>
           </div>
 
-          <div className={`flex ${isEnglish ? 'justify-end' : 'justify-start'} mt-4`}>
+          <div className={`flex ${isEnglish ? 'justify-end' : 'justify-start'} mt-5`}>
             <button 
+              type="button"
               onClick={handleAddItem}
-              className="flex items-center gap-2 bg-orange-50 text-[#EB682C] border border-orange-200 px-4 py-2 rounded-lg text-xs font-bold hover:bg-orange-100 transition-colors"
+              className="flex items-center gap-2 bg-gradient-to-r from-orange-50 to-orange-100 text-[#EB682C] border-2 border-[#EB682C] px-6 py-3 rounded-xl text-sm font-extrabold hover:bg-[#EB682C] hover:text-white transition-all shadow-xs cursor-pointer active:scale-95"
             >
-              <Plus className="w-4 h-4" /> {isEnglish ? "Add New Item" : "اضافة بند جديد"}
+              <Plus className="w-4 h-4 stroke-[3]" /> {isEnglish ? "Add New Item" : "اضافة بند جديد"}
             </button>
           </div>
         </div>
 
         {/* Technical Files Section */}
-        <div className="bg-white border border-orange-200 rounded-2xl p-6 shadow-sm mb-8">
-          <h3 className={`font-bold text-[#EB682C] text-lg mb-6 ${isEnglish ? 'text-left' : 'text-right'}`}>{isEnglish ? "Attachments and Technical Documents" : "المرفقات والوثائق الفنية"}</h3>
+        <div className="bg-white border-2 border-orange-200 rounded-2xl p-6 md:p-8 shadow-sm mb-8">
+          <h3 className={`font-extrabold text-[#EB682C] text-xl mb-6 ${isEnglish ? 'text-left' : 'text-right'}`}>
+            {isEnglish ? "Attachments and Technical Documents" : "المرفقات والوثائق الفنية"}
+          </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <FileBox label={isEnglish ? "Original BOQ File" : "ملف المقايسة الأصلي"} file={originalBoqFile} setter={setOriginalBoqFile} />
@@ -363,29 +404,26 @@ export default function BoqRequestForm({ onBack }) {
           </div>
         </div>
 
-        {/* Our Clients */}
-        <div className={`bg-white border border-orange-200 rounded-2xl p-6 shadow-sm mb-8 ${isEnglish ? 'text-left' : 'text-right'}`}>
-          <h4 className="font-bold text-[#EB682C] mb-6">{isEnglish ? "Some of our clients" : "بعض عملائنا"}</h4>
-          <div className="flex flex-wrap justify-between items-center opacity-60 grayscale gap-4">
-             <div className="w-16 h-8 bg-gray-300 rounded"></div>
-             <div className="w-16 h-8 bg-gray-300 rounded"></div>
-             <div className="w-16 h-8 bg-gray-300 rounded"></div>
-             <div className="w-16 h-8 bg-gray-300 rounded"></div>
-             <div className="w-16 h-8 bg-gray-300 rounded"></div>
-             <div className="w-16 h-8 bg-gray-300 rounded"></div>
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="mt-8">
+        {/* Submit and Back Buttons */}
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center">
           <button 
+            type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full flex justify-center items-center gap-2 bg-[#D97746] hover:bg-[#EB682C] text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-sm disabled:opacity-50"
+            className="flex-1 w-full flex justify-center items-center gap-2 bg-[#EB682C] hover:bg-[#d65a22] text-white py-4 rounded-2xl font-extrabold text-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting && <Loader2 className="w-5 h-5 animate-spin" />}
             {isEnglish ? "Submit BOQ Request" : "ارسال طلب المقايسة"}
           </button>
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="w-full sm:w-auto px-8 bg-white border-2 border-gray-300 text-gray-800 py-4 rounded-2xl font-extrabold text-lg hover:bg-gray-50 hover:border-gray-400 transition-all shadow-xs cursor-pointer"
+            >
+              {isEnglish ? "Back" : "الرجوع"}
+            </button>
+          )}
         </div>
 
       </div>

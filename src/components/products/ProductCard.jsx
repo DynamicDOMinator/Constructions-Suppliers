@@ -13,7 +13,7 @@ export default function ProductCard({
   companyId,
 }) {
   const { isEnglish } = useLanguage();
-  const href = companyId ? `/suppliers/${companyId}` : "#";
+  const href = companyId ? `/suppliers/${companyId}` : "/suppliers";
 
   return (
     <div
@@ -77,8 +77,8 @@ export default function ProductCard({
 
         {/* Action Button */}
         <Link href={href} className="w-full mt-auto">
-          <button className="w-full bg-[#EB682C] text-white py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-all flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md group-hover:scale-[1.02] active:scale-95 shadow-orange-500/20">
-            <span>{isEnglish ? "View Details" : "عرض التفاصيل"}</span>
+          <button className="w-full bg-[#EB682C] text-white py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-all flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md group-hover:scale-[1.02] active:scale-95 shadow-orange-500/20 cursor-pointer">
+            <span>{isEnglish ? "Request a Quote" : "طلب عرض سعر"}</span>
             <ArrowUpRight
               className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${
                 isEnglish ? "" : "rotate-[-90deg]"

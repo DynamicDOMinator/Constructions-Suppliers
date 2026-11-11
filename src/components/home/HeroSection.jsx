@@ -9,9 +9,21 @@ import { FaStar } from "react-icons/fa";
 import { useLanguage } from "@/context/LanguageContext";
 import api from "@/lib/axios";
 
+const HERO_SLIDES = [
+  "/Home-page-Hero.png",
+  "/hero-slide-2.png",
+  "/hero-slide-3.png",
+  "/hero-slide-4.png",
+  "/hero-slide-5.png",
+];
+
 export default function HeroSection() {
   const { isEnglish } = useLanguage();
   const router = useRouter();
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSlidePaused, setIsSlidePaused] = useState(false);
+  const touchStartX = useRef(0);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -95,6 +107,30 @@ export default function HeroSection() {
     setSearchQuery("");
     setIsOpen(false);
     setResults({ companies: [], products: [], services: [], blogs: [] });
+  };
+
+  // Automatic hero slider transition (without paginations)
+  useEffect(() => {
+    if (isSlidePaused) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isSlidePaused]);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+      } else {
+        setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+      }
+    }
   };
 
   const totalCount =
@@ -446,26 +482,44 @@ export default function HeroSection() {
         </h1>
       </div>
 
-      {/* Hero Image */}
+      {/* Hero Image Auto Slider */}
       <div
         data-aos="fade-up"
         data-aos-delay="300"
-        className="w-full max-w-[1296px] h-auto min-h-[300px] md:h-[550px] relative flex flex-col items-center justify-center"
+        className="w-full max-w-[1296px] relative flex flex-col items-center justify-center"
       >
-        <Image
-          className="w-full"
-          src="/Home-page-Hero.png"
-          alt="Construction Hero"
-          width={1000}
-          height={1000}
-          priority
-        />
+        {/* Auto Slider (without paginations) */}
+        <div
+          className="relative w-full aspect-[1296/520] select-none"
+          onMouseEnter={() => setIsSlidePaused(true)}
+          onMouseLeave={() => setIsSlidePaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {HERO_SLIDES.map((src, index) => (
+            <div
+              key={src}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              <Image
+                src={src}
+                alt={`Construction Hero ${index + 1}`}
+                fill
+                priority={index === 0}
+                className="w-full h-full object-contain pointer-events-none"
+                sizes="(max-width: 1296px) 100vw, 1296px"
+              />
+            </div>
+          ))}
+        </div>
 
         {/* Badges on Hero (Desktop) with Floating Motion */}
         <div
           data-aos="zoom-in"
           data-aos-delay="450"
-          className="hidden md:flex items-center gap-3 absolute bottom-6 right-10 animate-float-slow"
+          className="hidden md:flex items-center gap-3 absolute bottom-6 right-10 animate-float-slow z-20"
         >
           <div className="flex flex-col items-center justify-center bg-white/25 backdrop-blur-md w-[120px] h-[120px] rounded-full shadow-lg border border-white/30 hover:scale-105 transition-transform">
             <p className="text-white font-black text-lg">4.8</p>

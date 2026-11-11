@@ -1,30 +1,37 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function AuthLayout({ children }) {
+  const { isEnglish } = useLanguage();
+
   return (
-    <div className="min-h-screen w-full flex font-tajawal bg-white" dir="rtl">
+    <div className="min-h-screen w-full flex font-tajawal bg-white" dir={isEnglish ? "ltr" : "rtl"} suppressHydrationWarning>
       
-      {/* Right Side: Form Content (in RTL, Right is the primary reading side, but in the screenshot the form is on the right visually and image on the left. Wait, in RTL, right is usually the form. Yes, screenshot has image on left, form on right) */}
-      <div className="w-full lg:w-1/2 flex flex-col items-center justify-center relative px-6 md:px-12 py-10 min-h-screen">
+      {/* Form Content Side */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-between min-h-screen px-6 md:px-12 py-6 md:py-8" suppressHydrationWarning>
         
-        {/* Logo at Top Right */}
-        <div className="absolute top-6 right-6 md:top-10 md:right-12">
+        {/* Logo at Top in regular document flow (never overlaps headings) */}
+        <div className="w-full flex items-center justify-between mb-6 md:mb-8 shrink-0" suppressHydrationWarning>
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer">
-              <div className="text-[#004b87] font-bold text-lg md:text-xl text-right leading-tight hidden sm:block">
+              <div className={`text-[#004b87] font-bold text-lg md:text-xl leading-tight hidden sm:block ${isEnglish ? 'text-left' : 'text-right'}`}>
                 <div>CONSTRUCTIONS</div>
                 <div className="text-[#EB682C] text-center">SUPPLIERS</div>
               </div>
-              <Image src="/logo.png" alt="Constructions Suppliers" width={80} height={80} className="w-12 md:w-16 object-contain" />
+              <Image src="/logo.png" alt="Constructions Suppliers" width={80} height={80} className="w-12 md:w-16 object-contain" priority />
             </div>
           </Link>
         </div>
 
-        {/* The dynamic form content */}
-        <div className="w-full w-[361px] mt-12 lg:mt-0">
+        {/* The dynamic form content: Centered vertically when space permits */}
+        <div className="w-full max-w-[500px] mx-auto my-auto flex flex-col justify-center" suppressHydrationWarning>
           {children}
         </div>
+
+        {/* Bottom subtle spacer */}
+        <div className="w-full h-4 shrink-0" suppressHydrationWarning></div>
       </div>
 
       {/* Left Side: Image (Hidden on mobile) */}

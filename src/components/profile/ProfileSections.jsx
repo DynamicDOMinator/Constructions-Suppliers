@@ -3,10 +3,22 @@ import { useState } from "react";
 import { MapPin } from "lucide-react";
 import ProductDetailsPopup from "./ProductDetailsPopup";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
+import AuthRequiredModal from "@/components/common/AuthRequiredModal";
 
 export default function ProfileSections({ supplier }) {
   const { isEnglish } = useLanguage();
+  const { user, isAuthenticated } = useAuth();
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const handleRequestItem = (item) => {
+    if (!user && !isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+    setSelectedProduct(item);
+  };
 
   const bio = supplier?.company_profile?.bio || (isEnglish ? "No additional company information available." : "لا توجد معلومات إضافية عن الشركة.");
   const locationText = supplier?.company_profile?.location || (isEnglish ? "Location not specified" : "الموقع غير محدد");
@@ -150,7 +162,11 @@ export default function ProfileSections({ supplier }) {
                   <div className={`flex-1 ${isEnglish ? 'text-left' : 'text-right'}`}>
                     <h3 className="font-extrabold text-gray-950 text-base mb-2 font-tajawal">{service.name}</h3>
                     <p className="text-gray-800 text-xs font-semibold mb-4 leading-relaxed line-clamp-2">{service.description || (isEnglish ? "No description for service" : "لا يوجد وصف للخدمة")}</p>
-                    <button className="w-full bg-[#EB682C] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-[#d65a22] transition-colors">
+                    <button 
+                      type="button"
+                      onClick={() => handleRequestItem({ ...service, isService: true })}
+                      className="w-full bg-[#EB682C] text-white px-4 py-2.5 rounded-lg text-xs font-bold hover:bg-[#d65a22] transition-colors cursor-pointer active:scale-[0.99] shadow-sm"
+                    >
                       {isEnglish ? "Request Pricing" : "طلب عرض تسعير"}
                     </button>
                   </div>
@@ -189,7 +205,11 @@ export default function ProfileSections({ supplier }) {
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-900">{equipment.price ? `${equipment.price} ${isEnglish ? "SAR" : "ريال"}` : (isEnglish ? "Price not specified" : "السعر غير محدد")}</span>
                       </div>
-                      <button className="bg-[#EB682C] text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-[#d65a22] transition-colors">
+                      <button 
+                        type="button"
+                        onClick={() => handleRequestItem({ ...equipment, isEquipment: true })}
+                        className="bg-[#EB682C] text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-[#d65a22] transition-colors cursor-pointer active:scale-[0.99] shadow-sm"
+                      >
                         {isEnglish ? "Request Equipment" : "طلب المعدة"}
                       </button>
                     </div>
@@ -207,6 +227,13 @@ export default function ProfileSections({ supplier }) {
         onClose={() => setSelectedProduct(null)} 
         product={selectedProduct}
         supplierId={supplier?.uuid || supplier?.id}
+      />
+
+      <AuthRequiredModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        messageAr="يرجى تسجيل الدخول أو إنشاء حساب جديد لتتمكن من إرسال طلب عرض السعر والتواصل مع الموردين."
+        messageEn="Please sign in or create an account to request pricing and connect with suppliers."
       />
     </div>
   );

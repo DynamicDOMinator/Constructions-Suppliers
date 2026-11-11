@@ -4,9 +4,11 @@ import { Search, Trash2, ChevronDown, Plus, Minus, X, Loader2 } from "lucide-rea
 import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function PricingRequestForm({ onBack }) {
   const { isEnglish } = useLanguage();
+  const { user, isAuthenticated } = useAuth();
   const router = useRouter();
   const [suppliersList, setSuppliersList] = useState([]);
   const [loadingSuppliers, setLoadingSuppliers] = useState(true);
@@ -106,6 +108,12 @@ export default function PricingRequestForm({ onBack }) {
   };
 
   const handleSubmit = async () => {
+    if (!user && !isAuthenticated) {
+      alert(isEnglish ? "You must be logged in to send a pricing request. Please log in or register." : "يجب تسجيل الدخول لإرسال طلب التسعير. يرجى تسجيل الدخول أو إنشاء حساب جديد.");
+      router.push('/login');
+      return;
+    }
+
     const itemsToSubmit = addedItems.filter(item => item.selected);
     if (itemsToSubmit.length === 0) {
       alert(isEnglish ? "Please add and select products to submit the request" : "الرجاء اضافة وتحديد منتجات لإرسال الطلب");

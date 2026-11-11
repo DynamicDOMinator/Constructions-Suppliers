@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthLayout from "@/components/auth/AuthLayout";
 import RegisterStep1 from "@/components/auth/RegisterStep1";
 import RegisterStep2 from "@/components/auth/RegisterStep2";
@@ -17,6 +17,25 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const { isEnglish } = useLanguage();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const role = params.get("role") || params.get("type");
+      if (role === "supplier" || role === "factory" || role === "engineer") {
+        let display = "";
+        if (role === "engineer") display = isEnglish ? "Engineer" : "مهندس";
+        else if (role === "factory") display = isEnglish ? "Manufacturing Companies" : "شركات التصنيع";
+        else display = isEnglish ? "Supplier Companies" : "شركات الموردين";
+
+        setFormData(prev => ({
+          ...prev,
+          type: role,
+          accountTypeDisplay: display
+        }));
+      }
+    }
+  }, [isEnglish]);
 
   const handleFinish = async (additionalData = {}) => {
     setLoading(true);
@@ -104,6 +123,7 @@ export default function RegisterPage() {
           formData={formData} 
           setFormData={setFormData} 
           onNext={() => setCurrentStep(3)} 
+          onBack={() => setCurrentStep(1)}
         />
       )}
 

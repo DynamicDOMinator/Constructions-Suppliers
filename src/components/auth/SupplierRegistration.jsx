@@ -15,6 +15,37 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
   const [viewingProductGallery, setViewingProductGallery] = useState(null);
   const [viewingServiceGallery, setViewingServiceGallery] = useState(null);
   const [step1Error, setStep1Error] = useState("");
+  const [step1Errors, setStep1Errors] = useState({});
+
+  const validateStep1 = () => {
+    const errors = {};
+    if (!formData.company_name?.trim()) {
+      errors.company_name = isEnglish ? "Company name is required" : "اسم الشركة مطلوب";
+    }
+    if (!formData.tax_number?.trim()) {
+      errors.tax_number = isEnglish ? "Commercial registration number is required" : "رقم السجل التجاري مطلوب";
+    }
+    if (!formData.license_number?.trim()) {
+      errors.license_number = isEnglish ? "License number is required" : "رقم الترخيص مطلوب";
+    }
+    if (!formData.license_file) {
+      errors.license_file = isEnglish ? "License file is required" : "ملف الترخيص مطلوب";
+    }
+    if (!formData.tax_file) {
+      errors.tax_file = isEnglish ? "Commercial registration file is required" : "ملف السجل التجاري مطلوب";
+    }
+
+    setStep1Errors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      const firstError = Object.values(errors)[0];
+      setStep1Error(firstError);
+      return false;
+    }
+
+    setStep1Error("");
+    return true;
+  };
 
   const addBrand = (e) => {
     if (e.key === "Enter" && newBrand.trim()) {
@@ -30,6 +61,11 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
       brands: brands,
       products: products.filter(p => p.name && p.name.trim() !== "").map(p => {
         const { preview, ...rest } = p;
+        if (rest.price !== undefined && rest.price !== null && rest.price !== "") {
+          rest.price = Number(rest.price) || 0;
+        } else {
+          rest.price = 0;
+        }
         return rest;
       }),
       services: services.filter(s => s.name && s.name.trim() !== "").map(s => {
@@ -41,12 +77,8 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
   };
 
   const handleSkip = () => {
-    if (step <= 1) return; // First step cannot be skipped
-    if (step < 4) {
-      setStep((prev) => prev + 1);
-    } else {
-      handleFinalSubmit();
-    }
+    if (step <= 1 || step >= 4) return;
+    setStep((prev) => prev + 1);
   };
 
   const stepsData = isEnglish ? [
@@ -81,8 +113,7 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
             <div 
               key={s.id} 
               onClick={() => {
-                if (s.id > 1 && !formData.company_name?.trim()) {
-                  setStep1Error(isEnglish ? "Please enter company name first" : "يرجى إدخال اسم الشركة أولاً");
+                if (s.id > 1 && !validateStep1()) {
                   return;
                 }
                 setStep1Error("");
@@ -111,7 +142,7 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
 
   return (
     <div className="w-full relative">
-      {step > 1 && (
+      {step > 1 && step < 4 && (
         <div 
           onClick={handleSkip}
           className={`absolute top-0 ${isEnglish ? 'right-0 md:-right-8' : 'left-0 md:-left-8'} text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg select-none transition-colors hover:text-[#1e4287]`}
@@ -134,17 +165,27 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
             </div>
           )}
           <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
-            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Company Name" : "اسم الشركة"}</label>
+            <label className="text-sm font-bold text-gray-700">
+              {isEnglish ? "Company Name" : "اسم الشركة"} <span className="text-red-500 font-bold">*</span>
+            </label>
             <input 
               type="text" 
               placeholder={isEnglish ? "Name" : "الاسم"} 
-              className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
+              className={`w-full h-14 px-4 border rounded-2xl text-sm focus:outline-none transition-colors ${
+                step1Errors.company_name 
+                  ? 'border-red-500 focus:border-red-600 bg-red-50/20' 
+                  : 'border-gray-200 focus:border-[#EB682C]'
+              } ${isEnglish ? 'text-left' : 'text-right'}`}
               value={formData.company_name || ""}
               onChange={(e) => {
                 setStep1Error("");
+                setStep1Errors(prev => ({ ...prev, company_name: "" }));
                 setFormData({...formData, company_name: e.target.value});
               }}
             />
+            {step1Errors.company_name && (
+              <span className="text-xs font-bold text-red-500">{step1Errors.company_name}</span>
+            )}
           </div>
 
           <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
@@ -179,73 +220,137 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
             />
           </div>
 
+          {/* Commercial Registration Number */}
           <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
-            <label className="text-sm font-bold text-gray-700">{isEnglish ? "Commercial Registration Number" : "رقم السجل التجارى"}</label>
+            <label className="text-sm font-bold text-gray-700">
+              {isEnglish ? "Commercial Registration Number" : "رقم السجل التجارى"} <span className="text-red-500 font-bold">*</span>
+            </label>
             <input 
               type="text" 
               placeholder={isEnglish ? "Commercial Registration Number" : "رقم السجل التجارى"} 
-              className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
+              className={`w-full h-14 px-4 border rounded-2xl text-sm focus:outline-none transition-colors ${
+                step1Errors.tax_number 
+                  ? 'border-red-500 focus:border-red-600 bg-red-50/20' 
+                  : 'border-gray-200 focus:border-[#EB682C]'
+              } ${isEnglish ? 'text-left' : 'text-right'}`}
               value={formData.tax_number || ""}
-              onChange={(e) => setFormData({...formData, tax_number: e.target.value})}
+              onChange={(e) => {
+                setStep1Error("");
+                setStep1Errors(prev => ({ ...prev, tax_number: "" }));
+                setFormData({...formData, tax_number: e.target.value});
+              }}
             />
+            {step1Errors.tax_number && (
+              <span className="text-xs font-bold text-red-500">{step1Errors.tax_number}</span>
+            )}
           </div>
 
+          {/* License Number */}
           <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
-            <label className="text-sm font-bold text-gray-700">{isEnglish ? "License Number" : "رقم الترخيص"}</label>
+            <label className="text-sm font-bold text-gray-700">
+              {isEnglish ? "License Number" : "رقم الترخيص"} <span className="text-red-500 font-bold">*</span>
+            </label>
             <input 
               type="text" 
               placeholder={isEnglish ? "License Number" : "رقم الترخيص"} 
-              className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`}
+              className={`w-full h-14 px-4 border rounded-2xl text-sm focus:outline-none transition-colors ${
+                step1Errors.license_number 
+                  ? 'border-red-500 focus:border-red-600 bg-red-50/20' 
+                  : 'border-gray-200 focus:border-[#EB682C]'
+              } ${isEnglish ? 'text-left' : 'text-right'}`}
               value={formData.license_number || ""}
-              onChange={(e) => setFormData({...formData, license_number: e.target.value})}
+              onChange={(e) => {
+                setStep1Error("");
+                setStep1Errors(prev => ({ ...prev, license_number: "" }));
+                setFormData({...formData, license_number: e.target.value});
+              }}
             />
+            {step1Errors.license_number && (
+              <span className="text-xs font-bold text-red-500">{step1Errors.license_number}</span>
+            )}
           </div>
 
           <div className={`flex flex-row gap-4 mt-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
-            {/* Right Uploader */}
+            {/* License File Uploader */}
             <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-sm font-bold text-gray-700">{isEnglish ? "License File" : "ملف الترخيص"}</label>
-              <div className="relative border border-dashed border-[#de6d3a] rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-orange-50 transition-colors h-32">
+              <label className="text-sm font-bold text-gray-700">
+                {isEnglish ? "License File" : "ملف الترخيص"} <span className="text-red-500 font-bold">*</span>
+              </label>
+              <div className={`relative border border-dashed rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-colors h-32 ${
+                step1Errors.license_file
+                  ? 'border-red-500 bg-red-50/20'
+                  : formData.license_file
+                  ? 'border-emerald-500 bg-emerald-50/20'
+                  : 'border-[#de6d3a] hover:bg-orange-50'
+              }`}>
                 <input 
                   type="file" 
+                  accept=".pdf,.doc,.docx,image/*"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50"
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
+                      setStep1Error("");
+                      setStep1Errors(prev => ({ ...prev, license_file: "" }));
                       setFormData({...formData, license_file: e.target.files[0]});
                     }
                   }}
                 />
-                <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mb-2">
-                  <UploadCloud className="w-5 h-5 text-[#de6d3a]" />
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                  formData.license_file ? 'bg-emerald-100 text-emerald-600' : 'bg-orange-100 text-[#de6d3a]'
+                }`}>
+                  {formData.license_file ? <Check className="w-5 h-5" strokeWidth={3} /> : <UploadCloud className="w-5 h-5" />}
                 </div>
-                <p className="text-[10px] font-bold text-gray-600 mb-1">
+                <p className={`text-[10px] font-bold mb-1 truncate max-w-full px-2 ${
+                  formData.license_file ? 'text-emerald-700' : 'text-gray-600'
+                }`}>
                   {formData.license_file ? formData.license_file.name : (isEnglish ? "Click to upload file" : "اضغط لرفع الملف")}
                 </p>
                 <p className="text-[8px] text-gray-400">PDF, DOC, DOCX</p>
               </div>
+              {step1Errors.license_file && (
+                <span className="text-xs font-bold text-red-500">{step1Errors.license_file}</span>
+              )}
             </div>
 
-            {/* Left Uploader */}
+            {/* Commercial Registration File Uploader */}
             <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-sm font-bold text-gray-700">{isEnglish ? "Commercial Registration" : "السجل التجاري"}</label>
-              <div className="relative border border-dashed border-[#de6d3a] rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-orange-50 transition-colors h-32">
+              <label className="text-sm font-bold text-gray-700">
+                {isEnglish ? "Commercial Registration" : "السجل التجاري"} <span className="text-red-500 font-bold">*</span>
+              </label>
+              <div className={`relative border border-dashed rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-colors h-32 ${
+                step1Errors.tax_file
+                  ? 'border-red-500 bg-red-50/20'
+                  : formData.tax_file
+                  ? 'border-emerald-500 bg-emerald-50/20'
+                  : 'border-[#de6d3a] hover:bg-orange-50'
+              }`}>
                 <input 
                   type="file" 
+                  accept=".pdf,.doc,.docx,image/*"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50"
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
+                      setStep1Error("");
+                      setStep1Errors(prev => ({ ...prev, tax_file: "" }));
                       setFormData({...formData, tax_file: e.target.files[0]});
                     }
                   }}
                 />
-                <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mb-2">
-                  <UploadCloud className="w-5 h-5 text-[#de6d3a]" />
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                  formData.tax_file ? 'bg-emerald-100 text-emerald-600' : 'bg-orange-100 text-[#de6d3a]'
+                }`}>
+                  {formData.tax_file ? <Check className="w-5 h-5" strokeWidth={3} /> : <UploadCloud className="w-5 h-5" />}
                 </div>
-                <p className="text-[10px] font-bold text-gray-600 mb-1">
+                <p className={`text-[10px] font-bold mb-1 truncate max-w-full px-2 ${
+                  formData.tax_file ? 'text-emerald-700' : 'text-gray-600'
+                }`}>
                   {formData.tax_file ? formData.tax_file.name : (isEnglish ? "Click to upload file" : "اضغط لرفع الملف")}
                 </p>
                 <p className="text-[8px] text-gray-400">PDF, DOC, DOCX</p>
               </div>
+              {step1Errors.tax_file && (
+                <span className="text-xs font-bold text-red-500">{step1Errors.tax_file}</span>
+              )}
             </div>
           </div>
 
@@ -391,10 +496,12 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
               <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
                 <label className="text-sm font-bold text-gray-700">{isEnglish ? "Price" : "السعر"}</label>
                 <input 
-                  type="text" 
-                  placeholder="Xt-5000" 
+                  type="number" 
+                  step="any"
+                  min="0"
+                  placeholder={isEnglish ? "e.g. 5000" : "مثال: 5000"} 
                   className={`w-full h-14 px-4 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-[#EB682C] ${isEnglish ? 'text-left' : 'text-right'}`} 
-                  value={product.price || ""}
+                  value={product.price ?? ""}
                   onChange={(e) => setProducts(products.map(p => p.id === product.id ? { ...p, price: e.target.value } : p))}
                 />
               </div>
@@ -561,9 +668,8 @@ export default function SupplierRegistration({ formData, setFormData, onFinish, 
         <button 
           disabled={isSubmitting}
           onClick={() => {
-            if (step === 1 && !formData.company_name?.trim()) {
-              setStep1Error(isEnglish ? "Please enter company name" : "يرجى إدخال اسم الشركة للمتابعة");
-              return;
+            if (step === 1) {
+              if (!validateStep1()) return;
             }
             setStep1Error("");
             if (step < 4) {

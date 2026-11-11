@@ -57,12 +57,8 @@ export default function EngineerRegistration({ formData, setFormData, onFinish, 
   };
 
   const handleSkip = () => {
-    if (step <= 1) return; // First step cannot be skipped
-    if (step < 3) {
-      setStep((prev) => prev + 1);
-    } else {
-      handleFinalSubmit();
-    }
+    if (step <= 1 || step >= 3) return;
+    setStep((prev) => prev + 1);
   };
 
   const stepsData = isEnglish ? [
@@ -118,7 +114,7 @@ export default function EngineerRegistration({ formData, setFormData, onFinish, 
 
   return (
     <div className="w-full relative">
-      {step > 1 && (
+      {step > 1 && step < 3 && (
         <div 
           onClick={handleSkip}
           className={`absolute top-0 ${isEnglish ? 'right-0 md:-right-8' : 'left-0 md:-left-8'} text-[#2A5CBA] font-bold cursor-pointer hover:underline text-lg select-none transition-colors hover:text-[#1e4287]`}
