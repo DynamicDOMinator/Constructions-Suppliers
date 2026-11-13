@@ -10,6 +10,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import api from "@/lib/axios";
 
 const HERO_SLIDES = [
+  "/new-image.png",
   "/Home-page-Hero.png",
   "/hero-slide-2.png",
   "/hero-slide-3.png",
@@ -496,13 +497,8 @@ export default function HeroSection() {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {HERO_SLIDES.map((src, index) => (
-            <div
-              key={src}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
+          {HERO_SLIDES.map((src, index) => {
+            const slideContent = (
               <Image
                 src={src}
                 alt={`Construction Hero ${index + 1}`}
@@ -511,15 +507,36 @@ export default function HeroSection() {
                 className="w-full h-full object-contain pointer-events-none"
                 sizes="(max-width: 1296px) 100vw, 1296px"
               />
-            </div>
-          ))}
+            );
+
+            return (
+              <div
+                key={src}
+                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                  index === 0 ? "translate-y-[10px]" : ""
+                } ${
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                }`}
+              >
+                {index === 0 ? (
+                  <Link href="/register?role=factory" className="block w-full h-full cursor-pointer">
+                    {slideContent}
+                  </Link>
+                ) : (
+                  slideContent
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Badges on Hero (Desktop) with Floating Motion */}
         <div
           data-aos="zoom-in"
           data-aos-delay="450"
-          className="hidden md:flex items-center gap-3 absolute bottom-6 right-10 animate-float-slow z-20"
+          className={`hidden md:flex items-center gap-3 absolute bottom-6 right-10 animate-float-slow z-20 transition-all duration-300 ${
+            currentSlide === 0 ? "opacity-0 pointer-events-none invisible" : "opacity-100"
+          }`}
         >
           <div className="flex flex-col items-center justify-center bg-white/25 backdrop-blur-md w-[120px] h-[120px] rounded-full shadow-lg border border-white/30 hover:scale-105 transition-transform">
             <p className="text-white font-black text-lg">4.8</p>
@@ -541,7 +558,11 @@ export default function HeroSection() {
         </div>
 
         {/* Action Buttons (Desktop) with Pulse Glow */}
-        <div className="hidden md:flex absolute bottom-2 left-2 lg:left-4 z-20 items-center gap-2 md:gap-2.5">
+        <div
+          className={`hidden md:flex absolute bottom-2 left-2 lg:left-4 z-20 items-center gap-2 md:gap-2.5 transition-all duration-300 ${
+            currentSlide === 0 ? "opacity-0 pointer-events-none invisible" : "opacity-100"
+          }`}
+        >
           <div className="flex items-center gap-2 md:gap-2.5 justify-center">
             <Link
               href="/services"

@@ -4,6 +4,7 @@ import { Bookmark } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 import AuthRequiredModal from "@/components/common/AuthRequiredModal";
+import ShareMenu from "@/components/common/ShareMenu";
 
 export default function ProfileHeader({ activeView, setActiveView, supplier }) {
   const { isEnglish } = useLanguage();
@@ -87,6 +88,13 @@ export default function ProfileHeader({ activeView, setActiveView, supplier }) {
           >
             {isEnglish ? "Send Pricing Request" : "ارسال طلب تسعير"}
           </button>
+
+          <ShareMenu
+            title={companyName}
+            description={bio}
+            direction="down"
+            align="end"
+          />
         </div>
 
       </div>

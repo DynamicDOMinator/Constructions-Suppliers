@@ -5,6 +5,7 @@ import ProductDetailsPopup from "./ProductDetailsPopup";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 import AuthRequiredModal from "@/components/common/AuthRequiredModal";
+import ShareMenu from "@/components/common/ShareMenu";
 
 export default function ProfileSections({ supplier }) {
   const { isEnglish } = useLanguage();
@@ -134,16 +135,25 @@ export default function ProfileSections({ supplier }) {
                     <h3 className="font-extrabold text-gray-950 text-lg mb-1 font-tajawal">{product.name}</h3>
                     {product.model && <p className="text-gray-800 font-bold text-sm mb-2">{isEnglish ? "Model:" : "موديل:"} {product.model}</p>}
                     <p className="text-gray-800 text-xs font-semibold mb-4 line-clamp-2">{product.description || (isEnglish ? "No description" : "لا يوجد وصف")}</p>
-                    <div className={`flex flex-wrap items-center justify-between gap-4 mt-auto ${isEnglish ? 'flex-row' : 'flex-row'}`}>
+                    <div className={`flex flex-wrap items-center justify-between gap-3 mt-auto ${isEnglish ? 'flex-row' : 'flex-row'}`}>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-900">{product.price ? `${product.price} ${isEnglish ? "SAR" : "ريال"}` : (isEnglish ? "Price not specified" : "السعر غير محدد")}</span>
                       </div>
-                      <button 
-                        onClick={() => setSelectedProduct(product)}
-                        className="bg-[#EB682C] text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-[#d65a22] transition-colors"
-                      >
-                        {isEnglish ? "View Details" : "عرض التفاصيل"}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => setSelectedProduct(product)}
+                          className="bg-[#EB682C] text-white px-5 py-2 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-colors cursor-pointer shadow-xs active:scale-95"
+                        >
+                          {isEnglish ? "Request a Quote" : "طلب عرض سعر"}
+                        </button>
+                        <ShareMenu
+                          title={product.name}
+                          description={product.description}
+                          direction="up"
+                          align="end"
+                          showColon={true}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -162,13 +172,22 @@ export default function ProfileSections({ supplier }) {
                   <div className={`flex-1 ${isEnglish ? 'text-left' : 'text-right'}`}>
                     <h3 className="font-extrabold text-gray-950 text-base mb-2 font-tajawal">{service.name}</h3>
                     <p className="text-gray-800 text-xs font-semibold mb-4 leading-relaxed line-clamp-2">{service.description || (isEnglish ? "No description for service" : "لا يوجد وصف للخدمة")}</p>
-                    <button 
-                      type="button"
-                      onClick={() => handleRequestItem({ ...service, isService: true })}
-                      className="w-full bg-[#EB682C] text-white px-4 py-2.5 rounded-lg text-xs font-bold hover:bg-[#d65a22] transition-colors cursor-pointer active:scale-[0.99] shadow-sm"
-                    >
-                      {isEnglish ? "Request Pricing" : "طلب عرض تسعير"}
-                    </button>
+                    <div className="flex items-center gap-2 w-full">
+                      <button 
+                        type="button"
+                        onClick={() => handleRequestItem({ ...service, isService: true })}
+                        className="flex-1 bg-[#EB682C] text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-[#d65a22] transition-colors cursor-pointer active:scale-[0.99] shadow-xs truncate"
+                      >
+                        {isEnglish ? "Request a Quote" : "طلب عرض سعر"}
+                      </button>
+                      <ShareMenu
+                        title={service.name}
+                        description={service.description}
+                        direction="up"
+                        align="end"
+                        showColon={true}
+                      />
+                    </div>
                   </div>
                   <div className="w-24 h-24 bg-gray-100 rounded-xl overflow-hidden shrink-0">
                     {service.images && service.images.length > 0 ? (
@@ -205,13 +224,22 @@ export default function ProfileSections({ supplier }) {
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-900">{equipment.price ? `${equipment.price} ${isEnglish ? "SAR" : "ريال"}` : (isEnglish ? "Price not specified" : "السعر غير محدد")}</span>
                       </div>
-                      <button 
-                        type="button"
-                        onClick={() => handleRequestItem({ ...equipment, isEquipment: true })}
-                        className="bg-[#EB682C] text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-[#d65a22] transition-colors cursor-pointer active:scale-[0.99] shadow-sm"
-                      >
-                        {isEnglish ? "Request Equipment" : "طلب المعدة"}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button 
+                          type="button"
+                          onClick={() => handleRequestItem({ ...equipment, isEquipment: true })}
+                          className="bg-[#EB682C] text-white px-5 py-2 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-colors cursor-pointer active:scale-[0.99] shadow-xs"
+                        >
+                          {isEnglish ? "Request a Quote" : "طلب عرض سعر"}
+                        </button>
+                        <ShareMenu
+                          title={equipment.name}
+                          description={equipment.description}
+                          direction="up"
+                          align="end"
+                          showColon={true}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

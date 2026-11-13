@@ -12,6 +12,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'backend.prosental.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'eng.prosental.online',
+      },
     ],
   },
 };

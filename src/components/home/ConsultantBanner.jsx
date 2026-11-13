@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import api from "@/lib/axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -14,6 +15,7 @@ const DEFAULT_ADS = [
     name: "bannar",
     image: "https://eng.prosental.online/storage/ads/JMASIJ7VxC9mmsljCv7INtKqm80hJMfdxr8TLMkH.jpg",
     image_url: "https://eng.prosental.online/storage/ads/JMASIJ7VxC9mmsljCv7INtKqm80hJMfdxr8TLMkH.jpg",
+    link: "/register?role=factory",
     status: "approved",
   },
   {
@@ -22,6 +24,7 @@ const DEFAULT_ADS = [
     name: "bannar",
     image: "https://eng.prosental.online/storage/ads/AbOg9qYwX1vzYEbKwW0FasHWCsIiip6qGiHP2X8b.jpg",
     image_url: "https://eng.prosental.online/storage/ads/AbOg9qYwX1vzYEbKwW0FasHWCsIiip6qGiHP2X8b.jpg",
+    link: "/register?role=factory",
     status: "approved",
   },
 ];
@@ -68,7 +71,7 @@ export default function ConsultantBanner() {
           spaceBetween={0}
           slidesPerView={1}
           loop={displayAds.length > 1}
-          autoplay={displayAds.length > 1 ? { delay: 3500, disableOnInteraction: false } : false}
+          autoplay={displayAds.length > 1 ? { delay: 4000, disableOnInteraction: false } : false}
           pagination={displayAds.length > 1 ? { clickable: true } : false}
           className="ads-swiper"
         >
@@ -76,11 +79,17 @@ export default function ConsultantBanner() {
             const imgUrl = ad.image_url || ad.image;
             return (
               <SwiperSlide key={ad.uuid || ad.id || idx}>
-                <img
-                  src={imgUrl}
-                  alt={ad.name || "Ad Banner"}
-                  loading={idx === 0 ? "eager" : "lazy"}
-                />
+                <Link
+                  href={ad.link || "/register?role=factory"}
+                  className="block w-full h-full cursor-pointer group"
+                >
+                  <img
+                    src={imgUrl}
+                    alt={ad.name || (isEnglish ? "Manufacturing Companies - Register Now" : "شركات التصنيع - سجل الآن")}
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    className="w-full h-auto object-cover rounded-2xl block transition-opacity group-hover:opacity-95"
+                  />
+                </Link>
               </SwiperSlide>
             );
           })}

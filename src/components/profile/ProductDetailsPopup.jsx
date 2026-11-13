@@ -5,6 +5,7 @@ import { X, Loader2, LogIn } from "lucide-react";
 import api from "@/lib/axios";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
+import ShareMenu from "@/components/common/ShareMenu";
 
 export default function ProductDetailsPopup({ isOpen, onClose, product, supplierId }) {
   const { isEnglish } = useLanguage();
@@ -102,7 +103,15 @@ export default function ProductDetailsPopup({ isOpen, onClose, product, supplier
             )}
           </div>
 
-          <h3 className={`font-bold text-gray-900 text-xl mb-2 ${isEnglish ? 'text-left' : 'text-right'}`}>{product.name}</h3>
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <h3 className={`font-bold text-gray-900 text-xl ${isEnglish ? 'text-left' : 'text-right'}`}>{product.name}</h3>
+            <ShareMenu
+              title={product.name}
+              description={product.description}
+              direction="down"
+              align="end"
+            />
+          </div>
           {product.model && <p className={`text-[#EB682C] font-bold text-sm mb-4 ${isEnglish ? 'text-left' : 'text-right'}`}>{isEnglish ? "Model:" : "الموديل:"} {product.model}</p>}
           
           <div className="mb-6">
@@ -189,13 +198,21 @@ export default function ProductDetailsPopup({ isOpen, onClose, product, supplier
                 </div>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold text-base hover:bg-[#d65a22] transition-colors disabled:opacity-70 flex items-center justify-center gap-2 mt-4 shadow-md shadow-[#EB682C]/20 cursor-pointer"
-              >
-                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isEnglish ? "Send Request" : "إرسال الطلب")}
-              </button>
+              <div className="flex items-center gap-3 mt-4">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 bg-[#EB682C] text-white py-3.5 rounded-xl font-bold text-base hover:bg-[#d65a22] transition-colors disabled:opacity-70 flex items-center justify-center gap-2 shadow-md shadow-[#EB682C]/20 cursor-pointer"
+                >
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isEnglish ? "Send Request" : "إرسال طلب عرض السعر")}
+                </button>
+                <ShareMenu
+                  title={product.name}
+                  description={product.description}
+                  direction="up"
+                  align="end"
+                />
+              </div>
             </form>
           )}
         </div>

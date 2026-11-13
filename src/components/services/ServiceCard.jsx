@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Wrench, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import ShareMenu from "@/components/common/ShareMenu";
 
 export default function ServiceCard({
   service,
@@ -57,17 +58,30 @@ export default function ServiceCard({
               : "لا يوجد وصف متوفر لهذه الخدمة.")}
         </p>
 
-        {/* Action Button */}
-        <Link href={href} className="w-full mt-auto pt-2">
-          <button className="w-full bg-[#EB682C] text-white py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-all flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md group-hover:scale-[1.02] active:scale-95 shadow-orange-500/20 cursor-pointer">
-            <span>{isEnglish ? "Request a Quote" : "طلب عرض سعر"}</span>
-            <ArrowUpRight
-              className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${
-                isEnglish ? "" : "rotate-[-90deg]"
-              }`}
-            />
-          </button>
-        </Link>
+        {/* Action Area: Request Quote + Share */}
+        <div className="w-full mt-auto flex items-center gap-2 pt-2">
+          <Link href={href} className="flex-1">
+            <button
+              type="button"
+              className="w-full bg-[#EB682C] text-white py-2.5 px-3 md:px-4 rounded-xl text-xs md:text-sm font-bold hover:bg-[#d65a22] transition-all flex items-center justify-center gap-1.5 md:gap-2 shadow-xs group-hover:shadow-md group-hover:scale-[1.01] active:scale-95 shadow-orange-500/20 cursor-pointer"
+            >
+              <span className="truncate">{isEnglish ? "Request a Quote" : "طلب عرض سعر"}</span>
+              <ArrowUpRight
+                className={`w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 ${
+                  isEnglish ? "" : "rotate-[-90deg]"
+                }`}
+              />
+            </button>
+          </Link>
+
+          <ShareMenu
+            title={title}
+            description={description}
+            url={companyId ? `/suppliers/${companyId}` : `/services?search=${encodeURIComponent(title || "")}`}
+            direction="up"
+            align="end"
+          />
+        </div>
       </div>
     </div>
   );

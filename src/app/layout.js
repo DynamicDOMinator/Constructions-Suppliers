@@ -1,30 +1,8 @@
-import { Almarai, Open_Sans, Tajawal } from "next/font/google";
 import "./globals.css";
 import AOSInit from "@/components/AOSInit";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { NotificationsProvider } from "@/context/NotificationsContext";
-
-const almarai = Almarai({
-  variable: "--font-almarai",
-  subsets: ["arabic"],
-  weight: ["300", "400", "700", "800"],
-  display: "swap",
-});
-
-const openSans = Open_Sans({
-  variable: "--font-open-sans",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  display: "swap",
-});
-
-const tajawal = Tajawal({
-  variable: "--font-tajawal",
-  subsets: ["arabic"],
-  weight: ["200", "300", "400", "500", "700", "800", "900"],
-  display: "swap",
-});
 
 export const metadata = {
   title: "CONSTRUCTIONS SUPPLIERS",
@@ -39,9 +17,54 @@ export default function RootLayout({ children }) {
     <html
       lang="ar"
       dir="rtl"
-      className={`${almarai.variable} ${openSans.variable} ${tajawal.variable} h-full antialiased overflow-x-hidden w-full max-w-full`}
+      className="h-full antialiased overflow-x-hidden w-full max-w-full font-sans"
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof window === 'undefined') return;
+                // Prevent Bitdefender / extensions from setting bis_* attributes that cause React hydration mismatch
+                if (typeof Element !== 'undefined' && Element.prototype.setAttribute) {
+                  var origSetAttr = Element.prototype.setAttribute;
+                  Element.prototype.setAttribute = function(name, value) {
+                    if (typeof name === 'string' && name.startsWith('bis_')) return;
+                    return origSetAttr.apply(this, arguments);
+                  };
+                }
+                function clean() {
+                  var nodes = document.querySelectorAll('*');
+                  for (var i = 0; i < nodes.length; i++) {
+                    var attrs = nodes[i].attributes;
+                    for (var j = attrs.length - 1; j >= 0; j--) {
+                      if (attrs[j].name.startsWith('bis_')) {
+                        nodes[i].removeAttribute(attrs[j].name);
+                      }
+                    }
+                  }
+                }
+                clean();
+                try {
+                  var observer = new MutationObserver(function(mutations) {
+                    for (var i = 0; i < mutations.length; i++) {
+                      var m = mutations[i];
+                      if (m.type === 'attributes' && m.attributeName && m.attributeName.startsWith('bis_')) {
+                        m.target.removeAttribute(m.attributeName);
+                      }
+                    }
+                  });
+                  observer.observe(document.documentElement, {
+                    attributes: true,
+                    subtree: true
+                  });
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans overflow-x-hidden w-full max-w-full bg-[#F9FAFC]" suppressHydrationWarning>
         <LanguageProvider>
           <AuthProvider>

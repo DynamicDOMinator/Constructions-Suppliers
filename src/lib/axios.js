@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://backend.prosental.com/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://eng.prosental.online/api',
   headers: {
     'Accept': 'application/json',
   },

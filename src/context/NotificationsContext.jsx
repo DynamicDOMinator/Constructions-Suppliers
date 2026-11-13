@@ -156,15 +156,18 @@ export const NotificationsProvider = ({ children }) => {
 
     // Initialise Echo (shared instance for notifications)
     window.Pusher = Pusher;
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://eng.prosental.online/api";
+    const wsHost = process.env.NEXT_PUBLIC_WS_HOST || "eng.prosental.online";
+
     const echo = new Echo({
       broadcaster: "reverb",
       key: "8f4c1d2a9b7e6c5d3a1f0e9d8c7b6a5",
-      wsHost: "backend.prosental.com",
+      wsHost: wsHost,
       wsPort: 443,
       wssPort: 443,
       forceTLS: true,
       enabledTransports: ["ws", "wss"],
-      authEndpoint: "https://backend.prosental.com/api/broadcasting/auth",
+      authEndpoint: `${apiBase}/broadcasting/auth`,
       auth: {
         headers: {
           Authorization: "Bearer " + token,

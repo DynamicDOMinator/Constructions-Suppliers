@@ -66,16 +66,18 @@ function LiveChatContent({ heightClass = "h-[calc(100vh-120px)]" }) {
 
     window.Pusher = Pusher;
 
-    // Use backend.prosental.com as configured
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'https://eng.prosental.online/api';
+    const wsHost = process.env.NEXT_PUBLIC_WS_HOST || 'eng.prosental.online';
+
     const echo = new Echo({
       broadcaster: 'reverb',
       key: '8f4c1d2a9b7e6c5d3a1f0e9d8c7b6a5',
-      wsHost: 'backend.prosental.com',
+      wsHost: wsHost,
       wsPort: 443,
       wssPort: 443,
       forceTLS: true,
       enabledTransports: ['ws', 'wss'],
-      authEndpoint: 'https://backend.prosental.com/api/broadcasting/auth',
+      authEndpoint: `${apiBase}/broadcasting/auth`,
       auth: {
         headers: {
           Authorization: 'Bearer ' + token,
@@ -151,7 +153,8 @@ function LiveChatContent({ heightClass = "h-[calc(100vh-120px)]" }) {
       // Mark offline when leaving the chat
       const token = localStorage.getItem('access_token');
       if (token) {
-        fetch('https://backend.prosental.com/api/auth/chat/offline', {
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || 'https://eng.prosental.online/api';
+        fetch(`${apiBase}/auth/chat/offline`, {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token },
           keepalive: true
@@ -283,7 +286,8 @@ function LiveChatContent({ heightClass = "h-[calc(100vh-120px)]" }) {
     const handleBeforeUnload = () => {
       const token = localStorage.getItem('access_token');
       if (token) {
-        fetch('https://backend.prosental.com/api/auth/chat/offline', {
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || 'https://eng.prosental.online/api';
+        fetch(`${apiBase}/auth/chat/offline`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`

@@ -5,99 +5,92 @@ import api from "@/lib/axios";
 const DEFAULT_PARTNERS = [
   {
     id: 1,
-    uuid: "01a063ce-3d28-73d4-b465-35899f07028b",
+    uuid: "01a063db-ec50-70cf-994b-85f77214e36e",
     name: "الرابط الجديد New Link",
-    image_url: "https://eng.prosental.online/storage/partners/new_link.png",
-    url: "https://newlink.com",
+    image_url: "/partners/new_link.png",
+    url: "https://newlink.com.sa",
   },
   {
     id: 2,
-    uuid: "01a063ce-3d31-7242-894e-3aa98063987a",
-    name: "شركة الرابط الجديد للمقاولات 2",
-    image_url: "https://eng.prosental.online/storage/partners/partner_1.png",
-    url: "https://newlink.com",
+    uuid: "01a063db-ec5a-7100-8d64-8e80e94b3f42",
+    name: "سابك للصناعات الهندسية SABIC",
+    image_url: "/partners/sabic.png",
+    url: "https://www.sabic.com",
   },
   {
     id: 3,
-    uuid: "01a063ce-3d33-72c7-b5fe-34ce25915a91",
-    name: "مجموعة الرابط الجديد الهندسية 3",
-    image_url: "https://eng.prosental.online/storage/partners/partner_2.png",
-    url: "https://newlink.com",
+    uuid: "01a063db-ec5d-703e-88d6-eea2ef05cc67",
+    name: "الفنار للأنظمة الكهربائية alfanar",
+    image_url: "/partners/alfanar.png",
+    url: "https://www.alfanar.com",
   },
   {
     id: 4,
-    uuid: "01a063ce-3d35-70ab-9b7f-d1548ecb6f42",
-    name: "شريك الرابط الجديد للإنشاءات 4",
-    image_url: "https://eng.prosental.online/storage/partners/partner_3.png",
-    url: "https://newlink.com",
+    uuid: "01a063db-ec5e-73b6-9212-e830b5f35f03",
+    name: "شنايدر إلكتريك Schneider Electric",
+    image_url: "/partners/schneider.png",
+    url: "https://www.se.com",
   },
   {
     id: 5,
-    uuid: "01a063ce-3d37-72fe-92ca-e51f036e15dc",
-    name: "شركة الرابط الجديد للتطوير 5",
-    image_url: "https://eng.prosental.online/storage/partners/partner_4.png",
-    url: "https://newlink.com",
+    uuid: "01a063db-ec61-72d0-ac51-f8cc3762ec5b",
+    name: "الخزف السعودي Saudi Ceramics",
+    image_url: "/partners/saudi_ceramics.png",
+    url: "https://www.saudiceramics.com",
   },
   {
     id: 6,
-    uuid: "01a063ce-3d3a-70d9-a30b-4802ae980e4f",
-    name: "الرابط الجديد للاستشارات 6",
-    image_url: "https://eng.prosental.online/storage/partners/partner_5.png",
-    url: "https://newlink.com",
+    uuid: "01a063db-ec62-72be-8d0f-a5a592bf9515",
+    name: "دهانات الجزيرة Jazeera Paints",
+    image_url: "/partners/jazeera_paints.png",
+    url: "https://jazeerapaints.com",
+  },
+  {
+    id: 7,
+    uuid: "01a063db-ec63-71b6-8d88-3c16011aae64",
+    name: "الزامل للصناعات الهندسية Zamil Industrial",
+    image_url: "/partners/zamil.png",
+    url: "https://www.zamilindustrial.com",
+  },
+  {
+    id: 8,
+    uuid: "01a063db-ec63-71b6-8d88-3c1601d78a45",
+    name: "بوش للمعدات والأنظمة الهندسية BOSCH",
+    image_url: "/partners/bosch.png",
+    url: "https://www.bosch-pt.com",
+  },
+  {
+    id: 9,
+    uuid: "01a063db-ec66-73ae-bd49-ab91f4672ee9",
+    name: "هيلتي للمعدات الإنشائية HILTI",
+    image_url: "/partners/hilti.png",
+    url: "https://www.hilti.sa",
   },
 ];
 
 function PartnerLogoImage({ src, alt, className }) {
-  const [cleanSrc, setCleanSrc] = useState(src);
+  const [imgSrc, setImgSrc] = useState(src);
 
   useEffect(() => {
-    if (!src) return;
-    let isMounted = true;
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      try {
-        const w = img.naturalWidth || 300;
-        const h = img.naturalHeight || 100;
-        const canvas = document.createElement("canvas");
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        // Clear the 4 extreme corner marks (crop marks) present in server images
-        const cornerW = Math.min(22, Math.max(16, Math.round(w * 0.08)));
-        const cornerH = Math.min(22, Math.max(16, Math.round(h * 0.20)));
-
-        ctx.clearRect(0, 0, cornerW, cornerH);
-        ctx.clearRect(w - cornerW, 0, cornerW, cornerH);
-        ctx.clearRect(0, h - cornerH, cornerW, cornerH);
-        ctx.clearRect(w - cornerW, h - cornerH, cornerW, cornerH);
-
-        const dataUrl = canvas.toDataURL("image/png");
-        if (isMounted) {
-          setCleanSrc(dataUrl);
-        }
-      } catch (err) {
-        // Fallback to original src if cross-origin or canvas not supported
-      }
-    };
-    img.src = src;
-
-    return () => {
-      isMounted = false;
-    };
+    setImgSrc(src);
   }, [src]);
 
   return (
     <img
-      src={cleanSrc}
+      src={imgSrc}
       alt={alt}
       className={className}
       loading="lazy"
-      style={{
-        clipPath:
-          "polygon(16px 0%, calc(100% - 16px) 0%, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0% calc(100% - 16px), 0% 16px)",
+      onError={() => {
+        if (src.includes("sabic")) setImgSrc("/partners/sabic.png");
+        else if (src.includes("alfanar")) setImgSrc("/partners/alfanar.png");
+        else if (src.includes("schneider")) setImgSrc("/partners/schneider.png");
+        else if (src.includes("ceramics")) setImgSrc("/partners/saudi_ceramics.png");
+        else if (src.includes("jazeera")) setImgSrc("/partners/jazeera_paints.png");
+        else if (src.includes("zamil")) setImgSrc("/partners/zamil.png");
+        else if (src.includes("bosch")) setImgSrc("/partners/bosch.png");
+        else if (src.includes("hilti")) setImgSrc("/partners/hilti.png");
+        else setImgSrc("/partners/new_link.png");
       }}
     />
   );
@@ -107,6 +100,7 @@ export default function PartnersLogos() {
   const [partners, setPartners] = useState(DEFAULT_PARTNERS);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchPartners = async () => {
       try {
         const res = await api.get("/auth/partners");
@@ -116,10 +110,30 @@ export default function PartnersLogos() {
           ? res.data
           : [];
 
-        if (list.length > 0) {
+        if (list.length > 0 && isMounted) {
           const activePartners = list
             .filter((p) => p.is_active !== false && (p.image_url || p.image))
-            .sort((a, b) => (a.order || 0) - (b.order || 0));
+            .sort((a, b) => (a.order || 0) - (b.order || 0))
+            .map((p) => {
+              const rawImg = p.image_url || p.image || "";
+              const filename = rawImg.split("/").pop();
+              const localCandidates = [
+                "new_link.png",
+                "sabic.png",
+                "alfanar.png",
+                "schneider.png",
+                "saudi_ceramics.png",
+                "jazeera_paints.png",
+                "zamil.png",
+                "bosch.png",
+                "hilti.png",
+              ];
+              const localMatch = localCandidates.find((f) => f === filename);
+              return {
+                ...p,
+                image_url: localMatch ? `/partners/${localMatch}` : rawImg,
+              };
+            });
 
           if (activePartners.length > 0) {
             setPartners(activePartners);
@@ -131,6 +145,9 @@ export default function PartnersLogos() {
     };
 
     fetchPartners();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const displayPartners = partners.length > 0 ? partners : DEFAULT_PARTNERS;
@@ -143,7 +160,7 @@ export default function PartnersLogos() {
   ];
 
   return (
-    <section className="py-10 md:py-14 bg-white border-b border-gray-100 overflow-hidden relative" dir="ltr">
+    <section className="py-8 md:py-12 bg-white border-b border-gray-100 overflow-hidden relative" dir="ltr">
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes scrollPartnersMarquee {
           0% {
@@ -156,8 +173,11 @@ export default function PartnersLogos() {
         .partners-marquee-track {
           display: flex !important;
           width: max-content !important;
-          animation: scrollPartnersMarquee 25s linear infinite !important;
+          animation: scrollPartnersMarquee 28s linear infinite !important;
           will-change: transform !important;
+        }
+        .partners-marquee-track:hover {
+          animation-play-state: paused !important;
         }
       `}} />
 
@@ -167,15 +187,15 @@ export default function PartnersLogos() {
 
       {/* Continuous Running Track */}
       <div className="w-full flex items-center overflow-hidden">
-        <div className="partners-marquee-track animate-running-logos flex items-center gap-12 sm:gap-16 md:gap-20">
+        <div className="partners-marquee-track flex items-center gap-10 sm:gap-14 md:gap-16">
           {repeatedPartners.map((partner, idx) => {
             const imgUrl = partner.image_url || partner.image;
             const logoNode = (
-              <div className="h-20 sm:h-24 md:h-28 flex items-center justify-center px-6 sm:px-8 py-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 group shrink-0">
+              <div className="h-16 sm:h-20 md:h-24 flex items-center justify-center px-4 sm:px-6 py-2 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 group shrink-0">
                 <PartnerLogoImage
                   src={imgUrl}
                   alt={partner.name || "Partner Logo"}
-                  className="h-12 sm:h-14 md:h-18 lg:h-20 w-auto max-w-[180px] sm:max-w-[220px] md:max-w-[260px] object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="h-9 sm:h-11 md:h-14 lg:h-16 w-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-xs"
                 />
               </div>
             );
