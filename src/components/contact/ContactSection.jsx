@@ -1,9 +1,15 @@
 "use client";
+import { useState } from "react";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import CountryCodePicker from "@/components/common/CountryCodePicker";
+import { DEFAULT_COUNTRY } from "@/lib/countries";
 
 export default function ContactSection() {
   const { isEnglish } = useLanguage();
+  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY);
+  const [phone, setPhone] = useState("");
+
   return (
     <section className="py-12 px-6 md:px-12 font-tajawal max-w-[1400px] mx-auto w-full" dir={isEnglish ? "ltr" : "rtl"} data-aos="fade-up">
       
@@ -114,18 +120,22 @@ export default function ContactSection() {
                 <label className="text-sm font-bold text-gray-800 flex gap-1 items-center justify-start">
                   {isEnglish ? "Phone Number" : "رقم الهاتف"} <span className="text-red-500">*</span>
                 </label>
-                <div className="flex flex-row-reverse h-12 border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#EB682C]">
+                <div className={`flex ${isEnglish ? 'flex-row' : 'flex-row-reverse'} h-12 border border-gray-200 rounded-xl relative focus-within:border-[#EB682C] transition-colors bg-white`}>
                   {/* Phone Input */}
                   <input 
                     type="tel" 
-                    className="flex-1 h-full px-4 text-sm focus:outline-none text-left"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                    placeholder="5xxxxxxxx"
+                    className={`flex-1 h-full px-4 text-sm focus:outline-none bg-transparent ${isEnglish ? 'rounded-r-xl' : 'rounded-l-xl'}`}
                     dir="ltr"
                   />
-                  {/* Country Code Prefix */}
-                  <div className="h-full px-4 bg-gray-50 border-r border-gray-200 flex items-center justify-center gap-2 shrink-0">
-                    <span className="text-sm font-bold text-gray-600" dir="ltr">+966</span>
-                    <img src="https://flagcdn.com/w20/sa.png" alt="SA" className="w-5 h-auto rounded-sm" />
-                  </div>
+                  {/* Country Code Picker */}
+                  <CountryCodePicker
+                    selectedCountry={selectedCountry}
+                    onSelect={setSelectedCountry}
+                    isEnglish={isEnglish}
+                  />
                 </div>
               </div>
 
@@ -144,7 +154,7 @@ export default function ContactSection() {
               {/* Submit Button */}
               <button 
                 type="button" 
-                className="w-full bg-[#EB682C] text-white font-bold h-12 rounded-xl mt-2 hover:bg-[#d65a22] transition-colors"
+                className="w-full bg-[#EB682C] text-white font-bold h-12 rounded-xl mt-2 hover:bg-[#d65a22] transition-colors cursor-pointer"
               >
                 {isEnglish ? "Send Inquiry" : "ارسال استفسارك"}
               </button>

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useMemo } from 'react';
+import Link from 'next/link';
 import { User, Mail, EyeOff, Eye, ChevronDown, Check, AlertCircle, Loader2 } from 'lucide-react';
 import { useLanguage } from "@/context/LanguageContext";
 import api from "@/lib/axios";
@@ -33,6 +34,8 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [termsError, setTermsError] = useState("");
   const [topErrorObj, setTopErrorObj] = useState(null);
   const [isChecking, setIsChecking] = useState(false);
   const [serverErrors, setServerErrors] = useState({
@@ -350,6 +353,13 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
     if (clientNameError || clientEmailError || clientPhoneError || passwordError || confirmPasswordError) {
       const firstError = clientNameError || clientEmailError || clientPhoneError || passwordError || confirmPasswordError;
       setTopErrorObj(firstError);
+      return;
+    }
+
+    if (!agreeTerms) {
+      const err = isEnglish ? "You must agree to the Terms & Conditions" : "يجب الموافقة على الشروط والأحكام للمتابعة";
+      setTermsError(err);
+      setTopErrorObj({ ar: err, en: err });
       return;
     }
 
@@ -850,6 +860,59 @@ export default function RegisterStep1({ onNext, formData, setFormData }) {
             <p className="text-xs font-bold text-emerald-600 mt-0.5 flex items-center gap-1">
               <Check className="w-3.5 h-3.5" />
               <span>{isEnglish ? "Passwords match" : "كلمتا المرور متطابقتان"}</span>
+            </p>
+          )}
+        </div>
+
+        {/* Row 5: Terms and Conditions */}
+        <div className={`flex flex-col gap-1 mt-1 ${isEnglish ? 'text-left' : 'text-right'}`}>
+          <label className="inline-flex items-center gap-2.5 cursor-pointer select-none group py-1">
+            <input
+              type="checkbox"
+              checked={agreeTerms}
+              onChange={(e) => {
+                setAgreeTerms(e.target.checked);
+                if (termsError) setTermsError("");
+                if (topErrorObj?.ar?.includes("الشروط") || topErrorObj?.en?.includes("Terms")) {
+                  setTopErrorObj(null);
+                }
+              }}
+              className="w-4 h-4 rounded text-[#EB682C] focus:ring-[#EB682C] focus:ring-offset-0 border-gray-300 accent-[#EB682C] cursor-pointer"
+            />
+            <span className="text-sm font-medium text-gray-700">
+              {isEnglish ? (
+                <>
+                  I agree to the{" "}
+                  <Link
+                    href="/conditions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-[#EB682C] underline hover:text-[#d65a22] transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Terms & Conditions
+                  </Link>
+                </>
+              ) : (
+                <>
+                  أوافق على{" "}
+                  <Link
+                    href="/conditions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-[#EB682C] underline hover:text-[#d65a22] transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    الشروط والأحكام
+                  </Link>
+                </>
+              )}
+            </span>
+          </label>
+          {termsError && (
+            <p className={`text-xs font-bold text-red-500 flex items-center gap-1.5 ${isEnglish ? 'text-left' : 'text-right'}`}>
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{termsError}</span>
             </p>
           )}
         </div>

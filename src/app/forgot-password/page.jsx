@@ -4,9 +4,13 @@ import Link from "next/link";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { CheckCircle } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import CountryCodePicker from "@/components/common/CountryCodePicker";
+import { DEFAULT_COUNTRY } from "@/lib/countries";
 
 export default function ForgotPasswordPage() {
   const [step, setStep] = useState(1);
+  const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY);
+  const [phoneNumber, setPhoneNumber] = useState("");
   const { isEnglish } = useLanguage();
 
   // Step 1: Enter Phone Number
@@ -21,21 +25,26 @@ export default function ForgotPasswordPage() {
         <div className="flex flex-col gap-5" dir={isEnglish ? 'ltr' : 'rtl'}>
           <div className={`flex flex-col gap-2 ${isEnglish ? 'text-left' : 'text-right'}`}>
             <label className="text-sm font-bold text-gray-700">{isEnglish ? 'Phone Number' : 'رقم الهاتف'}</label>
-            <div className={`flex ${isEnglish ? 'flex-row' : 'flex-row-reverse'} h-12 border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#EB682C]`}>
+            <div className={`flex ${isEnglish ? 'flex-row' : 'flex-row-reverse'} h-12 border border-gray-200 rounded-xl relative focus-within:border-[#EB682C] transition-colors bg-white`}>
               <input 
                 type="tel" 
-                className={`flex-1 h-full px-4 text-sm focus:outline-none ${isEnglish ? 'text-left' : 'text-left'}`}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value.replace(/[^0-9]/g, ''))}
+                placeholder="5xxxxxxxx"
+                className={`flex-1 h-full px-4 text-sm focus:outline-none bg-transparent ${isEnglish ? 'rounded-r-xl' : 'rounded-l-xl'}`}
                 dir="ltr"
               />
-              <div className={`h-full px-4 bg-gray-50 border-${isEnglish ? 'r' : 'l'} border-gray-200 flex items-center justify-center gap-2 shrink-0`}>
-                <span className="text-sm font-bold text-gray-600" dir="ltr">+966</span>
-              </div>
+              <CountryCodePicker
+                selectedCountry={selectedCountry}
+                onSelect={setSelectedCountry}
+                isEnglish={isEnglish}
+              />
             </div>
           </div>
 
           <button 
             onClick={() => setStep(2)}
-            className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors mt-4"
+            className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors mt-4 cursor-pointer"
           >
             {isEnglish ? 'Next' : 'التالي'}
           </button>
@@ -76,7 +85,7 @@ export default function ForgotPasswordPage() {
 
         <button 
           onClick={() => setStep(3)}
-          className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors"
+          className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors cursor-pointer"
         >
           {isEnglish ? 'Next' : 'التالي'}
         </button>
@@ -114,7 +123,7 @@ export default function ForgotPasswordPage() {
 
           <button 
             onClick={() => setStep(4)}
-            className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors mt-4"
+            className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors mt-4 cursor-pointer"
           >
             {isEnglish ? 'Set Password' : 'تعيين كلمة المرور'}
           </button>
@@ -135,7 +144,7 @@ export default function ForgotPasswordPage() {
           <p className="text-gray-500 text-sm mb-12">{isEnglish ? 'You have successfully changed your password' : 'لقد قمت بتغيير كلمة المرور بنجاح'}</p>
 
           <Link href="/login" className="w-full">
-            <button className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors">
+            <button className="w-full bg-[#EB682C] text-white py-3.5 rounded-xl font-bold hover:bg-[#d65a22] transition-colors cursor-pointer">
               {isEnglish ? 'Return to Login' : 'العودة لتسجيل الدخول'}
             </button>
           </Link>
